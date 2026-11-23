@@ -1,4 +1,4 @@
-name: Build Strix Music APK
+﻿name: Build Strix Music APK
 
 on:
   workflow_dispatch:
@@ -23,6 +23,7 @@ jobs:
     name: Build universal Android APK
     runs-on: ubuntu-latest
     timeout-minutes: 60
+
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
@@ -35,6 +36,8 @@ jobs:
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          accept-android-sdk-licenses: true
 
       - name: Install Android SDK packages
         run: sdkmanager "platforms;android-37" "platform-tools"
