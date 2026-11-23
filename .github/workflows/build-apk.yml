@@ -45,8 +45,11 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Generate Android Debug Keystore
+      - name: Build Strix Music APK
         shell: bash
+        env:
+          BLAZIFY_APPLICATION_ID: com.strix.music
+          BLAZIFY_APP_NAME: Strix Music
         run: |
           mkdir -p "$HOME/.android"
           keytool -genkeypair -noprompt \
@@ -58,13 +61,13 @@ jobs:
             -keysize 2048 \
             -validity 10000 \
             -dname "CN=Android Debug,O=Android,C=US"
-          test -f "$HOME/.android/debug.keystore"
-          echo "Debug keystore successfully generated"
-      - name: Build Strix Music APK
-        env:
-          BLAZIFY_APPLICATION_ID: com.strix.music
-          BLAZIFY_APP_NAME: Strix Music
-        run: ./gradlew --no-daemon --max-workers=2 -Dorg.gradle.jvmargs="-Xmx3g -Dkotlin.daemon.jvm.options=-Xmx2g -XX:+UseParallelGC" --stacktrace assembleFossDebug
+
+          test -s "$HOME/.android/debug.keystore"
+          keytool -list -keystore "$HOME/.android/debug.keystore" -storepass android
+
+          ./gradlew --no-daemon --max-workers=2 \
+            -Dorg.gradle.jvmargs="-Xmx3g -Dkotlin.daemon.jvm.options=-Xmx2g -XX:+UseParallelGC" \
+            --stacktrace assembleFossDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
@@ -73,9 +76,3 @@ jobs:
           path: app/build/outputs/apk/foss/debug/*.apk
           if-no-files-found: error
           retention-days: 14
-
-
-
-
-
-
