@@ -40,7 +40,7 @@ jobs:
           accept-android-sdk-licenses: true
 
       - name: Install Android SDK packages
-        run: sdkmanager "platforms;android-37" "platform-tools"
+        run: sdkmanager "platforms;android-37.0" "platform-tools"
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
@@ -58,5 +58,6 @@ jobs:
           path: app/build/outputs/apk/foss/debug/*.apk
           if-no-files-found: error
           retention-days: 14
+
 
 
