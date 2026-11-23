@@ -58,6 +58,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -167,19 +168,18 @@ fun BlazeHomeHeader(
                     com.blazify.music.festival.FestivalLogo(festival, isDark, logoSize, logoModifier)
                 } else {
                     Image(
-                        painter = painterResource(
-                            if (isDark) R.drawable.blaze_logo_white else R.drawable.blaze_logo,
-                        ),
-                        contentDescription = null,
+                        painter = painterResource(R.drawable.blaze_logo),
+                        contentDescription = "Strix Music",
+                        colorFilter = ColorFilter.tint(iconTint),
                         modifier = logoModifier,
                     )
                 }
                 Spacer(Modifier.width(if (compactHeader) 6.dp else 10.dp))
                 Text(
-                    text = "Blazify",
-                    fontSize = if (compactHeader) 18.sp else 26.sp,
+                    text = "Strix Music",
+                    fontSize = if (compactHeader) 16.sp else 22.sp,
                     fontWeight = FontWeight.Bold,
-                    letterSpacing = if (compactHeader) 1.sp else 3.sp,
+                    letterSpacing = if (compactHeader) 0.3.sp else 0.5.sp,
                     maxLines = 1,
                     style = androidx.compose.ui.text.TextStyle(
                         brush = if (isDark) {

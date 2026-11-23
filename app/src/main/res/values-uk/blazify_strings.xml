@@ -267,7 +267,7 @@
     <string name="wrapped_playlist_saved">Список відтворення збережено</string>
     <string name="casting_to">Трансляція на %s</string>
     <string name="progress_percent">Прогрес %s%%</string>
-    <string name="listening_to_blazify">Слухаючи Blazify</string>
+    <string name="listening_to_blazify">Strix Music</string>
     <string name="open">Відкрити</string>
     <string name="failed_to_create_image">Не вдалося створити зображення: %s</string>
     <string name="copied_title">Скопійована назва</string>

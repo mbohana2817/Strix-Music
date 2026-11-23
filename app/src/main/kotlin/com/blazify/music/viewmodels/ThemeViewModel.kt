@@ -7,7 +7,7 @@ package com.blazify.music.viewmodels
 
 import androidx.lifecycle.ViewModel
 import com.blazify.music.ui.screens.settings.DarkMode
-import com.blazify.music.ui.theme.DefaultThemeColor
+import com.blazify.music.ui.theme.BlazeThemeColor
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,7 +20,7 @@ class ThemeViewModel : ViewModel() {
     private val _pureBlack = MutableStateFlow(false)
     val pureBlack: StateFlow<Boolean> = _pureBlack.asStateFlow()
 
-    private val _selectedThemeColorInt = MutableStateFlow(DefaultThemeColor.hashCode())
+    private val _selectedThemeColorInt = MutableStateFlow(BlazeThemeColor.hashCode())
     val selectedThemeColorInt: StateFlow<Int> = _selectedThemeColorInt.asStateFlow()
 
     fun updateDarkMode(mode: DarkMode) {

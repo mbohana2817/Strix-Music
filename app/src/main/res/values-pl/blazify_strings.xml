@@ -289,7 +289,7 @@
     <string name="import_error_title">Błąd importu</string>
     <string name="casting_to">Wysyłanie do %s</string>
     <string name="progress_percent">Postęp %s%%</string>
-    <string name="listening_to_blazify">Słuchasz Blazify</string>
+    <string name="listening_to_blazify">Strix Music</string>
     <string name="open">Otwórz</string>
     <string name="failed_to_create_image">Nie udało się utworzyć obrazu: %s</string>
     <string name="copied_title">Skopiowano Tytuł</string>
@@ -672,7 +672,7 @@
     <string name="like_what_i_do">Podoba Ci się to co robię?</string>
     <string name="buy_mo_a_coffee">Kup mi kawę</string>
     <string name="community_and_info">Społeczność i informacje</string>
-    <string name="blazify">BLAZIFY</string>
+    <string name="blazify">Strix Music</string>
     <string name="wanna_play_favorite_song">Chcesz zagrać ich ulubioną piosenkę?</string>
     <string name="yeah">Spoko</string>
     <string name="stands_with_palestine">Ten projekt wspiera Palestynę 🇵🇸</string>
@@ -772,7 +772,7 @@
     <string name="recognition_notification_processing">Rozpoznawanie...</string>
     <string name="recognition_notification_no_match">Nie znaleziono dopasowania</string>
     <string name="recognition_notification_failed">Rozpoznawanie nie powiodło się</string>
-    <string name="listen_on_blazify">Słuchaj na Blazify</string>
+    <string name="listen_on_blazify">Listen on Strix Music</string>
     <string name="android_auto">Android Auto</string>
     <string name="android_auto_visible_sections">Widoczne sekcje</string>
     <string name="android_auto_reorder_hint">Dotknij sekcji aby ją włączyć lub wyłączyć\nPrzytrzymaj ikonę przeciągania aby zmienić kolejność. Domyślnie wyświetlana będzie pierwsza sekcja.</string>

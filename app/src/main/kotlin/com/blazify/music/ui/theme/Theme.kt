@@ -29,9 +29,9 @@ import com.materialkolor.score.Score
 
 val DefaultThemeColor = Color(0xFFED5564)
 
-// Blazify brand colors (amber -> deep orange gradient)
-val BlazeThemeColor = Color(0xFFFFA726)
-val BlazeGradientEnd = Color(0xFFFF7043)
+// Strix brand colors (burgundy -> rose gradient)
+val BlazeThemeColor = Color(0xFF7B233F) // Strix Burgundy brand color
+val BlazeGradientEnd = Color(0xFFC05A78)
 
 /**
  * Cards and sheets in pure-black dark.

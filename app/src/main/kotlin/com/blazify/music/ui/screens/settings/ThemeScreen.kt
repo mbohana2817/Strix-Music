@@ -119,7 +119,9 @@ data class ThemePalette(
 
 val PaletteColors = listOf(
     ThemePalette(R.string.palette_dynamic, Color.Transparent), // Sentinel for System/Dynamic colors
-    ThemePalette(R.string.palette_blaze, BlazeThemeColor), // Blazify brand color (default)
+    ThemePalette(R.string.palette_strix, BlazeThemeColor), // Strix Burgundy brand color (default)
+    ThemePalette(R.string.palette_midnight, Color(0xFF35304F)),
+    ThemePalette(R.string.palette_rosewood, Color(0xFF9B3D54)),
     ThemePalette(R.string.palette_crimson, Color(0xFFEC5464)), // Slightly shifted from DefaultThemeColor (0xFFED5564) to avoid conflict
     ThemePalette(R.string.palette_rose, Color(0xFFD81B60)),
     ThemePalette(R.string.palette_purple, Color(0xFF8E24AA)),
@@ -710,7 +712,7 @@ internal fun ThemePhonePreview(
                         contentDescription = null,
                         modifier = Modifier.size(13.dp),
                     )
-                    Text("Blazify", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = cs.onSurface)
+                    Text("Strix Music", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = cs.onSurface)
                 }
                 Icon(painterResource(R.drawable.settings), null, tint = cs.onSurface.copy(alpha = 0.75f), modifier = Modifier.size(13.dp))
             }

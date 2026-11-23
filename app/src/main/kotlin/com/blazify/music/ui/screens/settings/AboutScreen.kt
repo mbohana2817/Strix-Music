@@ -68,16 +68,14 @@ import com.blazify.music.LocalPlayerAwareWindowInsets
 import com.blazify.music.R
 import com.blazify.music.ui.component.IconButton
 import com.blazify.music.ui.utils.backToMain
-import java.util.Locale
 
-private const val WEBSITE_URL = "https://www.rajendrapandey.info.np/"
-private const val GITHUB_URL = "https://github.com/rajendra7169"
+private const val WEBSITE_URL = "https://github.com/mbohana2817"
+private const val GITHUB_URL = "https://github.com/mbohana2817/Strix-Music"
 // The project, not the profile. The social row above is about who made it;
 // this is about the thing itself.
-private const val PROJECT_URL = "https://github.com/rajendra7169/blazify"
-private const val LICENSE_URL = "https://github.com/rajendra7169/blazify/blob/main/LICENSE"
-private const val INSTAGRAM_URL = "https://www.instagram.com/raja.indra7169"
-private const val GITHUB_AVATAR = "https://github.com/rajendra7169.png"
+private const val PROJECT_URL = "https://github.com/mbohana2817/Strix-Music"
+private const val LICENSE_URL = "https://github.com/mbohana2817/Strix-Music/blob/main/LICENSE"
+private const val GITHUB_AVATAR = "https://github.com/mbohana2817.png"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -122,8 +120,6 @@ fun AboutScreen(
                 )
                 Spacer(Modifier.height(12.dp))
                 val blazifyName = stringResource(R.string.blazify)
-                    .lowercase(Locale.getDefault())
-                    .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
                 Text(
                     text = blazifyName,
                     style = MaterialTheme.typography.headlineLarge,
@@ -162,7 +158,7 @@ fun AboutScreen(
                         val fallback = painterResource(R.drawable.person)
                         AsyncImage(
                             model = GITHUB_AVATAR,
-                            contentDescription = "Rajendra Pandey",
+                            contentDescription = "Muhammad Bohana (Han)",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.fillMaxSize(),
                             placeholder = fallback,
@@ -172,7 +168,7 @@ fun AboutScreen(
                     }
                     Column(verticalArrangement = Arrangement.Center) {
                         Text(
-                            text = "Rajendra Pandey",
+                            text = "Muhammad Bohana (Han)",
                             style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.Black,
                             color = MaterialTheme.colorScheme.onSurface,
@@ -195,9 +191,8 @@ fun AboutScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
-                    SocialButton(Modifier.weight(1f), R.drawable.language, stringResource(R.string.social_website)) { uriHandler.openUri(WEBSITE_URL) }
+                    SocialButton(Modifier.weight(1f), R.drawable.github, stringResource(R.string.social_website)) { uriHandler.openUri(WEBSITE_URL) }
                     SocialButton(Modifier.weight(1f), R.drawable.github, stringResource(R.string.social_github)) { uriHandler.openUri(GITHUB_URL) }
-                    SocialButton(Modifier.weight(1f), R.drawable.instagram, stringResource(R.string.social_instagram)) { uriHandler.openUri(INSTAGRAM_URL) }
                 }
 
                 Spacer(Modifier.height(20.dp))

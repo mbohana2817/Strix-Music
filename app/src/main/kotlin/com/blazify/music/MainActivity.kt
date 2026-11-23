@@ -1326,7 +1326,7 @@ class MainActivity : ComponentActivity() {
                                             if (navBackStackEntry?.destination?.route == Screens.Home.route) {
                                                 // Blazify gradient wordmark on the home screen
                                                 Text(
-                                                    text = "Blazify",
+                                                    text = "Strix Music",
                                                     style = MaterialTheme.typography.titleLarge.copy(
                                                         fontWeight = FontWeight.Bold,
                                                         letterSpacing = 0.5.sp,

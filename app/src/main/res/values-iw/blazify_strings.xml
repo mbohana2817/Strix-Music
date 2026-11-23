@@ -403,7 +403,7 @@
     <string name="plays">מחזות</string>
     <string name="casting_to">העברה ל-%s</string>
     <string name="progress_percent">התקדמות %s%%</string>
-    <string name="listening_to_blazify">מקשיבים ל-Blazify</string>
+    <string name="listening_to_blazify">Strix Music</string>
     <string name="open">פתח</string>
     <string name="failed_to_create_image">יצירת התמונה נכשלה: %s</string>
     <string name="copied_title">כותרת הועתקה</string>
@@ -634,7 +634,7 @@
     <string name="recognition_notification_processing">מזהה...</string>
     <string name="recognition_notification_no_match">לא נמצאה התאמה</string>
     <string name="recognition_notification_failed">הזיהוי נכשל</string>
-    <string name="listen_on_blazify">האזן ב-Blazify</string>
+    <string name="listen_on_blazify">Listen on Strix Music</string>
     <string name="map_csv_columns">מפה עמודות CSV</string>
     <string name="first_row_is_header">השורה הראשונה היא כותרת עליונה</string>
     <string name="artist_name_column">עמודת שם האמן</string>

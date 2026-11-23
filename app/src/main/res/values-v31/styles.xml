@@ -15,8 +15,8 @@
          instead of a still icon; MainActivity glides it into Home's header when Home is ready. -->
     <style name="Theme.Blazify.Splash" parent="Theme.Blazify">
         <item name="android:windowBackground">#000000</item>
-        <item name="android:windowSplashScreenBackground">#000000</item>
-        <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_icon_animated</item>
+        <item name="android:windowSplashScreenBackground">#210D17</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/strix_logo_mark</item>
         <item name="android:windowSplashScreenAnimationDuration">750</item>
     </style>
 </resources>

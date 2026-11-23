@@ -265,7 +265,7 @@
     <string name="wrapped_playlist_saved">Playlist salvat</string>
     <string name="casting_to">Se difuzează către %s</string>
     <string name="progress_percent">Progres: %s%%</string>
-    <string name="listening_to_blazify">Ascultă pe Blazify</string>
+    <string name="listening_to_blazify">Strix Music</string>
     <string name="open">Deschide</string>
     <string name="failed_to_create_image">Nu s-a putut crea imaginea: %s</string>
     <string name="copied_title">Titlul a fost copiat</string>
@@ -621,7 +621,7 @@
     <string name="like_what_i_do">Îți place ceea ce fac?</string>
     <string name="buy_mo_a_coffee">Cumpără-mi o cafea!</string>
     <string name="community_and_info">Comunitate și informații</string>
-    <string name="blazify">BLAZIFY</string>
+    <string name="blazify">Strix Music</string>
     <string name="wanna_play_favorite_song">Vrei să redai melodia lui/ei preferată?</string>
     <string name="yeah">Da!</string>
     <string name="stands_with_palestine">Acest proiect ține cu Palestina 🇵🇸</string>
@@ -769,7 +769,7 @@
     <string name="recognition_notification_processing">Se identifică…</string>
     <string name="recognition_notification_no_match">Nicio potrivire găsită</string>
     <string name="recognition_notification_failed">Recunoaștere eșuată</string>
-    <string name="listen_on_blazify">Ascultă pe Blazify</string>
+    <string name="listen_on_blazify">Listen on Strix Music</string>
     <string name="android_auto">Android Auto</string>
     <string name="android_auto_visible_sections">Secțiuni vizibile</string>
     <string name="android_auto_reorder_hint">Atinge o secțiune pentru a o activa sau dezactiva.\nȚine apăsat glisorul pentru a reordona. Prima secțiune va fi afișată în mod prestabilit</string>

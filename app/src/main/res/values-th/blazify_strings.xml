@@ -309,7 +309,7 @@
     <string name="error_eq_apply_failed">ไม่สามารถใช้โปรไฟล์อีควอไลเซอร์: %1$s</string>
     <string name="casting_to">กำลังแคสต์ไปยัง %s</string>
     <string name="progress_percent">ความคืบหน้า %s%%</string>
-    <string name="listening_to_blazify">กำลังฟังผ่าน Blazify</string>
+    <string name="listening_to_blazify">Strix Music</string>
     <string name="open">เปิด</string>
     <string name="failed_to_create_image">ไม่สามารถสร้างรูปภาพ: %s</string>
     <string name="copied_title">คัดลอกชื่อเพลงแล้ว</string>
@@ -604,7 +604,7 @@
     <string name="like_what_i_do">ชอบผลงานของฉันไหม?</string>
     <string name="buy_mo_a_coffee">เลี้ยงกาแฟฉันสักแก้ว!</string>
     <string name="community_and_info">ชุมชนและข้อมูล</string>
-    <string name="blazify">BLAZIFY</string>
+    <string name="blazify">Strix Music</string>
     <string name="wanna_play_favorite_song">อยากเล่นเพลงโปรดของพวกเขาไหม?</string>
     <string name="yeah">ใช่เลย!</string>
     <string name="stands_with_palestine">โปรเจกต์นี้ขอยืนหยัดเคียงข้างปาเลสไตน์ 🇵🇸</string>
@@ -827,7 +827,7 @@
     <string name="recognition_notification_processing">กำลังระบุเพลง…</string>
     <string name="recognition_notification_no_match">ไม่พบผลลัพธ์ที่ตรงกัน</string>
     <string name="recognition_notification_failed">ระบุเพลงไม่สำเร็จ</string>
-    <string name="listen_on_blazify">ฟังบน Blazify</string>
+    <string name="listen_on_blazify">Listen on Strix Music</string>
     <string name="pin">ปักหมุด</string>
     <string name="unpin">เลิกปักหมุด</string>
     <string name="and">และ</string>

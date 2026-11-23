@@ -332,7 +332,7 @@
     <string name="release_notes">Release notes</string>
     <string name="changelog">Changelog</string>
     <string name="changelog_empty">No changelogs available</string>
-    <string name="github_releases_url">https://github.com/rajendra7169/blazify/releases</string>
+    <string name="github_releases_url">https://github.com/mbohana2817/Strix-Music/releases</string>
     <string name="list_bullet">•</string>
     <string name="view_on_github">View on GitHub</string>
 
@@ -355,7 +355,7 @@
     <string name="developer_github">GitHub</string>
     <string name="developer_website_url" translatable="false">https://rajendrapandey.info.np</string>
     <string name="developer_github_url" translatable="false">https://github.com/rajendra7169</string>
-    <string name="blazify_repo_url" translatable="false">https://github.com/rajendra7169/blazify</string>
+    <string name="blazify_repo_url" translatable="false">https://github.com/mbohana2817/Strix-Music</string>
     <string name="current_version">Current version</string>
     <string name="version_format">Version: %s</string>
     <string name="update_settings">Update settings</string>
@@ -714,7 +714,7 @@
     <string name="plays">plays</string>
     <string name="casting_to">Casting to %s</string>
     <string name="progress_percent">Progress %s%%</string>
-    <string name="listening_to_blazify">Listening to Blazify</string>
+    <string name="listening_to_blazify">Strix Music</string>
     <string name="open">Open</string>
     <string name="failed_to_create_image">Failed to create image: %s</string>
     <string name="copied_title">Title copied</string>
@@ -977,7 +977,7 @@
     <string name="recognition_notification_processing">Identifying…</string>
     <string name="recognition_notification_no_match">No match found</string>
     <string name="recognition_notification_failed">Recognition failed</string>
-    <string name="listen_on_blazify">Listen on Blazify</string>
+    <string name="listen_on_blazify">Listen on Strix Music</string>
 
     <!-- CSV Import Strings -->
     <string name="map_csv_columns">Map CSV columns</string>
@@ -1111,7 +1111,7 @@
     <string name="like_what_i_do">Like what I do?</string>
     <string name="buy_mo_a_coffee">Buy me a coffee!</string>
     <string name="community_and_info">Community &amp; Info</string>
-    <string name="blazify">BLAZIFY</string>
+    <string name="blazify">Strix Music</string>
     <string name="wanna_play_favorite_song">Want to play their favorite song?</string>
     <string name="yeah">Yeah!</string>
     <string name="stands_with_palestine">This project stands with Palestine 🇵🇸</string>
@@ -1256,8 +1256,8 @@
     <string name="no_recently_played">No recently played songs yet.</string>
     <string name="no_recommendations">No recommendations yet.</string>
     <!-- About page -->
-    <string name="about_developer_role">Developer</string>
-    <string name="about_me_body">I\'m Rajendra Pandey, an independent app developer from Nepal who loves turning ideas into polished, everyday experiences. Blazify is my take on music streaming: fast, beautiful and personal, crafted from the ground up with Kotlin and Jetpack Compose. I care about the little details that make an app feel effortless, and I\'m always tinkering to make it better. Thanks for being here and letting my work be part of your day.</string>
+    <string name="about_developer_role">Developer • Strix Music</string>
+    <string name="about_me_body">Dikembangkan oleh Muhammad Bohana (Han), Alumni Siswa Al-Hidayah Kota Cirebon, TKJ 2. Strix Music adalah project personal untuk menghadirkan pengalaman mendengarkan musik yang nyaman, modern, dan terus dikembangkan.</string>
     <string name="buy_me_a_coffee">Buy me a coffee</string>
     <string name="coffee_dialog_subtitle">Scan the code to support Blazify</string>
     <string name="made_with_love">Made with ❤️ by Rajendra Pandey</string>
@@ -1330,14 +1330,14 @@
     <string name="edit_tags_note">Shown in Blazify only. The file itself is left alone, so other apps still see its original tags.</string>
     <string name="local_music_permission">Blazify needs permission to read audio files</string>
     <string name="blaze_greeting_default_name">Music Lover</string>
-    <string name="star_on_github">Star Blazify on GitHub</string>
+    <string name="star_on_github">Visit Strix Music on GitHub</string>
     <string name="star_prompt_title">Getting on with Blazify?</string>
     <string name="star_prompt_body">It is made by one person and given away, with no ads and nothing tracked. A star on GitHub is most of how anyone else finds it.</string>
     <string name="star_prompt_yes">Star it</string>
     <string name="star_prompt_later">Later</string>
     <string name="star_prompt_never">No thanks</string>
-    <string name="social_website">Website</string>
-    <string name="social_github">GitHub</string>
+    <string name="social_website">GitHub Profile</string>
+    <string name="social_github">Repository</string>
     <string name="social_instagram">Instagram</string>
     <string name="settings_group_connections">Connections</string>
     <string name="hint_integrations">Discord Rich Presence, Last.fm scrobbling</string>
@@ -1538,4 +1538,7 @@
     <string name="offline_home_downloaded_desc">Songs you downloaded</string>
     <string name="offline_home_device">Songs on this device</string>
     <string name="offline_home_device_desc">Your own music files on this phone</string>
+    <string name="palette_strix">Strix Burgundy</string>
+    <string name="palette_midnight">Midnight Plum</string>
+    <string name="palette_rosewood">Rosewood</string>
 </resources>

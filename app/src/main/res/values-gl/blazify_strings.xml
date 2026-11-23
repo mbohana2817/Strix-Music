@@ -312,7 +312,7 @@
     <string name="plays">reproducións</string>
     <string name="casting_to">Transmitindo a %s</string>
     <string name="progress_percent">Progreso %s%%</string>
-    <string name="listening_to_blazify">Escoitando Blazify</string>
+    <string name="listening_to_blazify">Strix Music</string>
     <string name="open">Abrir</string>
     <string name="failed_to_create_image">Erro ao crear a imaxe: %s</string>
     <string name="copied_title">Título copiado</string>
@@ -405,7 +405,7 @@
     <string name="recognition_notification_processing">Identificando…</string>
     <string name="recognition_notification_no_match">Non se atoparon coincidencias</string>
     <string name="recognition_notification_failed">Fallou o recoñecemento</string>
-    <string name="listen_on_blazify">Escoitar en Blazify</string>
+    <string name="listen_on_blazify">Listen on Strix Music</string>
     <string name="map_csv_columns">Asociar columnas do CSV</string>
     <string name="first_row_is_header">A primeira fila é o encabezado</string>
     <string name="artist_name_column">Columna do nome do artista</string>
@@ -537,7 +537,7 @@
     <string name="like_what_i_do">Gústache o que fago?</string>
     <string name="buy_mo_a_coffee">Convídame a un café!</string>
     <string name="community_and_info">Comunidade e información</string>
-    <string name="blazify">BLAZIFY</string>
+    <string name="blazify">Strix Music</string>
     <string name="wanna_play_favorite_song">Queres reproducir a súa canción favorita?</string>
     <string name="yeah">Si!</string>
     <string name="stands_with_palestine">Este proxecto apoia a Palestina 🇵🇸</string>

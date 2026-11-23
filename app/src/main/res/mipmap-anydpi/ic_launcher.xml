@@ -4,5 +4,5 @@
     <!-- Inset so the glyph sits inside the adaptive safe zone (72dp of 108dp)
          instead of running to the tile edges. -->
     <foreground android:drawable="@drawable/ic_launcher_foreground_inset" />
-    <monochrome android:drawable="@drawable/ic_launcher_foreground_inset" />
+    <monochrome android:drawable="@drawable/strix_logo_mark_monochrome" />
 </adaptive-icon>

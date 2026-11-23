@@ -239,7 +239,7 @@
     <string name="error_title">Klaida</string>
     <string name="error_eq_apply_failed">Klaida, įkeliant ekvalaizerio profilį %1$s</string>
     <string name="progress_percent">Progresas %s%%</string>
-    <string name="listening_to_blazify">Klausomasi „Blazify”</string>
+    <string name="listening_to_blazify">Strix Music</string>
     <string name="open">Atidaryti</string>
     <string name="failed_to_create_image">Klaida, kuriant nuotrauką %s</string>
     <string name="copied_title">Nukopijuotas pavadinimas</string>

@@ -403,7 +403,7 @@
     <string name="plays">слушания</string>
     <string name="casting_to">Предаване към %s</string>
     <string name="progress_percent">Прогрес %s%%</string>
-    <string name="listening_to_blazify">Слушане на Blazify</string>
+    <string name="listening_to_blazify">Strix Music</string>
     <string name="open">Отвори</string>
     <string name="failed_to_create_image">Неуспешно създаване на снимка: %s</string>
     <string name="copied_title">Заглавието е копирано</string>

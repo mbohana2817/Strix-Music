@@ -240,7 +240,7 @@
     <string name="wrapped_playlist_saved">Playlist tersimpan</string>
     <string name="casting_to">Casting ke %s</string>
     <string name="progress_percent">Progres %s%%</string>
-    <string name="listening_to_blazify">Mendengarkan Blazify</string>
+    <string name="listening_to_blazify">Strix Music</string>
     <string name="open">Buka</string>
     <string name="failed_to_create_image">Gagal membuat gambar: %s</string>
     <string name="copied_title">Judul disalin</string>
@@ -637,7 +637,7 @@
     <string name="like_what_i_do">Suka dengan yang saya lakukan?</string>
     <string name="buy_mo_a_coffee">Belikan saya kopi!</string>
     <string name="community_and_info">Komunitas &amp; Info</string>
-    <string name="blazify">BLAZIFY</string>
+    <string name="blazify">Strix Music</string>
     <string name="wanna_play_favorite_song">Ingin memutar lagu favorit mereka?</string>
     <string name="yeah">Tentu!</string>
     <string name="stands_with_palestine">Proyek ini berpihak pada Palestina 🇵🇸</string>
@@ -779,7 +779,7 @@
     <string name="recognition_notification_processing">Mengidentifikasi…</string>
     <string name="recognition_notification_no_match">Tidak ditemukan kecocokan</string>
     <string name="recognition_notification_failed">Pengenalan gagal</string>
-    <string name="listen_on_blazify">Dengarkan di Blazify</string>
+    <string name="listen_on_blazify">Listen on Strix Music</string>
     <string name="android_auto">Android Auto</string>
     <string name="android_auto_visible_sections">Bagian yang terlihat</string>
     <string name="android_auto_reorder_hint">Ketuk bagian untuk mengaktifkan atau menonaktifkannya.\nTekan lama gagang seret untuk mengurutkan ulang. Bagian pertama akan ditampilkan secara default</string>
@@ -1015,8 +1015,8 @@
     <string name="downloads">Unduhan</string>
     <string name="no_recently_played">Belum ada lagu yang baru diputar.</string>
     <string name="no_recommendations">Belum ada rekomendasi.</string>
-    <string name="about_developer_role">Pengembang</string>
-    <string name="about_me_body">Saya Rajendra Pandey, pengembang aplikasi independen dari Nepal yang senang mengubah ide menjadi pengalaman sehari-hari yang rapi. Blazify adalah versi saya tentang streaming musik — cepat, indah, dan personal — dibuat dari awal dengan Kotlin dan Jetpack Compose. Saya peduli pada detail kecil yang membuat aplikasi terasa mudah, dan saya terus mengutak-atiknya agar makin baik. Terima kasih sudah ada di sini dan membiarkan karya saya menjadi bagian dari hari Anda.</string>
+    <string name="about_developer_role">Pengembang • Strix Music</string>
+    <string name="about_me_body">Dikembangkan oleh Muhammad Bohana (Han), Alumni Siswa Al-Hidayah Kota Cirebon, TKJ 2. Strix Music adalah project personal untuk menghadirkan pengalaman mendengarkan musik yang nyaman, modern, dan terus dikembangkan.</string>
     <string name="buy_me_a_coffee">Traktir saya kopi</string>
     <string name="coffee_dialog_subtitle">Pindai kode untuk mendukung Blazify</string>
     <string name="made_with_love">Dibuat dengan ❤️ oleh Rajendra Pandey</string>
@@ -1085,14 +1085,14 @@
     <string name="edit_tags_note">Hanya ditampilkan di Blazify. File-nya tidak diubah, jadi aplikasi lain tetap melihat tag aslinya.</string>
     <string name="local_music_permission">Blazify perlu izin untuk membaca file audio</string>
     <string name="blaze_greeting_default_name">Pencinta Musik</string>
-    <string name="star_on_github">Beri bintang Blazify di GitHub</string>
+    <string name="star_on_github">Kunjungi Strix Music di GitHub</string>
     <string name="star_prompt_title">Suka memakai Blazify?</string>
     <string name="star_prompt_body">Aplikasi ini dibuat oleh satu orang dan dibagikan gratis, tanpa iklan dan tanpa pelacakan. Bintang di GitHub adalah cara utama orang lain menemukannya.</string>
     <string name="star_prompt_yes">Beri bintang</string>
     <string name="star_prompt_later">Nanti</string>
     <string name="star_prompt_never">Tidak, terima kasih</string>
-    <string name="social_website">Situs web</string>
-    <string name="social_github">GitHub</string>
+    <string name="social_website">Profil GitHub</string>
+    <string name="social_github">Repository</string>
     <string name="social_instagram">Instagram</string>
     <string name="settings_group_connections">Koneksi</string>
     <string name="hint_integrations">Discord Rich Presence, scrobbling Last.fm</string>
@@ -1350,4 +1350,7 @@
     <string name="star_prompt_title_short">Suka Blazify?</string>
     <string name="star_prompt_body_short">Bintang di GitHub membantu orang lain menemukannya. Gratis, tanpa iklan.</string>
     <string name="import_spotify_csv_tip">Untuk seluruh daftar, ekspor sebagai file CSV (Exportify melakukannya dengan login Spotify milikmu), lalu buka Setelan › Cadangkan dan pulihkan › Impor playlist CSV.</string>
+    <string name="palette_strix">Strix Burgundy</string>
+    <string name="palette_midnight">Midnight Plum</string>
+    <string name="palette_rosewood">Rosewood</string>
 </resources>

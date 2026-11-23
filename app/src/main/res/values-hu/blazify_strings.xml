@@ -520,7 +520,7 @@
     <string name="like_what_i_do">Tetszik, amit csinálok?</string>
     <string name="buy_mo_a_coffee">Hívjon meg egy kávéra!</string>
     <string name="community_and_info">Közösség &amp; információ</string>
-    <string name="blazify">BLAZIFY</string>
+    <string name="blazify">Strix Music</string>
     <string name="wanna_play_favorite_song">Játszuk a kedvenc dalukat?</string>
     <string name="yeah">Naná!</string>
     <string name="stands_with_palestine">Ez a projekt Palesztina mellett áll 🇵🇸</string>
@@ -596,7 +596,7 @@
     <string name="plays">játssza</string>
     <string name="casting_to">Átküldés %s-re</string>
     <string name="progress_percent">Állapot %s%%</string>
-    <string name="listening_to_blazify">Blazify-en hallgat</string>
+    <string name="listening_to_blazify">Strix Music</string>
     <string name="open">Megnyitás</string>
     <string name="failed_to_create_image">%s kép létrehozása sikertelen</string>
     <string name="copied_title">Cím másolva</string>
@@ -765,7 +765,7 @@
     <string name="recognition_notification_processing">Azonosítás…</string>
     <string name="recognition_notification_no_match">Nincs találat</string>
     <string name="recognition_notification_failed">Felismerés sikertelen</string>
-    <string name="listen_on_blazify">Meghallgatás Blazify-en</string>
+    <string name="listen_on_blazify">Listen on Strix Music</string>
     <string name="android_auto">Android Auto</string>
     <string name="android_auto_visible_sections">Látható részek</string>
     <string name="android_auto_reorder_hint">Koppintson egy szakaszra az engedélyezéséhez vagy letiltásához.\nNyomja meg hosszan a fogót az átrendezéshez. Alapértelmezés szerint az első szakasz jelenik meg</string>
