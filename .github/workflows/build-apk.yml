@@ -35,7 +35,7 @@ jobs:
           java-version: 21
 
       - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v4
         with:
           accept-android-sdk-licenses: true
 
@@ -58,3 +58,4 @@ jobs:
           path: app/build/outputs/apk/foss/debug/*.apk
           if-no-files-found: error
           retention-days: 14
+
