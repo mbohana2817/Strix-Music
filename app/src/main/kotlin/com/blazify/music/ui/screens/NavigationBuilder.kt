@@ -13,6 +13,8 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHostState
@@ -107,11 +109,23 @@ fun NavGraphBuilder.navigationBuilder(
     activity: Activity,
     snackbarHostState: SnackbarHostState,
 ) {
-    composable(Screens.Home.route) {
+    composable(
+        Screens.Home.route,
+        enterTransition = { fadeIn(tween(280)) + slideInVertically(tween(280)) { it / 28 } },
+        exitTransition = { fadeOut(tween(190)) + slideOutVertically(tween(190)) { -it / 36 } },
+        popEnterTransition = { fadeIn(tween(260)) + slideInVertically(tween(260)) { it / 32 } },
+        popExitTransition = { fadeOut(tween(180)) },
+    ) {
         HomeScreen(snackbarHostState = snackbarHostState)
     }
 
-    composable(Screens.Search.route) { backStackEntry ->
+    composable(
+        Screens.Search.route,
+        enterTransition = { fadeIn(tween(280)) + slideInVertically(tween(280)) { it / 28 } },
+        exitTransition = { fadeOut(tween(190)) + slideOutVertically(tween(190)) { -it / 36 } },
+        popEnterTransition = { fadeIn(tween(260)) + slideInVertically(tween(260)) { it / 32 } },
+        popExitTransition = { fadeOut(tween(180)) },
+    ) { backStackEntry ->
         val pureBlackEnabled by rememberPreference(PureBlackKey, defaultValue = true)
         val darkTheme by rememberEnumPreference(DarkModeKey, defaultValue = DarkMode.AUTO)
         val isSystemInDarkTheme = isSystemInDarkTheme()
@@ -129,11 +143,23 @@ fun NavGraphBuilder.navigationBuilder(
         )
     }
 
-    composable(Screens.Library.route) {
+    composable(
+        Screens.Library.route,
+        enterTransition = { fadeIn(tween(280)) + slideInVertically(tween(280)) { it / 28 } },
+        exitTransition = { fadeOut(tween(190)) + slideOutVertically(tween(190)) { -it / 36 } },
+        popEnterTransition = { fadeIn(tween(260)) + slideInVertically(tween(260)) { it / 32 } },
+        popExitTransition = { fadeOut(tween(180)) },
+    ) {
         LibraryScreen()
     }
 
-    composable(Screens.Yours.route) {
+    composable(
+        Screens.Yours.route,
+        enterTransition = { fadeIn(tween(280)) + slideInVertically(tween(280)) { it / 28 } },
+        exitTransition = { fadeOut(tween(190)) + slideOutVertically(tween(190)) { -it / 36 } },
+        popEnterTransition = { fadeIn(tween(260)) + slideInVertically(tween(260)) { it / 32 } },
+        popExitTransition = { fadeOut(tween(180)) },
+    ) {
         YoursScreen()
     }
 

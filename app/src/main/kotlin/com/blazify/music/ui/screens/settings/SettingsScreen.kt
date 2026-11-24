@@ -366,27 +366,25 @@ private fun chipColorsAt(index: Int): Pair<Color, Color> {
 
 @Composable
 private fun BlazeSettingRow(row: SettingRow, colorIndex: Int) {
-    val (chipBg, chipInk) = chipColorsAt(colorIndex)
+    // Auralist-inspired monochrome row: compact icon, quiet divider, glass-dark surface.
+    val shape = RoundedCornerShape(18.dp)
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
+            .clip(shape)
             .clickable(onClick = row.onClick)
             .animateContentSize()
-            .padding(horizontal = 14.dp, vertical = 13.dp),
+            .padding(horizontal = 14.dp, vertical = 14.dp),
     ) {
         Box(
-            modifier = Modifier
-                .size(40.dp)
-                .clip(RoundedCornerShape(12.dp))
-                .background(chipBg),
+            modifier = Modifier.size(34.dp),
             contentAlignment = Alignment.Center,
         ) {
             Icon(
                 painter = painterResource(row.icon),
                 contentDescription = null,
-                tint = chipInk,
+                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.94f),
                 modifier = Modifier.size(21.dp),
             )
         }
@@ -417,7 +415,7 @@ private fun BlazeSettingRow(row: SettingRow, colorIndex: Int) {
         Icon(
             painter = painterResource(R.drawable.navigate_next),
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.72f),
             modifier = Modifier.size(20.dp),
         )
     }
