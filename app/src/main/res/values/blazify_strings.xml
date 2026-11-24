@@ -1543,4 +1543,5 @@
     <string name="offline_home_downloaded_desc">Songs you downloaded</string>
     <string name="offline_home_device">Songs on this device</string>
     <string name="offline_home_device_desc">Your own music files on this phone</string>
+    <string name="profile">Profile</string>
 </resources>

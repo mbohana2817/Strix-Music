@@ -1355,4 +1355,5 @@
     <string name="star_prompt_title_short">Suka Strix Music?</string>
     <string name="star_prompt_body_short">Bintang di GitHub membantu orang lain menemukannya. Gratis, tanpa iklan.</string>
     <string name="import_spotify_csv_tip">Untuk seluruh daftar, ekspor sebagai file CSV (Exportify melakukannya dengan login Spotify milikmu), lalu buka Setelan › Cadangkan dan pulihkan › Impor playlist CSV.</string>
+    <string name="profile">Profil</string>
 </resources>
