@@ -193,7 +193,7 @@
     <string name="show_artist_description">Hiển thị mô tả nghệ sĩ</string>
     <string name="show_artist_subscriber_count">Hiện số lượng người đăng ký</string>
     <string name="show_artist_monthly_listeners">Hiển thị số lượt nghe hằng tháng</string>
-    <string name="wrapped_logo_content_description">Blazify Logo</string>
+    <string name="wrapped_logo_content_description">Strix Music Logo</string>
     <string name="wrapped_year">2025</string>
     <string name="listen_together_join_room">Tham gia phòng</string>
     <string name="listen_together_create_room_desc">Tạo phòng và chia sẻ mã với bạn bè của bạn</string>
@@ -217,13 +217,13 @@
     <string name="listen_together_use_custom_server">Sử dụng máy chủ tùy chỉnh</string>
     <string name="album_art">Cài đặt widget</string>
     <string name="no_song_playing">Không có bài hát đang phát</string>
-    <string name="tap_to_open">Chạm để mở Blazify</string>
+    <string name="tap_to_open">Chạm để mở Strix Music</string>
     <string name="previous">Bài trước</string>
     <string name="play_pause">Phát/Tạm dừng</string>
     <string name="next">Bài tiếp</string>
     <string name="like">Thích</string>
     <string name="widget_description">Widget trình phát nhạc với các nút điều khiển</string>
-    <string name="listen_together">Blaze Together</string>
+    <string name="listen_together">Strix Together</string>
     <string name="listen_together_view_logs_desc">Gỡ lỗi các sự kiện kết nối và tin nhắn</string>
     <string name="listen_together_logs">Nhật ký kết nối</string>
     <string name="listen_together_no_logs">Chưa có nhật ký nào</string>
@@ -232,13 +232,13 @@
     <string name="listen_together_sync_volume">Đồng bộ âm lượng của chủ phòng</string>
     <string name="listen_together_sync_volume_desc">Khách sẽ khớp với mức âm lượng của chủ phòng</string>
     <string name="listen_together_description">Nghe nhạc cùng bạn bè trong thời gian thực. Hãy tạo phòng để làm chủ trì, hoặc tham gia phòng có sẵn bằng mã</string>
-    <string name="listen_together_background_disconnect_note">LƯU Ý: Khi bạn đã được kết nối nhưng không ở trong cùng một phòng, tính năng Blaze Together sẽ tự động ngắt kết nối sau 30 phút chạy ngầm để tiết kiệm pin</string>
-    <string name="listen_together_not_configured">Blaze Together chưa được thiết lập. Vui lòng cấu hình URL máy chủ tại: Blaze Together &gt; Cài đặt &gt; URL máy chủ</string>
+    <string name="listen_together_background_disconnect_note">LƯU Ý: Khi bạn đã được kết nối nhưng không ở trong cùng một phòng, tính năng Strix Together sẽ tự động ngắt kết nối sau 30 phút chạy ngầm để tiết kiệm pin</string>
+    <string name="listen_together_not_configured">Strix Together chưa được thiết lập. Vui lòng cấu hình URL máy chủ tại: Strix Together &gt; Cài đặt &gt; URL máy chủ</string>
     <string name="listen_together_suggestion_received">%1$s đã gợi ý %2$s</string>
     <string name="listen_together_suggestion_sent">Đã gửi gợi ý đến chủ phòng!</string>
     <string name="listen_together_join_request_notification">%1$s muốn tham gia phòng</string>
-    <string name="listen_together_notification_channel_name">Blaze Together</string>
-    <string name="listen_together_notification_channel_desc">Thông báo cho các sự kiện Blaze Together</string>
+    <string name="listen_together_notification_channel_name">Strix Together</string>
+    <string name="listen_together_notification_channel_desc">Thông báo cho các sự kiện Strix Together</string>
     <string name="listen_together_room_created">Phòng đã được tạo: %s</string>
     <string name="listen_together_cannot_edit_username_in_room">Không thể thay đổi tên người dùng khi đang ở trong phòng</string>
     <string name="waiting_for_approval">Đang chờ chủ phòng phê duyệt…</string>
@@ -289,7 +289,7 @@
     <string name="crash_description">Đã xảy ra lỗi không mong muốn. Vui lòng chia sẻ báo cáo sự cố để giúp chúng tôi khắc phục lỗi</string>
     <string name="crash_share_logs">Chia sẻ nhật ký</string>
     <string name="crash_share_title">Chia sẻ báo cáo sự cố</string>
-    <string name="crash_report_subject">Báo cáo sự cố Blazify</string>
+    <string name="crash_report_subject">Báo cáo sự cố Strix Music</string>
     <string name="crash_close">Đóng</string>
     <string name="crash_no_log">Không có nhật ký sự cố</string>
     <string name="palette_crimson">Đỏ thẫm</string>
@@ -326,7 +326,7 @@
     <string name="remember_shuffle_and_repeat_desc">Ghi nhớ các cài đặt phát xáo trộn và phát lại khi khởi động lại ứng dụng</string>
     <string name="pause_music_when_media_is_muted">Tạm dừng nhạc khi tắt tiếng media</string>
     <string name="keep_screen_on_when_player_is_expanded">Giữ màn hình bật khi mở trình phát</string>
-    <string name="last_fm_send_likes_description">Tự động Yêu thích hoặc Bỏ yêu thích bài hát trên Last.fm khi bạn thích hoặc bỏ thích chúng trên Blazify</string>
+    <string name="last_fm_send_likes_description">Tự động Yêu thích hoặc Bỏ yêu thích bài hát trên Last.fm khi bạn thích hoặc bỏ thích chúng trên Strix Music</string>
     <string name="logging_in">Đang đăng nhập…</string>
     <string name="hide_video_songs">Ẩn bài hát video</string>
     <string name="details_desc">Xem thông tin chi tiết của bài hát</string>
@@ -388,7 +388,7 @@
     <string name="lyrics_provider_priority_desc">Kéo để xắp xếp lại nhà cung cấp theo ý muốn. Vị trí càng cao -&gt; Ưu tiên càng cao</string>
     <string name="changelog">Lịch sử cập nhật</string>
     <string name="changelog_empty">Không có lịch sử cập nhật có sẵn</string>
-    <string name="github_releases_url">https://github.com/BlazifyGroup/Blazify/releases</string>
+    <string name="github_releases_url">https://github.com/mbohana2817/Strix-Music/releases</string>
     <string name="list_bullet">•</string>
     <string name="view_on_github">Xem trong GitHub</string>
     <string name="current_version">Phiên bản hiện tại</string>
@@ -512,7 +512,7 @@
     <string name="wrapped_total_artists_subtitle">nghệ sĩ độc bản!</string>
     <string name="wrapped_total_songs_title">Bạn đã được nghe</string>
     <string name="wrapped_total_songs_subtitle">các bài hát độc đáo!</string>
-    <string name="wrapped_intro_title">BLAZIFY</string>
+    <string name="wrapped_intro_title">Strix Music</string>
     <string name="wrapped_intro_subtitle">đã đến lúc xem bạn đã nghe những gì trong suốt năm qua…</string>
     <string name="wrapped_intro_button">đi nào!</string>
     <string name="wrapped_ready_title">WRAPPED CỦA BẠN ĐÃ SẴN SÀNG!</string>
@@ -582,7 +582,7 @@
     <string name="found_in_settings_content">Tìm ở Cài đặt &gt; Nội dung</string>
     <string name="your_daily_discover">Hôm nay nghe gì</string>
     <string name="casting_to">Đang phát tới %s</string>
-    <string name="listening_to_blazify">Strix Music</string>
+    <string name="listening_to_blazify">Đang nghe Strix Music</string>
     <string name="open">Mở</string>
     <string name="failed_to_create_image">Không thể tạo ảnh: %s</string>
     <string name="copied_title">Đã sao chép tiêu đề</string>
@@ -594,7 +594,7 @@
     <string name="error_podcast_unsubscribe">Không thể hủy đăng ký podcast</string>
     <string name="view_channel">Xem kênh</string>
     <string name="not_playing">Không có bài hát đang phát</string>
-    <string name="tap_to_play">Ấn để mở Blazify</string>
+    <string name="tap_to_play">Ấn để mở Strix Music</string>
     <string name="widget_music_player">Máy phát Nhạc</string>
     <string name="widget_turntable">Bàn xoay</string>
     <string name="widget_recognizer_name">Nhận dạng âm nhạc</string>
@@ -611,10 +611,10 @@
     <string name="widget_recognizer_channel_name">Nhận dạng Âm Nhạc</string>
     <string name="widget_recognizer_channel_desc">Hiển thị một thông báo trong khi đang nhân dạng bài hát từ widget</string>
     <string name="widget_recognizer_notification_text">Đang ghi âm để nhận dạng bài hát…</string>
-    <string name="together">Blaze Together</string>
+    <string name="together">Strix Together</string>
     <string name="listen_together_auto_approval_suggestions">Tự động chấp nhận gợi ý bài hát</string>
     <string name="listen_together_auto_approval_suggestions_desc">Tự động chấp nhận và xếp hàng gợi ý bài hát từ khách</string>
-    <string name="listen_together_in_top_bar">Blaze Together trên thanh trên cùng</string>
+    <string name="listen_together_in_top_bar">Strix Together trên thanh trên cùng</string>
     <string name="copy_all_lyrics">Sao chép lời bài hát</string>
     <string name="change">Thay đổi</string>
     <string name="ai_provider">Nhà cung cấp</string>
@@ -693,7 +693,7 @@
     <string name="plays">phát</string>
     <string name="failed_to_parse_proxy">Không thể phân tích URL proxy</string>
     <string name="turntable_widget_description">Widget âm nhạc hình tròn có nút phát và nút thích</string>
-    <string name="listen_together_in_top_bar_desc">Hiển thị \"Blaze Together\" trên thanh ứng dụng trên cùng thay vì thanh điều hướng</string>
+    <string name="listen_together_in_top_bar_desc">Hiển thị \"Strix Together\" trên thanh ứng dụng trên cùng thay vì thanh điều hướng</string>
     <string name="ai_setup_guide">Thông tin xác thực API</string>
     <string name="ai_system_prompt_placeholder">Sử dụng {lineCount} làm ký hiệu giữ chỗ cho số dòng cần dịch</string>
     <string name="palette_dynamic">Thích ứng</string>
@@ -707,7 +707,7 @@
     <string name="clear_recognition_history_confirm">Bạn có chắc chắn muốn xóa toàn bộ lịch sử nhận dạng nhạc không?</string>
     <string name="delete_from_history">Xoá khỏi lịch sử</string>
     <string name="re_listen">Nghe lại</string>
-    <string name="play_on_app">Phát trên Blazify</string>
+    <string name="play_on_app">Phát trên Strix Music</string>
     <string name="qs_tile_music_recognizer">Nhận dạng bài hát</string>
     <string name="recognition_notification_channel_name">Nhận dạng bài hát</string>
     <string name="recognition_notification_channel_desc">Hiển thị thông báo trong khi nhận dạng bài hát từ menu cài đặt nhanh</string>
@@ -715,7 +715,7 @@
     <string name="recognition_notification_processing">Đang xác định…</string>
     <string name="recognition_notification_no_match">Không tìm thấy kết quả phù hợp</string>
     <string name="recognition_notification_failed">Không nhận dạng được</string>
-    <string name="listen_on_blazify">Listen on Strix Music</string>
+    <string name="listen_on_blazify">Nghe trên Strix Music</string>
     <string name="map_csv_columns">Ánh xạ các cột CSV</string>
     <string name="first_row_is_header">Dòng đầu tiên là tiêu đề</string>
     <string name="artist_name_column">Cột Tên nghệ sĩ</string>
@@ -733,7 +733,7 @@
     <string name="discord_buttons">Nút</string>
     <string name="discord_button_1">Nút 1</string>
     <string name="discord_button_2">Nút 2</string>
-    <string name="discord_information_warning">Blazify dùng các API công khai OAuth2 và Gateway của Discord để chia sẻ bài bạn đang nghe. Việc cấp quyền diễn ra qua một phiên trình duyệt cục bộ, tự đóng sau khi lấy được mã, và không có gì được gửi tới máy chủ bên thứ ba. Mã token của bạn được lưu trên thiết bị này trong phần cài đặt đã mã hóa và không bao giờ được chia sẻ. Blazify kết nối trực tiếp tới wss://gateway.discord.gg để đăng hoạt động của bạn, và chỉ yêu cầu quyền tối thiểu cần thiết (sdk.social_layer_presence).</string>
+    <string name="discord_information_warning">Strix Music dùng các API công khai OAuth2 và Gateway của Discord để chia sẻ bài bạn đang nghe. Việc cấp quyền diễn ra qua một phiên trình duyệt cục bộ, tự đóng sau khi lấy được mã, và không có gì được gửi tới máy chủ bên thứ ba. Mã token của bạn được lưu trên thiết bị này trong phần cài đặt đã mã hóa và không bao giờ được chia sẻ. Strix Music kết nối trực tiếp tới wss://gateway.discord.gg để đăng hoạt động của bạn, và chỉ yêu cầu quyền tối thiểu cần thiết (sdk.social_layer_presence).</string>
     <string name="discord_activity_type">Loại hoạt động</string>
     <string name="discord_activity_playing">Đang phát</string>
     <string name="discord_activity_listening">Đang nghe</string>
@@ -934,7 +934,7 @@
     <string name="custom_color_hex">Hex</string>
     <string name="custom_color_hsv">H %1$d°  ·  S %2$d%%  ·  V %3$d%%</string>
     <string name="developer_heading">Tìm hiểu về nhà phát triển</string>
-    <string name="developer_role">Phát triển Blazify từ Kathmandu</string>
+    <string name="developer_role">Phát triển Strix Music từ Kathmandu</string>
     <string name="developer_role_short">Nhà phát triển, Kathmandu</string>
     <string name="developer_star">Gắn sao</string>
     <string name="update_check_idle">Chạm để kiểm tra</string>
@@ -942,7 +942,7 @@
     <string name="update_check_latest">Bạn đang dùng phiên bản mới nhất</string>
     <string name="update_check_available">Đã có %1$s. Chạm để tải về</string>
     <string name="update_check_failed">Không kiểm tra được. Chạm để thử lại</string>
-    <string name="developer_bio">Tôi tự phát triển Blazify một mình và công khai. Mọi thứ bắt đầu vì tôi muốn có một trình phát nhạc trông đúng như tôi nghĩ, và mọi người cứ xin tôi một bản. Những gì có trong mỗi phiên bản phần lớn là những điều mọi người báo với tôi là bị lỗi hoặc còn thiếu.</string>
+    <string name="developer_bio">Tôi tự phát triển Strix Music một mình và công khai. Mọi thứ bắt đầu vì tôi muốn có một trình phát nhạc trông đúng như tôi nghĩ, và mọi người cứ xin tôi một bản. Những gì có trong mỗi phiên bản phần lớn là những điều mọi người báo với tôi là bị lỗi hoặc còn thiếu.</string>
     <string name="developer_website">Trang web</string>
     <string name="developer_github">GitHub</string>
     <string name="sleep_timer_stop_music_after">Dừng nhạc sau</string>
@@ -955,7 +955,7 @@
     <string name="lyrics_choose_source">Chọn lời bài hát</string>
     <string name="lyrics_choose_source_desc">Chọn nguồn hoặc ngôn ngữ cho bài hát này</string>
     <string name="live">TRỰC TIẾP</string>
-    <string name="update_new_version">Đã có Blazify %s</string>
+    <string name="update_new_version">Đã có Strix Music %s</string>
     <string name="update_download">Tải xuống</string>
     <string name="update_downloading">Đang tải xuống… %1$d%%</string>
     <string name="update_downloading_indeterminate">Đang tải xuống…</string>
@@ -963,16 +963,16 @@
     <string name="update_later">Để sau</string>
     <string name="update_saved_to_downloads">Đã lưu vào Tệp tải xuống với tên %s</string>
     <string name="update_failed">Tải xuống thất bại: %s</string>
-    <string name="update_allow_installs">Blazify cần quyền cài đặt ứng dụng. Hãy cấp quyền rồi nhấn Cài đặt lại.</string>
+    <string name="update_allow_installs">Strix Music cần quyền cài đặt ứng dụng. Hãy cấp quyền rồi nhấn Cài đặt lại.</string>
     <string name="update_allow_installs_button">Mở cài đặt</string>
     <string name="update_uninstall_first_title">Hãy gỡ phiên bản này trước</string>
-    <string name="update_uninstall_first_body">Bản dựng này được ký bằng khóa khác nên Android sẽ không cài đè lên bản hiện tại. Tệp đã tải vẫn nằm trong thư mục Tệp tải xuống và vẫn ở đó sau khi gỡ.\n\n1. Sao lưu trước — Cài đặt → Sao lưu và khôi phục → Sao lưu.\n2. Gỡ cài đặt Blazify.\n3. Mở Tệp tải xuống và chạm vào %s.</string>
+    <string name="update_uninstall_first_body">Bản dựng này được ký bằng khóa khác nên Android sẽ không cài đè lên bản hiện tại. Tệp đã tải vẫn nằm trong thư mục Tệp tải xuống và vẫn ở đó sau khi gỡ.\n\n1. Sao lưu trước — Cài đặt → Sao lưu và khôi phục → Sao lưu.\n2. Gỡ cài đặt Strix Music.\n3. Mở Tệp tải xuống và chạm vào %s.</string>
     <string name="update_open_downloads">Mở Tệp tải xuống</string>
     <string name="update_no_download">Bản phát hành này không có bản dựng nào để tải xuống.</string>
     <string name="update_up_to_date">Bạn đang dùng phiên bản mới nhất</string>
-    <string name="error_age_restricted">Bài hát này bị giới hạn độ tuổi và Blazify chưa thể phát bài hát bị giới hạn độ tuổi.</string>
+    <string name="error_age_restricted">Bài hát này bị giới hạn độ tuổi và Strix Music chưa thể phát bài hát bị giới hạn độ tuổi.</string>
     <string name="error_job_cancelled">Video không phát được. Hãy thử lại hoặc chuyển sang bài tiếp theo.</string>
-    <string name="blaze_together">Blaze Together</string>
+    <string name="blaze_together">Strix Together</string>
     <string name="copy_details">Sao chép chi tiết</string>
     <string name="add_to_playlist_top">Thêm bài hát mới lên đầu danh sách phát</string>
     <string name="add_to_playlist_top_desc">Tắt để thêm vào cuối danh sách</string>
@@ -1016,10 +1016,10 @@
     <string name="no_recently_played">Chưa có bài hát nào phát gần đây.</string>
     <string name="no_recommendations">Chưa có đề xuất nào.</string>
     <string name="about_developer_role">Nhà phát triển</string>
-    <string name="about_me_body">Tôi là Rajendra Pandey, một nhà phát triển ứng dụng độc lập đến từ Nepal, thích biến ý tưởng thành những trải nghiệm hằng ngày chỉn chu. Blazify là cách tôi nhìn về nghe nhạc trực tuyến — nhanh, đẹp và mang dấu ấn cá nhân — được xây dựng từ đầu bằng Kotlin và Jetpack Compose. Tôi quan tâm đến những chi tiết nhỏ khiến ứng dụng dễ dùng, và luôn mày mò để nó tốt hơn. Cảm ơn bạn đã ở đây và để sản phẩm của tôi trở thành một phần trong ngày của bạn.</string>
+    <string name="about_me_body">Tôi là Muhammad Bohana (Han), một nhà phát triển ứng dụng độc lập đến từ Nepal, thích biến ý tưởng thành những trải nghiệm hằng ngày chỉn chu. Strix Music là cách tôi nhìn về nghe nhạc trực tuyến — nhanh, đẹp và mang dấu ấn cá nhân — được xây dựng từ đầu bằng Kotlin và Jetpack Compose. Tôi quan tâm đến những chi tiết nhỏ khiến ứng dụng dễ dùng, và luôn mày mò để nó tốt hơn. Cảm ơn bạn đã ở đây và để sản phẩm của tôi trở thành một phần trong ngày của bạn.</string>
     <string name="buy_me_a_coffee">Mời tôi một ly cà phê</string>
-    <string name="coffee_dialog_subtitle">Quét mã để ủng hộ Blazify</string>
-    <string name="made_with_love">Được làm với ❤️ bởi Rajendra Pandey</string>
+    <string name="coffee_dialog_subtitle">Quét mã để ủng hộ Strix Music</string>
+    <string name="made_with_love">Được làm với ❤️ bởi Muhammad Bohana (Han)</string>
     <string name="arrange">Sắp xếp</string>
     <string name="created_by_you">Do bạn tạo</string>
     <string name="artists_you_liked">Nghệ sĩ bạn thích</string>
@@ -1076,17 +1076,17 @@
     <string name="local_music_kb">%1$d KB</string>
     <string name="local_music_mb">%1$d MB</string>
     <string name="edit_tags">Sửa chi tiết</string>
-    <string name="edit_tags_desc">Đổi tên bài, nghệ sĩ hoặc album hiển thị trong Blazify</string>
+    <string name="edit_tags_desc">Đổi tên bài, nghệ sĩ hoặc album hiển thị trong Strix Music</string>
     <string name="edit_tags_title">Tên bài</string>
     <string name="edit_tags_artist">Nghệ sĩ</string>
     <string name="edit_tags_album">Album</string>
     <string name="edit_tags_save">Lưu</string>
     <string name="edit_tags_reset">Dùng thẻ của tệp</string>
-    <string name="edit_tags_note">Chỉ hiển thị trong Blazify. Tệp gốc không bị thay đổi nên ứng dụng khác vẫn thấy thẻ ban đầu.</string>
-    <string name="local_music_permission">Blazify cần quyền đọc tệp âm thanh</string>
+    <string name="edit_tags_note">Chỉ hiển thị trong Strix Music. Tệp gốc không bị thay đổi nên ứng dụng khác vẫn thấy thẻ ban đầu.</string>
+    <string name="local_music_permission">Strix Music cần quyền đọc tệp âm thanh</string>
     <string name="blaze_greeting_default_name">Người yêu nhạc</string>
-    <string name="star_on_github">Gắn sao cho Blazify trên GitHub</string>
-    <string name="star_prompt_title">Bạn dùng Blazify thấy ổn chứ?</string>
+    <string name="star_on_github">Gắn sao cho Strix Music trên GitHub</string>
+    <string name="star_prompt_title">Bạn dùng Strix Music thấy ổn chứ?</string>
     <string name="star_prompt_body">Ứng dụng do một người làm và phát hành miễn phí, không quảng cáo và không theo dõi gì cả. Một ngôi sao trên GitHub là cách chính để người khác tìm thấy nó.</string>
     <string name="star_prompt_yes">Gắn sao</string>
     <string name="star_prompt_later">Để sau</string>
@@ -1096,7 +1096,7 @@
     <string name="social_instagram">Instagram</string>
     <string name="settings_group_connections">Kết nối</string>
     <string name="hint_integrations">Discord Rich Presence, scrobble Last.fm</string>
-    <string name="hint_together_settings">Đồng bộ và cài đặt phòng của Blaze Together</string>
+    <string name="hint_together_settings">Đồng bộ và cài đặt phòng của Strix Together</string>
     <string name="guest">Khách</string>
     <string name="manage_account">Quản lý tài khoản</string>
     <string name="tap_to_sign_in">Chạm để đăng nhập</string>
@@ -1137,7 +1137,7 @@
     <string name="hint_backup">Xuất hoặc nhập thư viện của bạn</string>
     <string name="hint_about">Phiên bản và nhà phát triển</string>
     <string name="hint_changelog">Có gì mới trong phiên bản này</string>
-    <string name="hint_links">Mở liên kết Blazify theo mặc định</string>
+    <string name="hint_links">Mở liên kết Strix Music theo mặc định</string>
     <string name="hint_updater">Kiểm tra cập nhật</string>
     <string name="player_theme">Chủ đề trình phát</string>
     <string name="player_theme_desc">Chọn bố cục trình phát</string>
@@ -1209,7 +1209,7 @@
     <string name="listenbrainz_get_token_desc">Mở trang cài đặt ListenBrainz của bạn</string>
     <string name="listenbrainz_forget">Xoá token này</string>
     <string name="listenbrainz_forget_desc">Ngừng gửi và xoá token khỏi điện thoại này</string>
-    <string name="sponsorblock_desc">Dùng các đánh dấu từ cộng đồng SponsorBlock để bỏ qua đoạn nói chuyện, phần danh đề và quảng cáo tài trợ trong video ca nhạc. Blazify chỉ hỏi bằng vài ký tự đầu của một mã, nên máy chủ không bao giờ biết bạn đang phát gì.</string>
+    <string name="sponsorblock_desc">Dùng các đánh dấu từ cộng đồng SponsorBlock để bỏ qua đoạn nói chuyện, phần danh đề và quảng cáo tài trợ trong video ca nhạc. Strix Music chỉ hỏi bằng vài ký tự đầu của một mã, nên máy chủ không bao giờ biết bạn đang phát gì.</string>
     <string name="sponsorblock_categories">Những gì cần bỏ qua</string>
     <string name="sponsorblock_non_music">Mọi thứ không phải âm nhạc</string>
     <string name="sponsorblock_sponsor">Quảng cáo tài trợ</string>
@@ -1242,7 +1242,7 @@
     <string name="lastfm_own_key">Khóa API Last.fm của bạn</string>
     <string name="lastfm_own_key_set">Đã thêm</string>
     <string name="lastfm_own_key_missing">Cần có trước khi đăng nhập</string>
-    <string name="lastfm_own_key_explain">Phiên bản Blazify này không kèm khóa Last.fm. Hãy tạo một khóa miễn phí trên Last.fm trong khoảng hai phút, rồi dán khóa API và shared secret vào đây.</string>
+    <string name="lastfm_own_key_explain">Phiên bản Strix Music này không kèm khóa Last.fm. Hãy tạo một khóa miễn phí trên Last.fm trong khoảng hai phút, rồi dán khóa API và shared secret vào đây.</string>
     <string name="lastfm_own_key_create">Tạo khóa trên Last.fm</string>
     <string name="lastfm_api_key">Khóa API</string>
     <string name="lastfm_shared_secret">Shared secret</string>
@@ -1253,7 +1253,7 @@
     <string name="add_to_library_hint">Lưu vào Thư viện của bạn</string>
     <string name="remove_from_library_hint">Xoá khỏi Thư viện của bạn</string>
     <string name="listen_together_song_hint">Phát cùng lúc với bạn bè trong một phòng</string>
-    <string name="listen_together_host_not_allowed">Máy chủ này chưa cho phép Blazify tạo phòng. Bạn vẫn có thể tham gia phòng do người khác tạo.</string>
+    <string name="listen_together_host_not_allowed">Máy chủ này chưa cho phép Strix Music tạo phòng. Bạn vẫn có thể tham gia phòng do người khác tạo.</string>
     <string name="song_not_found">Không tìm thấy bài hát</string>
     <string name="song_not_found_hint">Đưa điện thoại lại gần nguồn nhạc, chờ đến đoạn có lời hát hoặc giai điệu rõ ràng rồi thử lại.</string>
     <string name="finding_the_song">Đang tìm bài hát…</string>
@@ -1268,7 +1268,7 @@
     <string name="jump_to_playing">Đến bài đang phát</string>
     <string name="share_playlist">Chia sẻ danh sách phát</string>
     <string name="share_playlist_ways">Một liên kết hoặc một mã để quét bằng camera</string>
-    <string name="share_playlist_hint">Bất kỳ ai có Blazify đều có thể mở và giữ danh sách phát này. Các bài hát nằm ngay trong liên kết, không đi qua trang web nào.</string>
+    <string name="share_playlist_hint">Bất kỳ ai có Strix Music đều có thể mở và giữ danh sách phát này. Các bài hát nằm ngay trong liên kết, không đi qua trang web nào.</string>
     <string name="shared_playlist_title">Giữ danh sách phát này?</string>
     <string name="shared_playlist_kept">Đã giữ %1$d / %2$d bài hát</string>
     <string name="shared_playlist_failed">Không thể giữ danh sách phát đó</string>
@@ -1300,7 +1300,7 @@
     <string name="offline_mix">Đã lưu trên điện thoại này</string>
     <string name="offline_mix_empty">Không có kết nối và chưa có bài hát nào được lưu trên điện thoại này. Hãy tải bài hát xuống để nghe ngoại tuyến.</string>
     <string name="accounts_and_channels">Tài khoản và kênh</string>
-    <string name="accounts_restart_note">Blazify sẽ khởi động lại với tài khoản bạn chọn, kèm danh sách phát và thư viện của tài khoản đó. Các bài đã tải xuống vẫn được giữ.</string>
+    <string name="accounts_restart_note">Strix Music sẽ khởi động lại với tài khoản bạn chọn, kèm danh sách phát và thư viện của tài khoản đó. Các bài đã tải xuống vẫn được giữ.</string>
     <string name="accounts_channels_heading">Các kênh trong tài khoản này</string>
     <string name="accounts_other_heading">Tài khoản khác</string>
     <string name="accounts_add_another">Thêm tài khoản khác</string>
@@ -1323,7 +1323,7 @@
     <string name="accounts_sign_in_hint">Đăng nhập bằng Google để xem danh sách phát và thư viện</string>
     <string name="accounts_tap_to_manage">Tài khoản, kênh và đồng bộ của bạn</string>
     <string name="update_card_title">Có bản cập nhật</string>
-    <string name="update_card_text">Blazify %1$s đã sẵn sàng để tải xuống</string>
+    <string name="update_card_text">Strix Music %1$s đã sẵn sàng để tải xuống</string>
     <plurals name="accounts_more_saved">
         <item quantity="other">Thêm %1$d tài khoản trên điện thoại này</item>
     </plurals>
@@ -1334,7 +1334,7 @@
     <string name="festival_greeting_diwali">Chúc mừng lễ Diwali</string>
     <string name="festival_wish_lights">Ánh sáng, yêu thương và âm nhạc đến bạn và người thân</string>
     <string name="festival_touches">Điểm xuyết lễ hội</string>
-    <string name="festival_touches_desc">Logo Blazify mang không khí lễ hội vào các dịp lễ lớn ở nước bạn. Chạm vào để cùng ăn mừng.</string>
+    <string name="festival_touches_desc">Logo Strix Music mang không khí lễ hội vào các dịp lễ lớn ở nước bạn. Chạm vào để cùng ăn mừng.</string>
     <string name="festival_greeting_christmas">Giáng sinh vui vẻ</string>
     <string name="festival_greeting_new_year">Chúc mừng năm mới</string>
     <string name="festival_greeting_music_day">Chúc mừng Ngày Âm nhạc Thế giới</string>
@@ -1347,7 +1347,7 @@
     <string name="festival_turned_off">Đã tắt chế độ lễ hội. Bật lại trong Giao diện › Trang chủ.</string>
     <string name="artist_latest_release">Phát hành mới nhất</string>
     <string name="artist_you_and">Bạn và %1$s</string>
-    <string name="star_prompt_title_short">Bạn thích Blazify chứ?</string>
+    <string name="star_prompt_title_short">Bạn thích Strix Music chứ?</string>
     <string name="star_prompt_body_short">Một ngôi sao trên GitHub giúp người khác tìm thấy nó. Miễn phí, không quảng cáo.</string>
     <string name="import_spotify_csv_tip">Để có cả danh sách, hãy xuất nó thành tệp CSV (Exportify làm việc này bằng đăng nhập Spotify của bạn), rồi dùng Cài đặt › Sao lưu và khôi phục › Nhập danh sách phát CSV.</string>
 </resources>

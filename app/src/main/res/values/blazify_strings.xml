@@ -286,7 +286,7 @@
     <string name="listenbrainz_get_token_desc">Opens your ListenBrainz settings page</string>
     <string name="listenbrainz_forget">Forget this token</string>
     <string name="listenbrainz_forget_desc">Stops sending and removes the token from this phone</string>
-    <string name="sponsorblock_desc">Uses SponsorBlock\'s community marks to jump talking, credits and sponsor breaks in music videos. Blazify asks by a few characters of a code, so the server is never told what you are playing.</string>
+    <string name="sponsorblock_desc">Uses SponsorBlock\'s community marks to jump talking, credits and sponsor breaks in music videos. Strix Music asks by a few characters of a code, so the server is never told what you are playing.</string>
     <string name="sponsorblock_categories">What to skip</string>
     <string name="sponsorblock_non_music">Anything that is not music</string>
     <string name="sponsorblock_sponsor">Sponsor breaks</string>
@@ -341,20 +341,20 @@
 <string name="all_genres">All genres</string>
     <string name="fewer_genres">Fewer genres</string>
     <string name="developer_heading">Know about the developer</string>
-    <string name="developer_name" translatable="false">Rajendra Pandey</string>
-    <string name="developer_role">Builds Blazify, from Kathmandu</string>
-    <string name="developer_role_short">Developer, Kathmandu</string>
+    <string name="developer_name" translatable="false">Muhammad Bohana (Han)</string>
+    <string name="developer_role">Strix Music Developer • Cirebon, Indonesia</string>
+    <string name="developer_role_short">Developer • Cirebon</string>
     <string name="developer_star">Star</string>
     <string name="update_check_idle">Tap to check</string>
     <string name="update_check_running">Checking\u2026</string>
     <string name="update_check_latest">You have the newest version</string>
     <string name="update_check_available">%1$s is out. Tap to get it</string>
     <string name="update_check_failed">Could not check. Tap to try again</string>
-    <string name="developer_bio">I build Blazify on my own, in the open. It began because I wanted a music player that looked the way I thought one should, and people kept asking me for a copy. What goes into each version is mostly what people tell me is broken or missing.</string>
+    <string name="developer_bio">I am Muhammad Bohana (Han), an alumnus of Al-Hidayah, Cirebon City, TKJ 2. I customize and maintain Strix Music on top of an open-source upstream project, while preserving its original credits and license notices.</string>
     <string name="developer_website">Website</string>
     <string name="developer_github">GitHub</string>
-    <string name="developer_website_url" translatable="false">https://rajendrapandey.info.np</string>
-    <string name="developer_github_url" translatable="false">https://github.com/rajendra7169</string>
+    <string name="developer_website_url" translatable="false">https://github.com/mbohana2817</string>
+    <string name="developer_github_url" translatable="false">https://github.com/mbohana2817</string>
     <string name="blazify_repo_url" translatable="false">https://github.com/mbohana2817/Strix-Music</string>
     <string name="current_version">Current version</string>
     <string name="version_format">Version: %s</string>
@@ -526,7 +526,7 @@
     <string name="update_channel_name">App updates</string>
     <string name="update_channel_desc">Notifications about new app versions</string>
     <!-- Downloading and installing an update -->
-    <string name="update_new_version">Blazify %s is available</string>
+    <string name="update_new_version">Strix Music %s is available</string>
     <string name="update_download">Download</string>
     <string name="update_downloading">Downloading… %1$d%%</string>
     <string name="update_downloading_indeterminate">Downloading…</string>
@@ -534,10 +534,10 @@
     <string name="update_later">Later</string>
     <string name="update_saved_to_downloads">Saved to Downloads as %s</string>
     <string name="update_failed">Download failed: %s</string>
-    <string name="update_allow_installs">Blazify needs permission to install apps. Grant it, then press Install again.</string>
+    <string name="update_allow_installs">Strix Music needs permission to install apps. Grant it, then press Install again.</string>
     <string name="update_allow_installs_button">Open settings</string>
     <string name="update_uninstall_first_title">Uninstall this version first</string>
-    <string name="update_uninstall_first_body">This build is signed with a different key, so Android will not install it over the current one. The download is kept in your Downloads folder and will still be there afterwards.\n\n1. Back up first: Settings → Backup and restore → Backup.\n2. Uninstall Blazify.\n3. Open Downloads and tap %s.</string>
+    <string name="update_uninstall_first_body">This build is signed with a different key, so Android will not install it over the current one. The download is kept in your Downloads folder and will still be there afterwards.\n\n1. Back up first: Settings → Backup and restore → Backup.\n2. Uninstall Strix Music.\n3. Open Downloads and tap %s.</string>
     <string name="update_open_downloads">Open Downloads</string>
     <string name="update_no_download">This release has no downloadable build attached.</string>
     <string name="update_up_to_date">You are on the latest version</string>
@@ -572,7 +572,7 @@
     <string name="enable_scrobbling">Enable scrobbling</string>
     <string name="lastfm_now_playing">Send Now Playing status</string>
     <string name="last_fm_send_likes">Sync Loved and Unloved</string>
-    <string name="last_fm_send_likes_description">Love or unlove songs in Last.fm when you like or unlike them in Blazify</string>
+    <string name="last_fm_send_likes_description">Love or unlove songs in Last.fm when you like or unlike them in Strix Music</string>
     <string name="logging_in">Logging in…</string>
     <string name="japanese_dict_title">Japanese reading dictionary</string>
     <string name="japanese_dict_needed">Download it to show Japanese lyrics in English letters (%1$d MB, once)</string>
@@ -585,7 +585,7 @@
     <string name="lastfm_own_key">Your Last.fm API key</string>
     <string name="lastfm_own_key_set">Added</string>
     <string name="lastfm_own_key_missing">Needed before you can log in</string>
-    <string name="lastfm_own_key_explain">This version of Blazify comes without a Last.fm key. Create a free one on Last.fm in about two minutes, then paste the API key and shared secret here.</string>
+    <string name="lastfm_own_key_explain">This version of Strix Music comes without a Last.fm key. Create a free one on Last.fm in about two minutes, then paste the API key and shared secret here.</string>
     <string name="lastfm_own_key_create">Create a key on Last.fm</string>
     <string name="lastfm_api_key">API key</string>
     <string name="lastfm_shared_secret">Shared secret</string>
@@ -655,10 +655,10 @@
     <string name="wrapped_total_artists_subtitle">unique artists!</string>
     <string name="wrapped_total_songs_title">You\'ve listened to</string>
     <string name="wrapped_total_songs_subtitle">unique songs!</string>
-    <string name="wrapped_intro_title">BLAZIFY</string>
+    <string name="wrapped_intro_title">Strix Music</string>
     <string name="wrapped_intro_subtitle">it\'s time to see what you\'ve been listening to all this year…</string>
     <string name="wrapped_intro_button">let\'s go!</string>
-    <string name="wrapped_logo_content_description">Blazify Logo</string>
+    <string name="wrapped_logo_content_description">Strix Music Logo</string>
     <string name="wrapped_year">2025</string>
     <string name="wrapped_ready_title">YOUR WRAPPED IS READY!</string>
     <string name="wrapped_ready_subtitle">Time to see what you loved all this year…</string>
@@ -714,7 +714,7 @@
     <string name="plays">plays</string>
     <string name="casting_to">Casting to %s</string>
     <string name="progress_percent">Progress %s%%</string>
-    <string name="listening_to_blazify">Strix Music</string>
+    <string name="listening_to_blazify">Listening to Strix Music</string>
     <string name="open">Open</string>
     <string name="failed_to_create_image">Failed to create image: %s</string>
     <string name="copied_title">Title copied</string>
@@ -724,7 +724,7 @@
 
     <!-- Playback errors -->
     <string name="error_playback_failed">Playback failed</string>
-    <string name="error_age_restricted">This song is age-restricted, and Blazify can\'t play age-restricted songs yet.</string>
+    <string name="error_age_restricted">This song is age-restricted, and Strix Music can\'t play age-restricted songs yet.</string>
     <string name="error_job_cancelled">The video is not available for playback. Try again or skip to the next song.</string>
     <string name="error_episode_save">Failed to save episode</string>
     <string name="error_episode_remove">Failed to remove episode</string>
@@ -735,13 +735,13 @@
     <!-- Widget strings -->
     <string name="album_art">Album art</string>
     <string name="no_song_playing">No song playing</string>
-    <string name="tap_to_open">Tap to open Blazify</string>
+    <string name="tap_to_open">Tap to open Strix Music</string>
     <string name="previous">Previous</string>
     <string name="play_pause">Play/Pause</string>
     <string name="next">Next</string>
     <string name="like">Like</string>
     <string name="not_playing">No song playing</string>
-    <string name="tap_to_play">Tap to open Blazify</string>
+    <string name="tap_to_play">Tap to open Strix Music</string>
     <string name="widget_description">Music player widget with playback controls</string>
     <string name="turntable_widget_description">Circular music widget with play and like controls</string>
     <string name="widget_music_player">Music Player</string>
@@ -768,9 +768,9 @@
     <!-- Decryption Library Settings -->
 
     <!-- Listen Together -->
-    <string name="together">Blaze Together</string>
-    <string name="blaze_together">Blaze Together</string>
-    <string name="listen_together">Blaze Together</string>
+    <string name="together">Strix Together</string>
+    <string name="blaze_together">Strix Together</string>
+    <string name="listen_together">Strix Together</string>
     <string name="listen_together_server_url">Server URL</string>
     <string name="listen_together_choose_server">Choose server</string>
     <string name="listen_together_custom_server">Custom server</string>
@@ -781,7 +781,7 @@
     <string name="listen_together_disconnected">Disconnected</string>
     <string name="listen_together_connecting">Connecting…</string>
     <string name="listen_together_error">Connection error</string>
-    <string name="listen_together_host_not_allowed">This server doesn\'t let Blazify host rooms yet. You can still join a room someone else made.</string>
+    <string name="listen_together_host_not_allowed">This server doesn\'t let Strix Music host rooms yet. You can still join a room someone else made.</string>
     <string name="listen_together_create_room">Create room</string>
     <string name="listen_together_create_room_desc">Create a room and share the code with your friends</string>
     <string name="listen_together_join_room">Join room</string>
@@ -801,16 +801,16 @@
     <string name="listen_together_auto_approval_suggestions_desc">Automatically approve and queue song suggestions from guests</string>
     <string name="listen_together_sync_volume">Sync host volume</string>
     <string name="listen_together_sync_volume_desc">Guests will match the host\'s volume level</string>
-    <string name="listen_together_in_top_bar">Blaze Together in top bar</string>
-    <string name="listen_together_in_top_bar_desc">Show Blaze Together in the top app bar instead of the navigation bar</string>
+    <string name="listen_together_in_top_bar">Strix Together in top bar</string>
+    <string name="listen_together_in_top_bar_desc">Show Strix Together in the top app bar instead of the navigation bar</string>
     <string name="listen_together_description">Listen to music with your friends in real time. Create a room to host, or join an existing room with a code</string>
-    <string name="listen_together_background_disconnect_note">NOTE: When you are connected but not in a room, Blaze Together disconnects after 30 minutes in the background to save battery</string>
-    <string name="listen_together_not_configured">Blaze Together is not set up. Please configure the server URL in: Blaze Together &gt; Settings &gt; Server URL</string>
+    <string name="listen_together_background_disconnect_note">NOTE: When you are connected but not in a room, Strix Together disconnects after 30 minutes in the background to save battery</string>
+    <string name="listen_together_not_configured">Strix Together is not set up. Please configure the server URL in: Strix Together &gt; Settings &gt; Server URL</string>
     <string name="listen_together_suggestion_received">%1$s suggested %2$s</string>
     <string name="listen_together_suggestion_sent">Suggestion sent to host!</string>
     <string name="listen_together_join_request_notification">%1$s wants to join the room</string>
-    <string name="listen_together_notification_channel_name">Blaze Together</string>
-    <string name="listen_together_notification_channel_desc">Notifications for Blaze Together events</string>
+    <string name="listen_together_notification_channel_name">Strix Together</string>
+    <string name="listen_together_notification_channel_desc">Notifications for Strix Together events</string>
     <string name="listen_together_room_created">Room created: %s</string>
     <string name="listen_together_cannot_edit_username_in_room">The username cannot be changed while in a room</string>
     <string name="waiting_for_approval">Waiting for host approval…</string>
@@ -912,13 +912,18 @@
     <string name="crash_description">An unexpected error occurred. Please share the crash report to help us fix the issue</string>
     <string name="crash_share_logs">Share logs</string>
     <string name="crash_share_title">Share crash report</string>
-    <string name="crash_report_subject">Blazify crash report</string>
+    <string name="crash_report_subject">Strix Music crash report</string>
     <string name="crash_close">Close</string>
     <string name="crash_no_log">No crash log available</string>
 
     <!-- Theme Palette Names -->
     <string name="palette_dynamic">Dynamic</string>
-    <string name="palette_blaze">Blaze</string>
+    <string name="palette_blaze">Strix Burgundy</string>
+    <string name="palette_midnight">Midnight Plum</string>
+    <string name="palette_rosewood">Rosewood</string>
+    <string name="palette_ocean">Deep Ocean</string>
+    <string name="palette_forest">Forest</string>
+
     <string name="palette_crimson">Crimson</string>
     <string name="palette_rose">Rose</string>
     <string name="palette_purple">Purple</string>
@@ -969,7 +974,7 @@
     <string name="clear_recognition_history_confirm">Are you sure you want to clear all recognition history?</string>
     <string name="delete_from_history">Delete from history</string>
     <string name="re_listen">Re-listen</string>
-    <string name="play_on_app">Play on Blazify</string>
+    <string name="play_on_app">Play on Strix Music</string>
     <string name="qs_tile_music_recognizer">Recognize music</string>
     <string name="recognition_notification_channel_name">Music recognition</string>
     <string name="recognition_notification_channel_desc">Shows a notification while identifying a song from quick settings</string>
@@ -993,7 +998,7 @@
     <string name="column_label">Column %d</string>
 
     <string name="discord_connect_description">Sign in with Discord to share what you\'re listening to</string>
-    <string name="discord_information_warning">Blazify uses Discord\'s public OAuth2 and Gateway APIs to share what you\'re listening to. Authorization happens through a local browser session that closes itself after capturing the code, and nothing is sent to third-party servers. Your token is stored on this device in encrypted preferences and is never shared. Blazify connects directly to wss://gateway.discord.gg to publish your activity, and only requests the minimum scope required (sdk.social_layer_presence).</string>
+    <string name="discord_information_warning">Strix Music uses Discord\'s public OAuth2 and Gateway APIs to share what you\'re listening to. Authorization happens through a local browser session that closes itself after capturing the code, and nothing is sent to third-party servers. Your token is stored on this device in encrypted preferences and is never shared. Strix Music connects directly to wss://gateway.discord.gg to publish your activity, and only requests the minimum scope required (sdk.social_layer_presence).</string>
     <string name="discord_status_connecting">Connecting to Discord…</string>
     <string name="discord_status_reconnecting">Reconnecting to Discord…</string>
     <string name="discord_status_connected">Connected</string>
@@ -1061,7 +1066,7 @@
     <string name="jump_to_playing">Jump to playing</string>
     <string name="share_playlist">Share playlist</string>
     <string name="share_playlist_ways">A link or a square to point a camera at</string>
-    <string name="share_playlist_hint">Anyone with Blazify can open this and keep the playlist. The songs travel in the link itself, not through any website.</string>
+    <string name="share_playlist_hint">Anyone with Strix Music can open this and keep the playlist. The songs travel in the link itself, not through any website.</string>
     <string name="shared_playlist_title">Keep this playlist?</string>
     <string name="shared_playlist_kept">Kept %1$d of %2$d songs</string>
     <string name="shared_playlist_failed">Could not keep that playlist</string>
@@ -1256,11 +1261,11 @@
     <string name="no_recently_played">No recently played songs yet.</string>
     <string name="no_recommendations">No recommendations yet.</string>
     <!-- About page -->
-    <string name="about_developer_role">Developer • Strix Music</string>
-    <string name="about_me_body">Dikembangkan oleh Muhammad Bohana (Han), Alumni Siswa Al-Hidayah Kota Cirebon, TKJ 2. Strix Music adalah project personal untuk menghadirkan pengalaman mendengarkan musik yang nyaman, modern, dan terus dikembangkan.</string>
+    <string name="about_developer_role">Strix Music Developer</string>
+    <string name="about_me_body">Strix Music is customized and maintained by Muhammad Bohana (Han), an alumnus of Al-Hidayah, Cirebon City, TKJ 2. This app builds on an open-source upstream project; original contributors and license notices remain credited.</string>
     <string name="buy_me_a_coffee">Buy me a coffee</string>
-    <string name="coffee_dialog_subtitle">Scan the code to support Blazify</string>
-    <string name="made_with_love">Made with ❤️ by Rajendra Pandey</string>
+    <string name="coffee_dialog_subtitle">Scan the code to support Strix Music</string>
+    <string name="made_with_love">Made with care by Muhammad Bohana (Han)</string>
     <string name="about_open_source">Free and open source under GPL-3.0</string>
     <string name="arrange">Arrange</string>
     <!-- Library redesign -->
@@ -1321,23 +1326,23 @@
     <string name="local_music_kb">%1$d KB</string>
     <string name="local_music_mb">%1$d MB</string>
     <string name="edit_tags">Edit details</string>
-    <string name="edit_tags_desc">Change the title, artist or album shown in Blazify</string>
+    <string name="edit_tags_desc">Change the title, artist or album shown in Strix Music</string>
     <string name="edit_tags_title">Title</string>
     <string name="edit_tags_artist">Artist</string>
     <string name="edit_tags_album">Album</string>
     <string name="edit_tags_save">Save</string>
     <string name="edit_tags_reset">Use file tags</string>
-    <string name="edit_tags_note">Shown in Blazify only. The file itself is left alone, so other apps still see its original tags.</string>
-    <string name="local_music_permission">Blazify needs permission to read audio files</string>
+    <string name="edit_tags_note">Shown in Strix Music only. The file itself is left alone, so other apps still see its original tags.</string>
+    <string name="local_music_permission">Strix Music needs permission to read audio files</string>
     <string name="blaze_greeting_default_name">Music Lover</string>
-    <string name="star_on_github">Visit Strix Music on GitHub</string>
-    <string name="star_prompt_title">Getting on with Blazify?</string>
+    <string name="star_on_github">Star Strix Music on GitHub</string>
+    <string name="star_prompt_title">Getting on with Strix Music?</string>
     <string name="star_prompt_body">It is made by one person and given away, with no ads and nothing tracked. A star on GitHub is most of how anyone else finds it.</string>
     <string name="star_prompt_yes">Star it</string>
     <string name="star_prompt_later">Later</string>
     <string name="star_prompt_never">No thanks</string>
-    <string name="social_website">GitHub Profile</string>
-    <string name="social_github">Repository</string>
+    <string name="social_website">Website</string>
+    <string name="social_github">GitHub</string>
     <string name="social_instagram">Instagram</string>
     <string name="settings_group_connections">Connections</string>
     <string name="hint_integrations">Discord Rich Presence, Last.fm scrobbling</string>
@@ -1347,7 +1352,7 @@
     <string name="stop_downloading_confirm">Stop</string>
     <string name="keep_downloading">Keep downloading</string>
     <string name="removed_song_from_queue">Removed \"%s\" from the queue</string>
-    <string name="hint_together_settings">Blaze Together sync and room settings</string>
+    <string name="hint_together_settings">Strix Together sync and room settings</string>
     <string name="guest">Guest</string>
     <string name="manage_account">Manage your account</string>
     <string name="tap_to_sign_in">Tap to sign in</string>
@@ -1388,7 +1393,7 @@
     <string name="hint_backup">Export or import your library</string>
     <string name="hint_about">Version and developer</string>
     <string name="hint_changelog">What\'s new in this version</string>
-    <string name="hint_links">Handle Blazify links by default</string>
+    <string name="hint_links">Handle Strix Music links by default</string>
     <string name="hint_updater">Check for updates</string>
     <!-- Player designs -->
     <string name="player_theme">Player theme</string>
@@ -1471,7 +1476,7 @@
     <string name="offline_mix">Saved on this phone</string>
     <string name="offline_mix_empty">No connection, and no songs saved on this phone yet. Download songs to listen offline.</string>
     <string name="accounts_and_channels">Accounts and channels</string>
-    <string name="accounts_restart_note">Blazify restarts on the one you choose, and its playlists and library come in. Your downloads stay.</string>
+    <string name="accounts_restart_note">Strix Music restarts on the one you choose, and its playlists and library come in. Your downloads stay.</string>
     <string name="accounts_channels_heading">Channels on this account</string>
     <string name="accounts_other_heading">Other accounts</string>
     <string name="accounts_add_another">Add another account</string>
@@ -1490,7 +1495,7 @@
         <item quantity="other">%1$d more accounts</item>
     </plurals>
     <string name="update_card_title">Update available</string>
-    <string name="update_card_text">Blazify %1$s is ready to download</string>
+    <string name="update_card_text">Strix Music %1$s is ready to download</string>
     <string name="accounts_switching">Switching…</string>
     <string name="accounts_expired">That account is signed out. Add it again to use it.</string>
     <string name="mini_player_buttons">Buttons</string>
@@ -1500,7 +1505,7 @@
     <string name="festival_greeting_diwali">Happy Diwali</string>
     <string name="festival_wish_lights">Light, love and music to you and yours</string>
     <string name="festival_touches">Festival touches</string>
-    <string name="festival_touches_desc">A festive Blazify logo on major festivals in your country. Tap it to celebrate.</string>
+    <string name="festival_touches_desc">A festive Strix Music logo on major festivals in your country. Tap it to celebrate.</string>
     <string name="festival_greeting_christmas">Merry Christmas</string>
     <string name="festival_greeting_new_year">Happy New Year</string>
     <string name="festival_greeting_music_day">Happy World Music Day</string>
@@ -1514,10 +1519,10 @@
     <string name="festival_turned_off">Festive mode is off. Turn it back on in Look &amp; Feel › Home.</string>
     <string name="artist_latest_release">Latest release</string>
     <string name="artist_you_and">You and %1$s</string>
-    <string name="star_prompt_title_short">Enjoying Blazify?</string>
+    <string name="star_prompt_title_short">Enjoying Strix Music?</string>
     <string name="star_prompt_body_short">A star on GitHub helps others find it. It\'s free, with no ads.</string>
     <string name="star_prompt_already">Already starred</string>
-    <string name="update_prompt_title">Blazify %s is here</string>
+    <string name="update_prompt_title">Strix Music %s is here</string>
     <string name="update_prompt_body">New features and fixes are ready. Your music and library stay just as they are.</string>
     <string name="update_prompt_update">Update</string>
     <string name="import_spotify_csv_tip">For the whole list, export it as a CSV file (Exportify does it with your own Spotify sign-in), then use Settings › Backup and restore › Import a CSV playlist.</string>
@@ -1538,7 +1543,4 @@
     <string name="offline_home_downloaded_desc">Songs you downloaded</string>
     <string name="offline_home_device">Songs on this device</string>
     <string name="offline_home_device_desc">Your own music files on this phone</string>
-    <string name="palette_strix">Strix Burgundy</string>
-    <string name="palette_midnight">Midnight Plum</string>
-    <string name="palette_rosewood">Rosewood</string>
 </resources>

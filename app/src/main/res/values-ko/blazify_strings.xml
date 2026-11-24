@@ -37,7 +37,7 @@
     <string name="wrapped_top_album_title">당신의 최애 앨범은</string>
     <string name="wrapped_top_song_album_art_content_description">앨범 아트</string>
     <string name="wrapped_top_artist_title">올해 당신의 최애 아티스트는</string>
-    <string name="wrapped_intro_title">BLAZIFY</string>
+    <string name="wrapped_intro_title">Strix Music</string>
     <string name="wrapped_year">2025</string>
     <string name="equalizer_header">이퀄라이저</string>
     <string name="no_profiles">이퀄라이저 프로필 없음</string>
@@ -192,8 +192,8 @@
     <string name="crossfade">크로스페이드</string>
     <string name="crossfade_desc">곡의 끝과 다음 곡의 시작을 겹쳐서 자연스럽게 재생합니다</string>
     <string name="widget_recognizer_name">노래 검색기</string>
-    <string name="tap_to_play">Blazify 열기</string>
-    <string name="tap_to_open">Blazify 열기</string>
+    <string name="tap_to_play">Strix Music 열기</string>
+    <string name="tap_to_open">Strix Music 열기</string>
     <string name="widget_description">재생 제어가 가능한 음악 위젯</string>
     <string name="turntable_widget_description">재생 및 좋아요 제어가 가능한 원형 위젯</string>
     <string name="widget_music_player">음악 플레이어</string>
@@ -243,7 +243,7 @@
     <string name="release_notes">릴리스 노트</string>
     <string name="changelog">변경 사항</string>
     <string name="changelog_empty">표시할 변경 사항이 없습니다</string>
-    <string name="github_releases_url">https://github.com/BlazifyGroup/Blazify/releases</string>
+    <string name="github_releases_url">https://github.com/mbohana2817/Strix-Music/releases</string>
     <string name="list_bullet">•</string>
     <string name="view_on_github">GitHub에서 보기</string>
     <string name="current_version">현재 버전</string>
@@ -278,7 +278,7 @@
     <string name="wrapped_top_song_listening_time">당신은 총 %d분 동안 함께했습니다!</string>
     <string name="wrapped_intro_subtitle">올 한 해 어떤 음악과 함께했는지 확인해 보세요…</string>
     <string name="wrapped_intro_button">시작합니다!</string>
-    <string name="wrapped_logo_content_description">Blazify 로고</string>
+    <string name="wrapped_logo_content_description">Strix Music 로고</string>
     <string name="wrapped_ready_title">연말 결산 준비 완료!</string>
     <string name="wrapped_ready_subtitle">올해 당신이 사랑한 음악들을 만나보세요…</string>
     <string name="wrapped_thank_you">함께해주셔서 감사합니다!</string>
@@ -295,7 +295,7 @@
     <string name="plays">회 재생</string>
     <string name="casting_to">%s(으)로 전송 중</string>
     <string name="progress_percent">진행률 %s%%</string>
-    <string name="listening_to_blazify">Strix Music</string>
+    <string name="listening_to_blazify">Strix Music에서 감상 중</string>
     <string name="failed_to_create_image">이미지를 생성하지 못했습니다: %s</string>
     <string name="error_playing">재생 오류</string>
     <string name="failed_to_parse_proxy">프록시 URL을 분석하지 못했습니다</string>
@@ -354,7 +354,7 @@
     <string name="enable_scrobbling">스크로블링 활성화</string>
     <string name="lastfm_now_playing">현재 재생 정보 전송</string>
     <string name="last_fm_send_likes">\'좋아요\' 및 \'싫어요\' 동기화</string>
-    <string name="last_fm_send_likes_description">Blazify에서 곡에 좋아요 또는 싫어요를 표시하면 Last.fm에도 동일하게 반영합니다</string>
+    <string name="last_fm_send_likes_description">Strix Music에서 곡에 좋아요 또는 싫어요를 표시하면 Last.fm에도 동일하게 반영합니다</string>
     <string name="scrobbling_configuration">스크로블링 설정</string>
     <string name="scrobble_min_track_duration">지정된 시간(초) 이상 재생 시 스크로블링</string>
     <string name="scrobble_delay_percent">스크로블링 전송 기준(%)</string>
@@ -424,7 +424,7 @@
     <string name="crash_description">예상치 못한 오류가 발생했습니다. 문제 해결을 위해 오류 보고서를 공유해 주시면 감사하겠습니다</string>
     <string name="crash_share_logs">로그 공유</string>
     <string name="crash_share_title">오류 보고서 공유</string>
-    <string name="crash_report_subject">Blazify 오류 보고서</string>
+    <string name="crash_report_subject">Strix Music 오류 보고서</string>
     <string name="crash_close">닫기</string>
     <string name="crash_no_log">사용 가능한 오류 로그가 없습니다</string>
     <string name="palette_dynamic">다이내믹</string>
@@ -469,7 +469,7 @@
     <string name="clear_recognition_history_confirm">검색 기록을 모두 삭제하시겠습니까?</string>
     <string name="delete_from_history">기록에서 삭제</string>
     <string name="re_listen">다시 검색</string>
-    <string name="play_on_app">Blazify로 재생</string>
+    <string name="play_on_app">Strix Music로 재생</string>
     <string name="qs_tile_music_recognizer">노래 검색</string>
     <string name="recognition_notification_channel_name">노래 검색</string>
     <string name="recognition_notification_channel_desc">빠른 설정창에서 곡을 검색하는 동안 알림을 표시합니다</string>
@@ -477,7 +477,7 @@
     <string name="recognition_notification_processing">분석 중…</string>
     <string name="recognition_notification_no_match">일치하는 곡을 찾을 수 없습니다</string>
     <string name="recognition_notification_failed">검색 실패</string>
-    <string name="listen_on_blazify">Listen on Strix Music</string>
+    <string name="listen_on_blazify">Strix Music로 재생</string>
     <string name="speed_dial">빠른 실행</string>
     <string name="pin_to_speed_dial">빠른 실행에 고정</string>
     <string name="unpin_from_speed_dial">빠른 실행에서 고정 해제</string>
@@ -655,7 +655,7 @@
     <string name="discord_buttons">버튼</string>
     <string name="discord_button_1">버튼 1</string>
     <string name="discord_button_2">버튼 2</string>
-    <string name="discord_information_warning">Blazify는 Discord의 공개 OAuth2 및 Gateway API를 사용해 듣고 있는 음악을 공유합니다. 인증은 코드를 받은 뒤 스스로 닫히는 로컬 브라우저 세션에서 이루어지며, 제3자 서버로는 아무것도 전송되지 않습니다. 토큰은 이 기기의 암호화된 설정에 저장되며 절대 공유되지 않습니다. Blazify는 활동을 게시하기 위해 wss://gateway.discord.gg에 직접 연결하며, 꼭 필요한 최소 권한(sdk.social_layer_presence)만 요청합니다.</string>
+    <string name="discord_information_warning">Strix Music는 Discord의 공개 OAuth2 및 Gateway API를 사용해 듣고 있는 음악을 공유합니다. 인증은 코드를 받은 뒤 스스로 닫히는 로컬 브라우저 세션에서 이루어지며, 제3자 서버로는 아무것도 전송되지 않습니다. 토큰은 이 기기의 암호화된 설정에 저장되며 절대 공유되지 않습니다. Strix Music는 활동을 게시하기 위해 wss://gateway.discord.gg에 직접 연결하며, 꼭 필요한 최소 권한(sdk.social_layer_presence)만 요청합니다.</string>
     <string name="discord_activity_type">활동 유형</string>
     <string name="discord_activity_playing">플레이 중</string>
     <string name="discord_activity_listening">듣는 중</string>
@@ -667,8 +667,8 @@
     <string name="discord_activity_name">활동 이름</string>
     <string name="discord_advanced_mode">고급 모드</string>
     <string name="discord_advanced_mode_description">추가 Rich Presence 사용자 지정 옵션을 표시합니다</string>
-    <string name="together">Blaze Together</string>
-    <string name="listen_together">Blaze Together</string>
+    <string name="together">Strix Together</string>
+    <string name="listen_together">Strix Together</string>
     <string name="listen_together_server_url">서버 URL</string>
     <string name="listen_together_choose_server">서버 선택</string>
     <string name="listen_together_custom_server">사용자 지정 서버</string>
@@ -698,16 +698,16 @@
     <string name="listen_together_auto_approval_suggestions_desc">게스트가 추천한 곡을 자동으로 승인하고 대기열에 추가합니다</string>
     <string name="listen_together_sync_volume">호스트 볼륨과 동기화</string>
     <string name="listen_together_sync_volume_desc">게스트의 볼륨이 호스트의 볼륨 레벨과 동일하게 맞춰집니다</string>
-    <string name="listen_together_in_top_bar">상단 바에 Blaze Together 표시</string>
-    <string name="listen_together_in_top_bar_desc">하단 내비게이션 바 대신 앱 상단 바에 Blaze Together를 표시합니다</string>
+    <string name="listen_together_in_top_bar">상단 바에 Strix Together 표시</string>
+    <string name="listen_together_in_top_bar_desc">하단 내비게이션 바 대신 앱 상단 바에 Strix Together를 표시합니다</string>
     <string name="listen_together_description">실시간으로 친구들과 함께 음악을 듣습니다. 방을 만들어 호스트가 되거나 코드를 사용해 기존 방에 참여하세요</string>
-    <string name="listen_together_background_disconnect_note">참고: 연결되어 있지만 방에 있지 않으면 배터리를 아끼기 위해 백그라운드에서 30분 후 Blaze Together 연결이 끊어집니다</string>
-    <string name="listen_together_not_configured">Blaze Together가 설정되지 않았습니다. 다음 경로에서 서버 URL을 설정해 주십시오: Blaze Together &gt; 설정 &gt; 서버 URL</string>
+    <string name="listen_together_background_disconnect_note">참고: 연결되어 있지만 방에 있지 않으면 배터리를 아끼기 위해 백그라운드에서 30분 후 Strix Together 연결이 끊어집니다</string>
+    <string name="listen_together_not_configured">Strix Together가 설정되지 않았습니다. 다음 경로에서 서버 URL을 설정해 주십시오: Strix Together &gt; 설정 &gt; 서버 URL</string>
     <string name="listen_together_suggestion_received">%1$s 님이 %2$s을(를) 추천했습니다</string>
     <string name="listen_together_suggestion_sent">호스트에게 추천 곡을 보냈습니다!</string>
     <string name="listen_together_join_request_notification">%1$s 님이 방에 참여하고 싶어 합니다</string>
-    <string name="listen_together_notification_channel_name">Blaze Together</string>
-    <string name="listen_together_notification_channel_desc">Blaze Together 이벤트에 대한 알림입니다</string>
+    <string name="listen_together_notification_channel_name">Strix Together</string>
+    <string name="listen_together_notification_channel_desc">Strix Together 이벤트에 대한 알림입니다</string>
     <string name="listen_together_room_created">방이 생성되었습니다: %s</string>
     <string name="listen_together_cannot_edit_username_in_room">방에 있는 동안에는 사용자 이름을 변경할 수 없습니다</string>
     <string name="waiting_for_approval">호스트의 승인을 기다리는 중…</string>
@@ -857,7 +857,7 @@
     <string name="auto_radio_queue">자동 라디오 대기열</string>
     <string name="auto_radio_queue_desc">검색이나 홈에서 노래를 재생하면 라디오 대기열을 자동으로 만듭니다</string>
     <string name="developer_heading">개발자 소개</string>
-    <string name="developer_role">카트만두에서 Blazify를 만듭니다</string>
+    <string name="developer_role">카트만두에서 Strix Music를 만듭니다</string>
     <string name="developer_role_short">개발자, 카트만두</string>
     <string name="developer_star">스타</string>
     <string name="update_check_idle">탭하여 확인</string>
@@ -865,7 +865,7 @@
     <string name="update_check_latest">최신 버전을 사용 중입니다</string>
     <string name="update_check_available">%1$s 버전이 나왔습니다. 탭하여 받기</string>
     <string name="update_check_failed">확인하지 못했습니다. 탭하여 다시 시도</string>
-    <string name="developer_bio">Blazify는 저 혼자서, 공개적으로 만들고 있습니다. 제가 생각하는 모습의 음악 플레이어를 갖고 싶어서 시작했는데, 사람들이 계속 사본을 달라고 했습니다. 각 버전에 들어가는 내용은 대부분 사람들이 고장 났거나 빠졌다고 알려 준 것들입니다.</string>
+    <string name="developer_bio">Strix Music는 저 혼자서, 공개적으로 만들고 있습니다. 제가 생각하는 모습의 음악 플레이어를 갖고 싶어서 시작했는데, 사람들이 계속 사본을 달라고 했습니다. 각 버전에 들어가는 내용은 대부분 사람들이 고장 났거나 빠졌다고 알려 준 것들입니다.</string>
     <string name="developer_website">웹사이트</string>
     <string name="developer_github">GitHub</string>
     <string name="sleep_timer_stop_music_after">음악 정지까지</string>
@@ -878,7 +878,7 @@
     <string name="lyrics_choose_source">가사 선택</string>
     <string name="lyrics_choose_source_desc">이 노래의 소스나 언어를 선택하세요</string>
     <string name="live">LIVE</string>
-    <string name="update_new_version">Blazify %s 사용 가능</string>
+    <string name="update_new_version">Strix Music %s 사용 가능</string>
     <string name="update_download">다운로드</string>
     <string name="update_downloading">다운로드 중… %1$d%%</string>
     <string name="update_downloading_indeterminate">다운로드 중…</string>
@@ -886,10 +886,10 @@
     <string name="update_later">나중에</string>
     <string name="update_saved_to_downloads">다운로드 폴더에 %s(으)로 저장됨</string>
     <string name="update_failed">다운로드 실패: %s</string>
-    <string name="update_allow_installs">Blazify에 앱 설치 권한이 필요합니다. 권한을 허용한 후 설치를 다시 누르세요.</string>
+    <string name="update_allow_installs">Strix Music에 앱 설치 권한이 필요합니다. 권한을 허용한 후 설치를 다시 누르세요.</string>
     <string name="update_allow_installs_button">설정 열기</string>
     <string name="update_uninstall_first_title">먼저 이 버전을 제거하세요</string>
-    <string name="update_uninstall_first_body">이 빌드는 다른 키로 서명되어 Android가 현재 버전 위에 설치하지 않습니다. 다운로드한 파일은 다운로드 폴더에 그대로 남아 있습니다.\n\n1. 먼저 백업하세요 — 설정 → 백업 및 복원 → 백업.\n2. Blazify를 제거하세요.\n3. 다운로드를 열고 %s을(를) 탭하세요.</string>
+    <string name="update_uninstall_first_body">이 빌드는 다른 키로 서명되어 Android가 현재 버전 위에 설치하지 않습니다. 다운로드한 파일은 다운로드 폴더에 그대로 남아 있습니다.\n\n1. 먼저 백업하세요 — 설정 → 백업 및 복원 → 백업.\n2. Strix Music를 제거하세요.\n3. 다운로드를 열고 %s을(를) 탭하세요.</string>
     <string name="update_open_downloads">다운로드 열기</string>
     <string name="update_no_download">이 릴리스에는 다운로드할 수 있는 빌드가 없습니다.</string>
     <string name="update_up_to_date">최신 버전을 사용 중입니다</string>
@@ -910,9 +910,9 @@
     <string name="wizard_multiple_variants">여러 버전이 있습니다</string>
     <string name="wizard_select_eq_profiles">%s의 EQ 프로필 선택</string>
     <string name="wizard_save_profiles">프로필 저장</string>
-    <string name="error_age_restricted">이 노래는 연령 제한이 있으며, Blazify는 아직 연령 제한 노래를 재생할 수 없습니다.</string>
+    <string name="error_age_restricted">이 노래는 연령 제한이 있으며, Strix Music는 아직 연령 제한 노래를 재생할 수 없습니다.</string>
     <string name="error_job_cancelled">이 동영상은 재생할 수 없습니다. 다시 시도하거나 다음 곡으로 넘어가세요.</string>
-    <string name="blaze_together">Blaze Together</string>
+    <string name="blaze_together">Strix Together</string>
     <string name="copy_details">세부정보 복사</string>
     <string name="add_to_playlist_top">새 노래를 재생목록 맨 위에 추가</string>
     <string name="add_to_playlist_top_desc">끄면 맨 아래에 추가합니다</string>
@@ -1016,10 +1016,10 @@
     <string name="no_recently_played">최근 재생한 곡이 아직 없습니다.</string>
     <string name="no_recommendations">아직 추천이 없습니다.</string>
     <string name="about_developer_role">개발자</string>
-    <string name="about_me_body">저는 네팔의 독립 앱 개발자 Rajendra Pandey입니다. 아이디어를 매일 쓰는 세련된 경험으로 만드는 일을 좋아합니다. Blazify는 빠르고, 아름답고, 개인적인 음악 스트리밍에 대한 제 생각을 담아 Kotlin과 Jetpack Compose로 처음부터 만든 앱입니다. 앱을 편하게 느끼게 하는 작은 디테일을 중요하게 여기고, 더 좋게 만들기 위해 늘 손보고 있습니다. 찾아와 주시고 제 작업을 하루의 일부로 삼아 주셔서 감사합니다.</string>
+    <string name="about_me_body">저는 네팔의 독립 앱 개발자 Muhammad Bohana (Han)입니다. 아이디어를 매일 쓰는 세련된 경험으로 만드는 일을 좋아합니다. Strix Music는 빠르고, 아름답고, 개인적인 음악 스트리밍에 대한 제 생각을 담아 Kotlin과 Jetpack Compose로 처음부터 만든 앱입니다. 앱을 편하게 느끼게 하는 작은 디테일을 중요하게 여기고, 더 좋게 만들기 위해 늘 손보고 있습니다. 찾아와 주시고 제 작업을 하루의 일부로 삼아 주셔서 감사합니다.</string>
     <string name="buy_me_a_coffee">커피 한 잔 사 주기</string>
-    <string name="coffee_dialog_subtitle">코드를 스캔해 Blazify를 후원하세요</string>
-    <string name="made_with_love">Rajendra Pandey가 ❤️을 담아 만듦</string>
+    <string name="coffee_dialog_subtitle">코드를 스캔해 Strix Music를 후원하세요</string>
+    <string name="made_with_love">Muhammad Bohana (Han)가 ❤️을 담아 만듦</string>
     <string name="arrange">정렬</string>
     <string name="created_by_you">내가 만든 목록</string>
     <string name="artists_you_liked">좋아요 표시한 아티스트</string>
@@ -1076,17 +1076,17 @@
     <string name="local_music_kb">%1$d KB</string>
     <string name="local_music_mb">%1$d MB</string>
     <string name="edit_tags">세부정보 수정</string>
-    <string name="edit_tags_desc">Blazify에 표시되는 제목, 아티스트, 앨범 변경</string>
+    <string name="edit_tags_desc">Strix Music에 표시되는 제목, 아티스트, 앨범 변경</string>
     <string name="edit_tags_title">제목</string>
     <string name="edit_tags_artist">아티스트</string>
     <string name="edit_tags_album">앨범</string>
     <string name="edit_tags_save">저장</string>
     <string name="edit_tags_reset">파일 태그 사용</string>
-    <string name="edit_tags_note">Blazify에서만 표시됩니다. 파일 자체는 바뀌지 않으므로 다른 앱에서는 원래 태그가 보입니다.</string>
-    <string name="local_music_permission">Blazify에 오디오 파일 읽기 권한이 필요합니다</string>
+    <string name="edit_tags_note">Strix Music에서만 표시됩니다. 파일 자체는 바뀌지 않으므로 다른 앱에서는 원래 태그가 보입니다.</string>
+    <string name="local_music_permission">Strix Music에 오디오 파일 읽기 권한이 필요합니다</string>
     <string name="blaze_greeting_default_name">음악 애호가</string>
-    <string name="star_on_github">GitHub에서 Blazify에 스타 주기</string>
-    <string name="star_prompt_title">Blazify 잘 쓰고 계신가요?</string>
+    <string name="star_on_github">GitHub에서 Strix Music에 스타 주기</string>
+    <string name="star_prompt_title">Strix Music 잘 쓰고 계신가요?</string>
     <string name="star_prompt_body">한 사람이 만들어 무료로 배포하며, 광고도 추적도 없습니다. GitHub 스타는 다른 사람들이 이 앱을 찾는 주요 방법입니다.</string>
     <string name="star_prompt_yes">스타 주기</string>
     <string name="star_prompt_later">나중에</string>
@@ -1096,7 +1096,7 @@
     <string name="social_instagram">Instagram</string>
     <string name="settings_group_connections">연결</string>
     <string name="hint_integrations">Discord Rich Presence, Last.fm 스크로블</string>
-    <string name="hint_together_settings">Blaze Together 동기화 및 방 설정</string>
+    <string name="hint_together_settings">Strix Together 동기화 및 방 설정</string>
     <string name="guest">게스트</string>
     <string name="manage_account">계정 관리</string>
     <string name="tap_to_sign_in">탭하여 로그인</string>
@@ -1137,7 +1137,7 @@
     <string name="hint_backup">보관함 내보내기 또는 가져오기</string>
     <string name="hint_about">버전 및 개발자</string>
     <string name="hint_changelog">이번 버전의 새로운 기능</string>
-    <string name="hint_links">기본적으로 Blazify로 링크 열기</string>
+    <string name="hint_links">기본적으로 Strix Music로 링크 열기</string>
     <string name="hint_updater">업데이트 확인</string>
     <string name="player_theme">플레이어 테마</string>
     <string name="player_theme_desc">플레이어 레이아웃 선택</string>
@@ -1209,7 +1209,7 @@
     <string name="listenbrainz_get_token_desc">ListenBrainz 설정 페이지를 엽니다</string>
     <string name="listenbrainz_forget">이 토큰 삭제</string>
     <string name="listenbrainz_forget_desc">전송을 중지하고 이 휴대폰에서 토큰을 삭제합니다</string>
-    <string name="sponsorblock_desc">SponsorBlock 커뮤니티의 표시를 이용해 뮤직비디오의 대화, 크레딧, 광고 구간을 건너뜁니다. Blazify는 코드의 앞 몇 글자만으로 요청하므로 서버는 무엇을 재생 중인지 알 수 없습니다.</string>
+    <string name="sponsorblock_desc">SponsorBlock 커뮤니티의 표시를 이용해 뮤직비디오의 대화, 크레딧, 광고 구간을 건너뜁니다. Strix Music는 코드의 앞 몇 글자만으로 요청하므로 서버는 무엇을 재생 중인지 알 수 없습니다.</string>
     <string name="sponsorblock_categories">건너뛸 항목</string>
     <string name="sponsorblock_non_music">음악이 아닌 모든 부분</string>
     <string name="sponsorblock_sponsor">스폰서 광고</string>
@@ -1242,7 +1242,7 @@
     <string name="lastfm_own_key">내 Last.fm API 키</string>
     <string name="lastfm_own_key_set">추가됨</string>
     <string name="lastfm_own_key_missing">로그인하려면 필요합니다</string>
-    <string name="lastfm_own_key_explain">이 버전의 Blazify에는 Last.fm 키가 포함되어 있지 않습니다. Last.fm에서 2분 정도면 무료 키를 만들 수 있으니, 만든 뒤 API 키와 공유 비밀 키를 여기에 붙여넣으세요.</string>
+    <string name="lastfm_own_key_explain">이 버전의 Strix Music에는 Last.fm 키가 포함되어 있지 않습니다. Last.fm에서 2분 정도면 무료 키를 만들 수 있으니, 만든 뒤 API 키와 공유 비밀 키를 여기에 붙여넣으세요.</string>
     <string name="lastfm_own_key_create">Last.fm에서 키 만들기</string>
     <string name="lastfm_api_key">API 키</string>
     <string name="lastfm_shared_secret">공유 비밀 키</string>
@@ -1253,7 +1253,7 @@
     <string name="add_to_library_hint">보관함에 저장합니다</string>
     <string name="remove_from_library_hint">보관함에서 뺍니다</string>
     <string name="listen_together_song_hint">방에서 친구들과 함께 맞춰 듣기</string>
-    <string name="listen_together_host_not_allowed">이 서버에서는 아직 Blazify로 방을 만들 수 없습니다. 다른 사람이 만든 방에는 참여할 수 있습니다.</string>
+    <string name="listen_together_host_not_allowed">이 서버에서는 아직 Strix Music로 방을 만들 수 없습니다. 다른 사람이 만든 방에는 참여할 수 있습니다.</string>
     <string name="song_not_found">노래를 찾지 못했습니다</string>
     <string name="song_not_found_hint">휴대폰을 음악 가까이 대고, 노랫소리나 선명한 멜로디가 나오는 부분에서 다시 시도하세요.</string>
     <string name="finding_the_song">노래 찾는 중…</string>
@@ -1268,7 +1268,7 @@
     <string name="jump_to_playing">재생 중인 곡으로 이동</string>
     <string name="share_playlist">재생목록 공유</string>
     <string name="share_playlist_ways">링크 또는 카메라로 스캔하는 코드</string>
-    <string name="share_playlist_hint">Blazify가 있다면 누구나 이것을 열어 재생목록을 저장할 수 있습니다. 노래 정보는 웹사이트를 거치지 않고 링크 자체에 담겨 전달됩니다.</string>
+    <string name="share_playlist_hint">Strix Music가 있다면 누구나 이것을 열어 재생목록을 저장할 수 있습니다. 노래 정보는 웹사이트를 거치지 않고 링크 자체에 담겨 전달됩니다.</string>
     <string name="shared_playlist_title">이 재생목록을 저장할까요?</string>
     <string name="shared_playlist_kept">%2$d곡 중 %1$d곡을 저장했습니다</string>
     <string name="shared_playlist_failed">재생목록을 저장할 수 없습니다</string>
@@ -1300,7 +1300,7 @@
     <string name="offline_mix">이 휴대폰에 저장됨</string>
     <string name="offline_mix_empty">인터넷에 연결되어 있지 않고, 이 휴대폰에 저장된 노래도 아직 없습니다. 오프라인으로 들으려면 노래를 다운로드하세요.</string>
     <string name="accounts_and_channels">계정 및 채널</string>
-    <string name="accounts_restart_note">선택한 계정으로 Blazify가 다시 시작되고 해당 계정의 재생목록과 보관함을 불러옵니다. 다운로드한 항목은 그대로 유지됩니다.</string>
+    <string name="accounts_restart_note">선택한 계정으로 Strix Music가 다시 시작되고 해당 계정의 재생목록과 보관함을 불러옵니다. 다운로드한 항목은 그대로 유지됩니다.</string>
     <string name="accounts_channels_heading">이 계정의 채널</string>
     <string name="accounts_other_heading">다른 계정</string>
     <string name="accounts_add_another">다른 계정 추가</string>
@@ -1323,7 +1323,7 @@
     <string name="accounts_sign_in_hint">재생목록과 보관함을 보려면 Google로 로그인하세요</string>
     <string name="accounts_tap_to_manage">내 계정, 채널, 동기화</string>
     <string name="update_card_title">업데이트 있음</string>
-    <string name="update_card_text">Blazify %1$s 다운로드 준비 완료</string>
+    <string name="update_card_text">Strix Music %1$s 다운로드 준비 완료</string>
     <plurals name="accounts_more_saved">
         <item quantity="other">이 휴대폰에 계정 %1$d개 더 있음</item>
     </plurals>
@@ -1334,7 +1334,7 @@
     <string name="festival_greeting_diwali">즐거운 디왈리 보내세요</string>
     <string name="festival_wish_lights">당신과 소중한 사람들에게 빛과 사랑과 음악을</string>
     <string name="festival_touches">축제 꾸미기</string>
-    <string name="festival_touches_desc">우리나라 큰 명절에 Blazify 로고가 축제 분위기로 바뀌어요. 탭해서 함께 축하하세요.</string>
+    <string name="festival_touches_desc">우리나라 큰 명절에 Strix Music 로고가 축제 분위기로 바뀌어요. 탭해서 함께 축하하세요.</string>
     <string name="festival_greeting_christmas">메리 크리스마스</string>
     <string name="festival_greeting_new_year">새해 복 많이 받으세요</string>
     <string name="festival_greeting_music_day">세계 음악의 날을 축하해요</string>
@@ -1347,7 +1347,7 @@
     <string name="festival_turned_off">축제 모드를 껐어요. 디자인 › 홈에서 다시 켤 수 있어요.</string>
     <string name="artist_latest_release">최신 발매</string>
     <string name="artist_you_and">나와 %1$s</string>
-    <string name="star_prompt_title_short">Blazify 마음에 드세요?</string>
+    <string name="star_prompt_title_short">Strix Music 마음에 드세요?</string>
     <string name="star_prompt_body_short">GitHub에 별을 남기면 다른 사람들이 찾기 쉬워져요. 무료이고 광고가 없어요.</string>
     <string name="import_spotify_csv_tip">전체 목록을 가져오려면 CSV 파일로 내보낸 뒤(Exportify에서 내 Spotify 로그인으로 할 수 있어요) 설정 › 백업 및 복원 › CSV 재생목록 가져오기를 사용하세요.</string>
 </resources>

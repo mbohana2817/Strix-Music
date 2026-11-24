@@ -26,12 +26,13 @@ import com.materialkolor.PaletteStyle
 import com.materialkolor.dynamiccolor.ColorSpec
 import com.materialkolor.rememberDynamicColorScheme
 import com.materialkolor.score.Score
+import com.blazify.music.constants.AppBackgroundStyle
 
 val DefaultThemeColor = Color(0xFFED5564)
 
-// Strix brand colors (burgundy -> rose gradient)
-val BlazeThemeColor = Color(0xFF7B233F) // Strix Burgundy brand color
-val BlazeGradientEnd = Color(0xFFC05A78)
+// Strix Music brand colors (burgundy -> rose gradient)
+val BlazeThemeColor = Color(0xFF9B3156)
+val BlazeGradientEnd = Color(0xFFE66A91)
 
 /**
  * Cards and sheets in pure-black dark.
@@ -54,6 +55,7 @@ fun BlazifyTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     pureBlack: Boolean = false,
     themeColor: Color = DefaultThemeColor,
+    backgroundStyle: AppBackgroundStyle = AppBackgroundStyle.STRIX_BURGUNDY,
     content: @Composable () -> Unit,
 ) {
     val context = LocalContext.current
@@ -75,11 +77,47 @@ fun BlazifyTheme(
     }
 
     // Apply pureBlack modification if needed, similar to original logic
-    val colorScheme = remember(baseColorScheme, pureBlack, darkTheme) {
+    val colorScheme = remember(baseColorScheme, pureBlack, darkTheme, backgroundStyle) {
         if (darkTheme && pureBlack) {
             baseColorScheme.pureBlack(true)
         } else {
-            baseColorScheme
+            val surfaces = when (backgroundStyle) {
+                AppBackgroundStyle.STRIX_BURGUNDY -> if (darkTheme) {
+                    listOf(Color(0xFF10070C), Color(0xFF190B12), Color(0xFF24111A), Color(0xFF2D1721))
+                } else {
+                    listOf(Color(0xFFFFF7F9), Color(0xFFFFF0F4), Color(0xFFFFE8EF), Color(0xFFF8DDE6))
+                }
+                AppBackgroundStyle.MIDNIGHT_PLUM -> if (darkTheme) {
+                    listOf(Color(0xFF0C0A12), Color(0xFF15111F), Color(0xFF211A2D), Color(0xFF2B2339))
+                } else {
+                    listOf(Color(0xFFF8F6FC), Color(0xFFF0ECF8), Color(0xFFE9E2F3), Color(0xFFDDD4EB))
+                }
+                AppBackgroundStyle.DEEP_OCEAN -> if (darkTheme) {
+                    listOf(Color(0xFF071015), Color(0xFF0D1A21), Color(0xFF142630), Color(0xFF1C3440))
+                } else {
+                    listOf(Color(0xFFF4FAFC), Color(0xFFEAF5F8), Color(0xFFDDEEF3), Color(0xFFCEE4EB))
+                }
+                AppBackgroundStyle.FOREST -> if (darkTheme) {
+                    listOf(Color(0xFF09110D), Color(0xFF111D16), Color(0xFF1A2A20), Color(0xFF24392B))
+                } else {
+                    listOf(Color(0xFFF5FAF6), Color(0xFFEBF5ED), Color(0xFFDDEDE1), Color(0xFFCEE3D4))
+                }
+                AppBackgroundStyle.AMOLED -> if (darkTheme) {
+                    listOf(Color.Black, Color(0xFF080808), Color(0xFF121212), Color(0xFF1B1B1B))
+                } else {
+                    listOf(Color(0xFFFFFFFF), Color(0xFFF8F8F8), Color(0xFFF0F0F0), Color(0xFFE8E8E8))
+                }
+            }
+            baseColorScheme.copy(
+                background = surfaces[0],
+                surface = surfaces[0],
+                surfaceDim = surfaces[0],
+                surfaceContainerLowest = surfaces[0],
+                surfaceContainerLow = surfaces[1],
+                surfaceContainer = surfaces[2],
+                surfaceContainerHigh = surfaces[3],
+                surfaceContainerHighest = surfaces[3],
+            )
         }
     }
 

@@ -180,7 +180,7 @@
     <string name="scrobble_delay_minutes">Затримка Scrobble у хвилинах</string>
     <string name="swipe_song_to_remove">Проведіть пальцем по пісні, щоб вилучити її зі списку відтворення</string>
     <string name="last_fm_send_likes">Надіслати вподобання/не вподобання</string>
-    <string name="last_fm_send_likes_description">Пісні, які подобається/не подобається, на Last.fm, коли вони вподобані/зняті з Blazify</string>
+    <string name="last_fm_send_likes_description">Пісні, які подобається/не подобається, на Last.fm, коли вони вподобані/зняті з Strix Music</string>
     <string name="lyrics_romanize_chinese">Романізувати китайські тексти</string>
     <string name="google_cast">Google Cast</string>
     <string name="google_cast_description">Увімкнути трансляцію аудіо на Chromecast та інші пристрої з підтримкою Cast</string>
@@ -252,10 +252,10 @@
     <string name="wrapped_total_artists_subtitle">унікальні артисти!</string>
     <string name="wrapped_total_songs_title">Ти слухав/слухала</string>
     <string name="wrapped_total_songs_subtitle">унікальні пісні!</string>
-    <string name="wrapped_intro_title">BLAZIFY</string>
+    <string name="wrapped_intro_title">Strix Music</string>
     <string name="wrapped_intro_subtitle">настав час подивитися, що ви слухали протягом усього цього року…</string>
     <string name="wrapped_intro_button">Ходімо!</string>
-    <string name="wrapped_logo_content_description">Логотип Blazify</string>
+    <string name="wrapped_logo_content_description">Логотип Strix Music</string>
     <string name="wrapped_year">2025</string>
     <string name="wrapped_ready_title">ВАШ АУДІОПІДСУМОК ЗА РІК ГОТОВИЙ!</string>
     <string name="wrapped_ready_subtitle">Час подивитися, що вам сподобалося цього року…</string>
@@ -267,7 +267,7 @@
     <string name="wrapped_playlist_saved">Список відтворення збережено</string>
     <string name="casting_to">Трансляція на %s</string>
     <string name="progress_percent">Прогрес %s%%</string>
-    <string name="listening_to_blazify">Strix Music</string>
+    <string name="listening_to_blazify">Слухаючи Strix Music</string>
     <string name="open">Відкрити</string>
     <string name="failed_to_create_image">Не вдалося створити зображення: %s</string>
     <string name="copied_title">Скопійована назва</string>
@@ -300,7 +300,7 @@
     <string name="system_equalizer">Системний еквалайзер</string>
     <string name="album_art">Обкладинка альбому</string>
     <string name="no_song_playing">Пісня не відтворюється</string>
-    <string name="tap_to_open">Натисніть, щоб відкрити Blazify</string>
+    <string name="tap_to_open">Натисніть, щоб відкрити Strix Music</string>
     <string name="previous">Попередній</string>
     <string name="play_pause">Відтворення/Пауза</string>
     <string name="next">Далі</string>
@@ -365,7 +365,7 @@
     <string name="lyrics_provider_priority">Пріоритет постачальників текстів</string>
     <string name="lyrics_provider_priority_desc">Перетягуйте постачальників, щоб змінити їхній порядок. Чим вища позиція у списку, тим вищий пріоритет</string>
     <string name="choose_something_below">Виберіть щось із наведеного нижче</string>
-    <string name="github_releases_url">https://github.com/BlazifyGroup/Blazify/releases</string>
+    <string name="github_releases_url">https://github.com/mbohana2817/Strix-Music/releases</string>
     <string name="list_bullet">•</string>
     <string name="view_on_github">Переглянути на GitHub</string>
     <string name="current_version">Поточна версія</string>
@@ -466,7 +466,7 @@
     <string name="your_daily_discover">Ваші відкриття дня</string>
     <string name="view_channel">Переглянути канал</string>
     <string name="not_playing">Нічого не відтворюється</string>
-    <string name="tap_to_play">Натисніть, щоб відкрити Blazify</string>
+    <string name="tap_to_play">Натисніть, щоб відкрити Strix Music</string>
     <string name="widget_music_player">Музичний плеєр</string>
     <string name="widget_turntable">Вініловий програвач</string>
     <string name="widget_recognizer_name">Розпізнавач музики</string>
@@ -483,8 +483,8 @@
     <string name="widget_recognizer_channel_name">Розпізнавання музики</string>
     <string name="widget_recognizer_channel_desc">Показує сповіщення під час пошуку пісні через віджет</string>
     <string name="widget_recognizer_notification_text">Запис аудіо для розпізнавання пісні…</string>
-    <string name="together">Blaze Together</string>
-    <string name="listen_together">Blaze Together</string>
+    <string name="together">Strix Together</string>
+    <string name="listen_together">Strix Together</string>
     <string name="listen_together_choose_server">Виберіть сервер</string>
     <string name="listen_together_server_url">Адреса сервера</string>
     <string name="listen_together_custom_server">Свій сервер</string>
@@ -515,10 +515,10 @@
     <string name="listen_together_sync_volume">Синхронізувати гучність організатора</string>
     <string name="listen_together_sync_volume_desc">У гостей буде такий самий рівень гучності, як в організатора</string>
     <string name="listen_together_description">Слухайте музику разом із друзями в режимі реального часу. Створіть кімнату, щоб стати її організатором, або приєднайтеся до створеної за допомогою коду</string>
-    <string name="listen_together_background_disconnect_note">ПРИМІТКА: Якщо ви підключені, але не перебуваєте в кімнаті, функція «Blaze Together» вимикається після 30 хвилин роботи у фоновому режимі задля економії заряду акумулятора</string>
+    <string name="listen_together_background_disconnect_note">ПРИМІТКА: Якщо ви підключені, але не перебуваєте в кімнаті, функція «Strix Together» вимикається після 30 хвилин роботи у фоновому режимі задля економії заряду акумулятора</string>
     <string name="listen_together_suggestion_received">%1$s запропонував(ла): %2$s</string>
     <string name="listen_together_join_request_notification">%1$s хоче приєднатися до кімнати</string>
-    <string name="listen_together_notification_channel_name">Blaze Together</string>
+    <string name="listen_together_notification_channel_name">Strix Together</string>
     <string name="listen_together_room_created">Кімнату створено: %s</string>
     <string name="listen_together_cannot_edit_username_in_room">Ім\'я користувача не можна змінити, перебуваючи в кімнаті</string>
     <string name="waiting_for_approval">Очікується підтвердження від організатора…</string>
@@ -567,7 +567,7 @@
     <string name="clear_recognition_history_confirm">Ви впевнені, що хочете очистити всю історію розпізнавання?</string>
     <string name="delete_from_history">Видалити з історії</string>
     <string name="re_listen">Переслухати</string>
-    <string name="play_on_app">Відтворити в Blazify</string>
+    <string name="play_on_app">Відтворити в Strix Music</string>
     <string name="importing_playlist">Імпорт списку відтворення…</string>
     <string name="added_to_playlist">Додано до списку відтворення</string>
     <string name="android_auto_target_playlist_not_set">Список відтворення не вибрано. Виберіть його в налаштуваннях Android Auto</string>
@@ -586,7 +586,7 @@
     <string name="error_episode_remove">Не вдалося видалити епізод</string>
     <string name="error_podcast_subscribe">Не вдалося підписатися на подкаст</string>
     <string name="error_podcast_unsubscribe">Не вдалося відписатись від подкаста</string>
-    <string name="listen_together_in_top_bar">«Blaze Together» у верхній панелі</string>
+    <string name="listen_together_in_top_bar">«Strix Together» у верхній панелі</string>
     <string name="listen_together_suggestion_sent">Пропозицію надіслано організатору!</string>
     <string name="connect">Підключитись</string>
     <string name="disconnect">Відключитись</string>

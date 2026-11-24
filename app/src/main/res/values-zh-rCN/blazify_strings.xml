@@ -193,7 +193,7 @@
     <string name="google_cast">Google Cast</string>
     <string name="google_cast_description">向 Chromecast 和其他支持投屏功能的设备投屏音频</string>
     <string name="last_fm_send_likes">同步喜欢和取消喜欢</string>
-    <string name="last_fm_send_likes_description">在 Blazify 中对歌曲点赞或取消点赞时，Last.fm 中的喜欢或取消喜欢歌曲会同步更新</string>
+    <string name="last_fm_send_likes_description">在 Strix Music 中对歌曲点赞或取消点赞时，Last.fm 中的喜欢或取消喜欢歌曲会同步更新</string>
     <string name="logging_in">正在登录…</string>
     <string name="hide_video_songs">隐藏带视频歌曲</string>
     <string name="details_desc">查看歌曲详情</string>
@@ -246,10 +246,10 @@
     <string name="wrapped_total_artists_subtitle">独特的音乐人！</string>
     <string name="wrapped_total_songs_title">您已听了</string>
     <string name="wrapped_total_songs_subtitle">独特的歌曲！</string>
-    <string name="wrapped_intro_title">BLAZIFY</string>
+    <string name="wrapped_intro_title">Strix Music</string>
     <string name="wrapped_intro_subtitle">是时候回顾这一年都在听什么了…</string>
     <string name="wrapped_intro_button">让我们开始吧！</string>
-    <string name="wrapped_logo_content_description">Blazify 徽标</string>
+    <string name="wrapped_logo_content_description">Strix Music 徽标</string>
     <string name="wrapped_year">2025</string>
     <string name="wrapped_ready_title">您的年度总结已准备好！</string>
     <string name="wrapped_ready_subtitle">是时候回顾这一年最喜欢什么了…</string>
@@ -261,7 +261,7 @@
     <string name="wrapped_playlist_saved">播放列表已保存</string>
     <string name="casting_to">转换为 %s</string>
     <string name="progress_percent">进度 %s%%</string>
-    <string name="listening_to_blazify">Strix Music</string>
+    <string name="listening_to_blazify">收听 Strix Music</string>
     <string name="open">打开</string>
     <string name="failed_to_create_image">无法创建图片：%s</string>
     <string name="copied_title">标题已复制</string>
@@ -288,7 +288,7 @@
     <string name="system_equalizer">系统均衡器</string>
     <string name="album_art">专辑封面</string>
     <string name="no_song_playing">没有音乐正在播放</string>
-    <string name="tap_to_open">点击打开 Blazify</string>
+    <string name="tap_to_open">点击打开 Strix Music</string>
     <string name="previous">上一曲</string>
     <string name="play_pause">播放/暂停</string>
     <string name="next">下一曲</string>
@@ -316,7 +316,7 @@
     <string name="crop_album_art">裁剪专辑封面</string>
     <string name="crop_album_art_desc">通过裁剪视频缩略图强制使用正方形宽高比</string>
     <string name="keep_screen_on_when_player_is_expanded">当播放页面最大化时保持屏幕打开</string>
-    <string name="listen_together">Blaze Together</string>
+    <string name="listen_together">Strix Together</string>
     <string name="listen_together_server_url">服务器网址</string>
     <string name="listen_together_username">用户名</string>
     <string name="listen_together_connected">已连接</string>
@@ -336,13 +336,13 @@
     <string name="listen_together_logs">连接日志</string>
     <string name="listen_together_no_logs">还没有日志</string>
     <string name="listen_together_description">与好友实时一起听音乐。创建房间成为房主，或使用邀请码加入现有房间</string>
-    <string name="listen_together_background_disconnect_note">注意：当您已连接但不在房间内时，“Blaze Together”会在后台运行 30 分钟后断开连接以节省电量</string>
-    <string name="listen_together_not_configured">Blaze Together未设置。请在“Blaze Together”&gt;“设置”&gt;“服务器网址”中配置服务器网址</string>
+    <string name="listen_together_background_disconnect_note">注意：当您已连接但不在房间内时，“Strix Together”会在后台运行 30 分钟后断开连接以节省电量</string>
+    <string name="listen_together_not_configured">Strix Together未设置。请在“Strix Together”&gt;“设置”&gt;“服务器网址”中配置服务器网址</string>
     <string name="listen_together_suggestion_received">%1$s 推荐了 %2$s</string>
     <string name="listen_together_suggestion_sent">推荐已发送给房主！</string>
     <string name="listen_together_join_request_notification">%1$s 人想要加入房间</string>
-    <string name="listen_together_notification_channel_name">Blaze Together</string>
-    <string name="listen_together_notification_channel_desc">“Blaze Together”活动通知</string>
+    <string name="listen_together_notification_channel_name">Strix Together</string>
+    <string name="listen_together_notification_channel_desc">“Strix Together”活动通知</string>
     <string name="listen_together_room_created">房间创建成功 编号:%s</string>
     <string name="listen_together_cannot_edit_username_in_room">进入房间后无法更改用户名</string>
     <string name="waiting_for_approval">正在等待房主批准…</string>
@@ -383,7 +383,7 @@
     <string name="crash_share_logs">分享日志</string>
     <string name="crash_description">发生意外错误，请分享崩溃报告以帮助我们解决问题</string>
     <string name="crash_share_title">分享崩溃报告</string>
-    <string name="crash_report_subject">Blazify 崩溃报告</string>
+    <string name="crash_report_subject">Strix Music 崩溃报告</string>
     <string name="crash_close">关闭</string>
     <string name="crash_no_log">没有可用的崩溃日志</string>
     <string name="palette_dynamic">灵动</string>
@@ -426,7 +426,7 @@
     <string name="listen_together_no_blocked_users">无已屏蔽的用户</string>
     <string name="unblock">取消屏蔽</string>
     <string name="not_playing">未在播放歌曲</string>
-    <string name="tap_to_play">点击打开 Blazify</string>
+    <string name="tap_to_play">点击打开 Strix Music</string>
     <string name="widget_music_player">播放器</string>
     <string name="listen_together_sync_volume">与房主音量保持一致</string>
     <string name="listen_together_sync_volume_desc">访客音量与房主音量保持一致</string>
@@ -457,7 +457,7 @@
     <string name="ai_error_unknown">发生未知错误</string>
     <string name="ai_error_translation_failed">翻译失败</string>
     <string name="play_all">播放全部</string>
-    <string name="together">Blaze Together</string>
+    <string name="together">Strix Together</string>
     <string name="ai_translation_transcribed">转录</string>
     <string name="recognize_music">识别音乐</string>
     <string name="youtube_url_column">YouTube 网址列（可选）</string>
@@ -480,7 +480,7 @@
     <string name="song_title_column">歌曲标题列</string>
     <string name="recently_converted">最近转换</string>
     <string name="importing_csv">正在导入 CSV…</string>
-    <string name="play_on_app">在 Blazify 上播放</string>
+    <string name="play_on_app">在 Strix Music 上播放</string>
     <string name="listening">正在听…</string>
     <string name="continue_action">继续</string>
     <string name="enable">启用</string>
@@ -493,8 +493,8 @@
     <string name="crossfade_beta_message">淡入淡出是一项新功能，可能存在错误。如果您遇到任何问题，请及时反馈。\n\n注意：由于技术限制，此功能会禁用省电播放功能</string>
     <string name="audio_offload_disabled_by_crossfade">因淡入淡出功能已启用而被禁用</string>
     <string name="hide_youtube_shorts">隐藏 YouTube Shorts 短视频</string>
-    <string name="listen_together_in_top_bar">在顶部栏显示Blaze Together</string>
-    <string name="listen_together_in_top_bar_desc">在顶部应用栏显示Blaze Together，而非在导航栏中显示</string>
+    <string name="listen_together_in_top_bar">在顶部栏显示Strix Together</string>
+    <string name="listen_together_in_top_bar_desc">在顶部应用栏显示Strix Together，而非在导航栏中显示</string>
     <string name="prevent_duplicate_tracks_in_queue">防止待播列表中出现重复曲目</string>
     <string name="prevent_duplicate_tracks_in_queue_desc">如果添加的曲目已在待播列表中，则会将其从先前位置移动，而不是再次添加</string>
     <string name="ai_translation_literal_desc">将含义翻译成目标语言</string>
@@ -518,7 +518,7 @@
     <string name="discord_buttons">按钮</string>
     <string name="discord_button_1">按钮 1</string>
     <string name="discord_button_2">按钮 2</string>
-    <string name="discord_information_warning">Blazify 使用 Discord 的公共 OAuth2 和 Gateway API 来分享您当前正在收听的内容。授权通过本地浏览器会话进行，该会话在获取代码后会自动关闭——不会向第三方服务器发送任何信息。您的令牌存储在此设备的加密偏好设置中，绝不会被共享。Blazify 直接连接到 wss://gateway.discord.gg 来发布您的活动，并且仅请求所需的最小权限范围（sdk.social_layer_presence）。</string>
+    <string name="discord_information_warning">Strix Music 使用 Discord 的公共 OAuth2 和 Gateway API 来分享您当前正在收听的内容。授权通过本地浏览器会话进行，该会话在获取代码后会自动关闭——不会向第三方服务器发送任何信息。您的令牌存储在此设备的加密偏好设置中，绝不会被共享。Strix Music 直接连接到 wss://gateway.discord.gg 来发布您的活动，并且仅请求所需的最小权限范围（sdk.social_layer_presence）。</string>
     <string name="discord_activity_type">活动类型</string>
     <string name="discord_activity_playing">正在播放</string>
     <string name="discord_activity_listening">正在听</string>
@@ -550,7 +550,7 @@
     <string name="lyrics_provider_priority_desc">拖动即可按偏好重新排序提供商。位置越高，优先级越高</string>
     <string name="changelog">更新日志</string>
     <string name="changelog_empty">暂无更新日志</string>
-    <string name="github_releases_url">https://github.com/BlazifyGroup/Blazify/releases</string>
+    <string name="github_releases_url">https://github.com/mbohana2817/Strix-Music/releases</string>
     <string name="list_bullet">•</string>
     <string name="view_on_github">在 GitHub 上查看</string>
     <string name="current_version">当前版本</string>
@@ -750,7 +750,7 @@
     <string name="recognition_notification_processing">正在识别…</string>
     <string name="recognition_notification_no_match">未找到匹配</string>
     <string name="recognition_notification_failed">识别失败</string>
-    <string name="listen_on_blazify">Listen on Strix Music</string>
+    <string name="listen_on_blazify">在 Strix Music 上听</string>
     <string name="android_auto">Android Auto</string>
     <string name="android_auto_visible_sections">可见板块</string>
     <string name="android_auto_reorder_hint">点击某个板块即可启用或禁用。\n长按拖动手柄可重新排序。默认情况下将显示第一个板块</string>
@@ -934,7 +934,7 @@
     <string name="custom_color_hex">十六进制</string>
     <string name="custom_color_hsv">H %1$d°  ·  S %2$d%%  ·  V %3$d%%</string>
     <string name="developer_heading">了解开发者</string>
-    <string name="developer_role">在加德满都开发 Blazify</string>
+    <string name="developer_role">在加德满都开发 Strix Music</string>
     <string name="developer_role_short">开发者，加德满都</string>
     <string name="developer_star">点星</string>
     <string name="update_check_idle">点按以检查</string>
@@ -942,7 +942,7 @@
     <string name="update_check_latest">已是最新版本</string>
     <string name="update_check_available">%1$s 已发布，点按获取</string>
     <string name="update_check_failed">无法检查，点按重试</string>
-    <string name="developer_bio">我独自开发 Blazify，并且完全公开。起因是我想要一个符合我心目中样子的音乐播放器，而大家不断向我要一份。每个版本加入的内容，大多是大家告诉我哪里坏了或缺了什么。</string>
+    <string name="developer_bio">我独自开发 Strix Music，并且完全公开。起因是我想要一个符合我心目中样子的音乐播放器，而大家不断向我要一份。每个版本加入的内容，大多是大家告诉我哪里坏了或缺了什么。</string>
     <string name="developer_website">网站</string>
     <string name="developer_github">GitHub</string>
     <string name="sleep_timer_stop_music_after">在此时间后停止音乐</string>
@@ -955,7 +955,7 @@
     <string name="lyrics_choose_source">选择歌词</string>
     <string name="lyrics_choose_source_desc">为这首歌选择来源或语言</string>
     <string name="live">直播</string>
-    <string name="update_new_version">Blazify %s 已可用</string>
+    <string name="update_new_version">Strix Music %s 已可用</string>
     <string name="update_download">下载</string>
     <string name="update_downloading">正在下载… %1$d%%</string>
     <string name="update_downloading_indeterminate">正在下载…</string>
@@ -963,16 +963,16 @@
     <string name="update_later">稍后</string>
     <string name="update_saved_to_downloads">已保存到“下载”，文件名为 %s</string>
     <string name="update_failed">下载失败：%s</string>
-    <string name="update_allow_installs">Blazify 需要安装应用的权限。请授予权限后再点按“安装”。</string>
+    <string name="update_allow_installs">Strix Music 需要安装应用的权限。请授予权限后再点按“安装”。</string>
     <string name="update_allow_installs_button">打开设置</string>
     <string name="update_uninstall_first_title">请先卸载此版本</string>
-    <string name="update_uninstall_first_body">此版本使用了不同的密钥签名，因此 Android 不会在当前版本上直接安装。下载的文件会保留在“下载”文件夹中，之后仍然可以找到。\n\n1. 先备份：设置 → 备份与还原 → 备份。\n2. 卸载 Blazify。\n3. 打开“下载”，点按 %s。</string>
+    <string name="update_uninstall_first_body">此版本使用了不同的密钥签名，因此 Android 不会在当前版本上直接安装。下载的文件会保留在“下载”文件夹中，之后仍然可以找到。\n\n1. 先备份：设置 → 备份与还原 → 备份。\n2. 卸载 Strix Music。\n3. 打开“下载”，点按 %s。</string>
     <string name="update_open_downloads">打开“下载”</string>
     <string name="update_no_download">此版本没有附带可下载的安装包。</string>
     <string name="update_up_to_date">你已在使用最新版本</string>
-    <string name="error_age_restricted">这首歌有年龄限制，Blazify 目前还无法播放有年龄限制的歌曲。</string>
+    <string name="error_age_restricted">这首歌有年龄限制，Strix Music 目前还无法播放有年龄限制的歌曲。</string>
     <string name="error_job_cancelled">该视频无法播放。请重试或跳到下一首。</string>
-    <string name="blaze_together">Blaze Together</string>
+    <string name="blaze_together">Strix Together</string>
     <string name="copy_details">复制详情</string>
     <string name="add_to_playlist_top">将新歌曲添加到歌单顶部</string>
     <string name="add_to_playlist_top_desc">关闭后会添加到末尾</string>
@@ -1016,10 +1016,10 @@
     <string name="no_recently_played">还没有最近播放的歌曲。</string>
     <string name="no_recommendations">暂无推荐。</string>
     <string name="about_developer_role">开发者</string>
-    <string name="about_me_body">我是 Rajendra Pandey，一名来自尼泊尔的独立应用开发者，喜欢把想法变成精致、日常好用的体验。Blazify 是我对音乐流媒体的理解——快速、美观、个性化，使用 Kotlin 和 Jetpack Compose 从零打造。我在意那些让应用用起来毫不费力的小细节，也一直在打磨让它变得更好。感谢你的到来，让我的作品成为你生活的一部分。</string>
+    <string name="about_me_body">我是 Muhammad Bohana (Han)，一名来自尼泊尔的独立应用开发者，喜欢把想法变成精致、日常好用的体验。Strix Music 是我对音乐流媒体的理解——快速、美观、个性化，使用 Kotlin 和 Jetpack Compose 从零打造。我在意那些让应用用起来毫不费力的小细节，也一直在打磨让它变得更好。感谢你的到来，让我的作品成为你生活的一部分。</string>
     <string name="buy_me_a_coffee">请我喝杯咖啡</string>
-    <string name="coffee_dialog_subtitle">扫码支持 Blazify</string>
-    <string name="made_with_love">由 Rajendra Pandey 用 ❤️ 打造</string>
+    <string name="coffee_dialog_subtitle">扫码支持 Strix Music</string>
+    <string name="made_with_love">由 Muhammad Bohana (Han) 用 ❤️ 打造</string>
     <string name="arrange">排列</string>
     <string name="created_by_you">你创建的</string>
     <string name="artists_you_liked">你喜欢的艺人</string>
@@ -1076,17 +1076,17 @@
     <string name="local_music_kb">%1$d KB</string>
     <string name="local_music_mb">%1$d MB</string>
     <string name="edit_tags">编辑详情</string>
-    <string name="edit_tags_desc">更改在 Blazify 中显示的标题、艺人或专辑</string>
+    <string name="edit_tags_desc">更改在 Strix Music 中显示的标题、艺人或专辑</string>
     <string name="edit_tags_title">标题</string>
     <string name="edit_tags_artist">艺人</string>
     <string name="edit_tags_album">专辑</string>
     <string name="edit_tags_save">保存</string>
     <string name="edit_tags_reset">使用文件标签</string>
-    <string name="edit_tags_note">仅在 Blazify 中显示。文件本身不会被修改，其他应用仍会看到原来的标签。</string>
-    <string name="local_music_permission">Blazify 需要读取音频文件的权限</string>
+    <string name="edit_tags_note">仅在 Strix Music 中显示。文件本身不会被修改，其他应用仍会看到原来的标签。</string>
+    <string name="local_music_permission">Strix Music 需要读取音频文件的权限</string>
     <string name="blaze_greeting_default_name">音乐爱好者</string>
-    <string name="star_on_github">在 GitHub 上为 Blazify 点星</string>
-    <string name="star_prompt_title">Blazify 用得还顺手吗？</string>
+    <string name="star_on_github">在 GitHub 上为 Strix Music 点星</string>
+    <string name="star_prompt_title">Strix Music 用得还顺手吗？</string>
     <string name="star_prompt_body">它由一个人开发并免费提供，没有广告，也不追踪任何东西。GitHub 上的一颗星几乎是别人发现它的主要方式。</string>
     <string name="star_prompt_yes">去点星</string>
     <string name="star_prompt_later">稍后</string>
@@ -1096,7 +1096,7 @@
     <string name="social_instagram">Instagram</string>
     <string name="settings_group_connections">连接</string>
     <string name="hint_integrations">Discord Rich Presence、Last.fm 记录</string>
-    <string name="hint_together_settings">Blaze Together的同步和房间设置</string>
+    <string name="hint_together_settings">Strix Together的同步和房间设置</string>
     <string name="guest">访客</string>
     <string name="manage_account">管理你的账号</string>
     <string name="tap_to_sign_in">点按登录</string>
@@ -1137,7 +1137,7 @@
     <string name="hint_backup">导出或导入你的音乐库</string>
     <string name="hint_about">版本和开发者</string>
     <string name="hint_changelog">此版本的新内容</string>
-    <string name="hint_links">默认用 Blazify 打开链接</string>
+    <string name="hint_links">默认用 Strix Music 打开链接</string>
     <string name="hint_updater">检查更新</string>
     <string name="player_theme">播放器主题</string>
     <string name="player_theme_desc">选择播放器布局</string>
@@ -1209,7 +1209,7 @@
     <string name="listenbrainz_get_token_desc">打开 ListenBrainz 设置页面</string>
     <string name="listenbrainz_forget">移除此令牌</string>
     <string name="listenbrainz_forget_desc">停止发送，并从本机删除令牌</string>
-    <string name="sponsorblock_desc">使用 SponsorBlock 社区的标记，跳过音乐视频中的谈话、片尾字幕和赞助广告。Blazify 只用代码的前几个字符进行查询，因此服务器永远不会知道你在播放什么。</string>
+    <string name="sponsorblock_desc">使用 SponsorBlock 社区的标记，跳过音乐视频中的谈话、片尾字幕和赞助广告。Strix Music 只用代码的前几个字符进行查询，因此服务器永远不会知道你在播放什么。</string>
     <string name="sponsorblock_categories">要跳过的内容</string>
     <string name="sponsorblock_non_music">所有非音乐内容</string>
     <string name="sponsorblock_sponsor">赞助广告</string>
@@ -1242,7 +1242,7 @@
     <string name="lastfm_own_key">你的 Last.fm API 密钥</string>
     <string name="lastfm_own_key_set">已添加</string>
     <string name="lastfm_own_key_missing">登录前需要设置</string>
-    <string name="lastfm_own_key_explain">此版本的 Blazify 不含 Last.fm 密钥。在 Last.fm 上免费创建一个大约只需两分钟，然后将 API 密钥和共享密钥粘贴到这里。</string>
+    <string name="lastfm_own_key_explain">此版本的 Strix Music 不含 Last.fm 密钥。在 Last.fm 上免费创建一个大约只需两分钟，然后将 API 密钥和共享密钥粘贴到这里。</string>
     <string name="lastfm_own_key_create">在 Last.fm 上创建密钥</string>
     <string name="lastfm_api_key">API 密钥</string>
     <string name="lastfm_shared_secret">共享密钥</string>
@@ -1253,7 +1253,7 @@
     <string name="add_to_library_hint">保存到你的媒体库</string>
     <string name="remove_from_library_hint">从你的媒体库中移除</string>
     <string name="listen_together_song_hint">在房间里与朋友同步播放</string>
-    <string name="listen_together_host_not_allowed">此服务器暂不允许 Blazify 创建房间。你仍然可以加入别人创建的房间。</string>
+    <string name="listen_together_host_not_allowed">此服务器暂不允许 Strix Music 创建房间。你仍然可以加入别人创建的房间。</string>
     <string name="song_not_found">未找到歌曲</string>
     <string name="song_not_found_hint">请将手机靠近音源，等到有歌声或旋律清晰的段落时再试一次。</string>
     <string name="finding_the_song">正在查找歌曲…</string>
@@ -1268,7 +1268,7 @@
     <string name="jump_to_playing">跳到正在播放</string>
     <string name="share_playlist">分享播放列表</string>
     <string name="share_playlist_ways">链接或可用相机扫描的二维码</string>
-    <string name="share_playlist_hint">任何装有 Blazify 的人都能打开并保存这个播放列表。歌曲信息就包含在链接里，不经过任何网站。</string>
+    <string name="share_playlist_hint">任何装有 Strix Music 的人都能打开并保存这个播放列表。歌曲信息就包含在链接里，不经过任何网站。</string>
     <string name="shared_playlist_title">保存这个播放列表？</string>
     <string name="shared_playlist_kept">已保存 %2$d 首中的 %1$d 首歌曲</string>
     <string name="shared_playlist_failed">无法保存该播放列表</string>
@@ -1300,7 +1300,7 @@
     <string name="offline_mix">已保存在本机</string>
     <string name="offline_mix_empty">没有网络连接，本机也还没有保存歌曲。下载歌曲即可离线收听。</string>
     <string name="accounts_and_channels">账号和频道</string>
-    <string name="accounts_restart_note">Blazify 将以你选择的账号重新启动，并载入其播放列表和媒体库。你的下载内容会保留。</string>
+    <string name="accounts_restart_note">Strix Music 将以你选择的账号重新启动，并载入其播放列表和媒体库。你的下载内容会保留。</string>
     <string name="accounts_channels_heading">此账号下的频道</string>
     <string name="accounts_other_heading">其他账号</string>
     <string name="accounts_add_another">添加其他账号</string>
@@ -1323,7 +1323,7 @@
     <string name="accounts_sign_in_hint">使用 Google 登录以查看播放列表和媒体库</string>
     <string name="accounts_tap_to_manage">你的账号、频道和同步</string>
     <string name="update_card_title">有可用更新</string>
-    <string name="update_card_text">Blazify %1$s 已可下载</string>
+    <string name="update_card_text">Strix Music %1$s 已可下载</string>
     <plurals name="accounts_more_saved">
         <item quantity="other">此手机上还有 %1$d 个账号</item>
     </plurals>
@@ -1334,7 +1334,7 @@
     <string name="festival_greeting_diwali">排灯节快乐</string>
     <string name="festival_wish_lights">愿光明、爱与音乐伴你和家人</string>
     <string name="festival_touches">节日装扮</string>
-    <string name="festival_touches_desc">在你所在国家的重大节日，Blazify 标志会换上节日装扮。点按它一起庆祝。</string>
+    <string name="festival_touches_desc">在你所在国家的重大节日，Strix Music 标志会换上节日装扮。点按它一起庆祝。</string>
     <string name="festival_greeting_christmas">圣诞快乐</string>
     <string name="festival_greeting_new_year">新年快乐</string>
     <string name="festival_greeting_music_day">世界音乐日快乐</string>
@@ -1347,7 +1347,7 @@
     <string name="festival_turned_off">节日模式已关闭。可在 外观与体验 › 首页 中重新开启。</string>
     <string name="artist_latest_release">最新发行</string>
     <string name="artist_you_and">你和%1$s</string>
-    <string name="star_prompt_title_short">喜欢 Blazify 吗？</string>
+    <string name="star_prompt_title_short">喜欢 Strix Music 吗？</string>
     <string name="star_prompt_body_short">在 GitHub 上点个星，能帮更多人发现它。免费，无广告。</string>
     <string name="import_spotify_csv_tip">要导入完整列表，请先导出为 CSV 文件（Exportify 可用你自己的 Spotify 登录完成），然后使用 设置 › 备份与恢复 › 导入 CSV 播放列表。</string>
 </resources>

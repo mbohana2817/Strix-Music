@@ -6,7 +6,7 @@ object DiscordDefaults {
     const val BUTTON1_LABEL = "Listen on YouTube Music"
     const val BUTTON1_URL_TEMPLATE = "https://music.youtube.com/watch?v={song.id}"
 
-    const val BUTTON2_LABEL = "Visit Blazify"
+    const val BUTTON2_LABEL = "Visit Strix Music"
     const val BUTTON2_URL = "https://github.com/mbohana2817/Strix-Music"
 
     const val STATE_TEMPLATE = "{artist.name}"

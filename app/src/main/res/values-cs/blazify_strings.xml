@@ -180,7 +180,7 @@
     <string name="scrobble_delay_minutes">Zpoždění scrobblování (minuty)</string>
     <string name="swipe_song_to_remove">Posuňte pro odstranění skladby z playlistu</string>
     <string name="last_fm_send_likes">Synchronizovat oblíbené</string>
-    <string name="last_fm_send_likes_description">Přidat/odebrat srdíčko u skladby v Last.fm, když ji přidáte/odeberete z oblíbených v Blazifyu</string>
+    <string name="last_fm_send_likes_description">Přidat/odebrat srdíčko u skladby v Last.fm, když ji přidáte/odeberete z oblíbených v Strix Musicu</string>
     <string name="lyrics_romanize_chinese">Přepsat čínské texty do latinky</string>
     <string name="google_cast">Google Cast</string>
     <string name="google_cast_description">Streamovat zvuk do Chromecastu a dalších zařízení kompatibilních s protokolem Cast</string>
@@ -252,10 +252,10 @@
     <string name="wrapped_total_artists_subtitle">různých umělců!</string>
     <string name="wrapped_total_songs_title">Poslouchali jste</string>
     <string name="wrapped_total_songs_subtitle">různých skladeb!</string>
-    <string name="wrapped_intro_title">BLAZIFY</string>
+    <string name="wrapped_intro_title">Strix Music</string>
     <string name="wrapped_intro_subtitle">je čas podívat se, co jsi tento rok poslouchal/a…</string>
     <string name="wrapped_intro_button">jdeme na to!</string>
-    <string name="wrapped_logo_content_description">Logo Blazify</string>
+    <string name="wrapped_logo_content_description">Logo Strix Music</string>
     <string name="wrapped_year">2025</string>
     <string name="wrapped_ready_title">TVŮJ WRAPPED JE READY!</string>
     <string name="wrapped_ready_subtitle">Je čas podívat se, co se ti tento rok líbilo…</string>
@@ -267,7 +267,7 @@
     <string name="wrapped_playlist_saved">Playlist uložen</string>
     <string name="casting_to">Přehrávání přes %s</string>
     <string name="progress_percent">Postup %s%%</string>
-    <string name="listening_to_blazify">Strix Music</string>
+    <string name="listening_to_blazify">Poslouchá Strix Music</string>
     <string name="open">Otevřít</string>
     <string name="failed_to_create_image">Nepodařilo se vytvořit obrázek: %s</string>
     <string name="copied_title">Název zkopírován</string>
@@ -300,7 +300,7 @@
     <string name="system_equalizer">Systémový ekvalizér</string>
     <string name="album_art">Obal alba</string>
     <string name="no_song_playing">Nehraje žádná skladba</string>
-    <string name="tap_to_open">Klepnutím otevřete Blazify</string>
+    <string name="tap_to_open">Klepnutím otevřete Strix Music</string>
     <string name="previous">Předchozí</string>
     <string name="play_pause">Přehrát/pozastavit</string>
     <string name="next">Další</string>
@@ -328,7 +328,7 @@
     <string name="crop_album_art">Oříznout obal alba</string>
     <string name="crop_album_art_desc">Vynutit čtvercový poměr stran oříznutím miniatur videí</string>
     <string name="keep_screen_on_when_player_is_expanded">Ponechat zapnutou obrazovku při zvětšeném přehrávači</string>
-    <string name="listen_together">Blaze Together</string>
+    <string name="listen_together">Strix Together</string>
     <string name="listen_together_server_url">Adresa serveru</string>
     <string name="listen_together_username">Uživatelské jméno</string>
     <string name="listen_together_connected">Připojeno</string>
@@ -340,7 +340,7 @@
     <string name="listen_together_join_room">Připojit se k místnosti</string>
     <string name="listen_together_room_code">Kód místnosti</string>
     <string name="listen_together_join_requests">Žádosti o připojení</string>
-    <string name="listen_together_background_disconnect_note">UPOZORNĚNÍ: Když nejste připojeni do místnosti, služba Blaze Together se automaticky odpojí po 30 minutách na pozadí pro ušetření baterie</string>
+    <string name="listen_together_background_disconnect_note">UPOZORNĚNÍ: Když nejste připojeni do místnosti, služba Strix Together se automaticky odpojí po 30 minutách na pozadí pro ušetření baterie</string>
     <string name="listen_together_join_request_notification">%1$s se chce připojit do místnosti</string>
     <string name="listen_together_room_created">Místnost vytvořena: %s</string>
     <string name="invalid_room_code">Neplatný kód místnosti</string>
@@ -356,8 +356,8 @@
     <string name="disconnect">Odpojit se</string>
     <string name="create">Vytvořit</string>
     <string name="listen_together_reconnecting">Obnovuji spojení…</string>
-    <string name="listen_together_notification_channel_name">Blaze Together</string>
-    <string name="listen_together_notification_channel_desc">Oznámení pro události funkce Blaze Together</string>
+    <string name="listen_together_notification_channel_name">Strix Together</string>
+    <string name="listen_together_notification_channel_desc">Oznámení pro události funkce Strix Together</string>
     <string name="listen_together_cannot_edit_username_in_room">Uživatelské jméno nelze změnit, když jste v místnosti</string>
     <string name="join">Připojit se</string>
     <string name="approve">Schválit</string>
@@ -384,7 +384,7 @@
     <string name="listen_together_logs">Logy připojení</string>
     <string name="listen_together_no_logs">Zatím žádné logy</string>
     <string name="listen_together_description">Poslouchejte hudbu s přáteli v reálném čase. Vytvořte místnost pro její hostování nebo se připojte k existující místnosti pomocí kódu</string>
-    <string name="listen_together_not_configured">Blaze Together není nastaven. Nastavte prosím adresu serveru v: Blaze Together &gt; Nastavení &gt; Adresa serveru</string>
+    <string name="listen_together_not_configured">Strix Together není nastaven. Nastavte prosím adresu serveru v: Strix Together &gt; Nastavení &gt; Adresa serveru</string>
     <string name="suggest_to_host">Navrhnout hostiteli</string>
     <string name="host_label">Hostitel</string>
     <string name="resync">Znovu synchronizovat</string>
@@ -395,7 +395,7 @@
     <string name="crash_description">Došlo k neočekávané chybě. Pošlete nám hlášení o chybě, abyste nám pomohli problém opravit</string>
     <string name="crash_share_logs">Sdílet protokoly</string>
     <string name="crash_share_title">Sdílet hlášení o chybě</string>
-    <string name="crash_report_subject">Hlášení o chybě Blazify</string>
+    <string name="crash_report_subject">Hlášení o chybě Strix Music</string>
     <string name="crash_close">Zavřít</string>
     <string name="crash_no_log">Není k dispozici žádný záznam o chybě</string>
     <string name="palette_dynamic">Dynamická</string>
@@ -444,7 +444,7 @@
     <string name="unblock">Odblokovat</string>
     <string name="user_blocked_by_host">Zablokován hostitelem</string>
     <string name="not_playing">Nehraje žádná skladba</string>
-    <string name="tap_to_play">Klepněte pro otevření Blazifyu</string>
+    <string name="tap_to_play">Klepněte pro otevření Strix Musicu</string>
     <string name="widget_music_player">Hudební přehrávač</string>
     <string name="widget_turntable">Gramofon</string>
     <string name="enter_room_code">Zadejte kód místnosti</string>
@@ -470,7 +470,7 @@
     <string name="ai_lyrics_translation">AI překlad textů</string>
     <string name="ai_error_translation_failed">Překlad selhal</string>
     <string name="map_csv_columns">Namapovat sloupce CSV</string>
-    <string name="together">Blaze Together</string>
+    <string name="together">Strix Together</string>
     <string name="ai_error_no_lyrics">Žádné texty k překladu</string>
     <string name="ai_lyrics_translated">Texty přeloženy</string>
     <string name="column_label">Sloupec %d</string>
@@ -488,7 +488,7 @@
     <string name="song_title_column">Sloupec názvu skladby</string>
     <string name="recently_converted">Nedávno převedeno</string>
     <string name="importing_csv">Importuji CSV…</string>
-    <string name="play_on_app">Přehrát v Blazifyu</string>
+    <string name="play_on_app">Přehrát v Strix Musicu</string>
     <string name="listening">Poslouchám…</string>
     <string name="ai_api_key_required">Vyžadován klíč API</string>
     <string name="ai_error_unexpected">Neočekávaný výsledek překladu</string>
@@ -505,8 +505,8 @@
     <string name="crossfade_beta_message">Prolnutí je nová funkce, ve které se mohou vyskytnout chyby. Pokud na nějaké narazíte, prosíme nahlaste je.\n\nUPOZORNĚNÍ: Tato funkce zakáže offload zvuku z důvodu technických omezení</string>
     <string name="audio_offload_disabled_by_crossfade">Zakázáno z důvodu aktivního prolínání</string>
     <string name="hide_youtube_shorts">Skrýt YouTube Shorts</string>
-    <string name="listen_together_in_top_bar">Blaze Together v horní liště</string>
-    <string name="listen_together_in_top_bar_desc">Zobrazit Blaze Together v horní liště namísto navigační lišty</string>
+    <string name="listen_together_in_top_bar">Strix Together v horní liště</string>
+    <string name="listen_together_in_top_bar_desc">Zobrazit Strix Together v horní liště namísto navigační lišty</string>
     <string name="player_background_solid">Jednolité</string>
     <string name="prevent_duplicate_tracks_in_queue">Zabránit duplikovaným skladbám ve frontě</string>
     <string name="prevent_duplicate_tracks_in_queue_desc">Při přidávání skladby, která se již ve frontě nachází, bude přesunuta z její předchozí pozice namísto jejího opětovného přidání</string>
@@ -535,7 +535,7 @@
     <string name="discord_buttons">Tlačítka</string>
     <string name="discord_button_1">Tlačítko 1</string>
     <string name="discord_button_2">Tlačítko 2</string>
-    <string name="discord_information_warning">Blazify využívá veřejné služby OAuth2 SDK a Gateway API Discordu ke sdílení toho, co posloucháte. Autorizace se provádí skrze lokální relaci prohlížeče, která se automaticky zavře po zaznamenání kódu – nic se neodesílá na servery třetích stran. Váš token je uložen na tomto zařízení v šifrovaných předvolbách a nikdy není sdílen. Blazify se připojuje přímo k wss://gateway.discord.gg pro zveřejnění vaší aktivity, a žádá pouze o minimální vyžadovaný rozsah (sdk.social_layer_presence).</string>
+    <string name="discord_information_warning">Strix Music využívá veřejné služby OAuth2 SDK a Gateway API Discordu ke sdílení toho, co posloucháte. Autorizace se provádí skrze lokální relaci prohlížeče, která se automaticky zavře po zaznamenání kódu – nic se neodesílá na servery třetích stran. Váš token je uložen na tomto zařízení v šifrovaných předvolbách a nikdy není sdílen. Strix Music se připojuje přímo k wss://gateway.discord.gg pro zveřejnění vaší aktivity, a žádá pouze o minimální vyžadovaný rozsah (sdk.social_layer_presence).</string>
     <string name="discord_activity_type">Typ aktivity</string>
     <string name="discord_activity_playing">Hraje</string>
     <string name="discord_activity_listening">Poslouchá</string>
@@ -570,7 +570,7 @@
     <string name="listen_together_auto_approval_suggestions_desc">Automaticky schvalovat a zařazovat do fronty návrhy skladeb od hostů</string>
     <string name="changelog">Seznam změn</string>
     <string name="changelog_empty">Seznam změn není k dispozici</string>
-    <string name="github_releases_url">https://github.com/BlazifyGroup/Blazify/releases</string>
+    <string name="github_releases_url">https://github.com/mbohana2817/Strix-Music/releases</string>
     <string name="list_bullet">•</string>
     <string name="view_on_github">Zobrazit na GitHubu</string>
     <string name="current_version">Aktuální verze</string>
@@ -780,7 +780,7 @@
     <string name="recognition_notification_processing">Identifikuji…</string>
     <string name="recognition_notification_no_match">Nenalezena žádná shoda</string>
     <string name="recognition_notification_failed">Rozpoznávání selhalo</string>
-    <string name="listen_on_blazify">Listen on Strix Music</string>
+    <string name="listen_on_blazify">Přehrát v Strix Musicu</string>
     <string name="android_auto">Android Auto</string>
     <string name="android_auto_visible_sections">Viditelné sekce</string>
     <string name="android_auto_reorder_hint">Klepněte na sekci pro její povolení nebo zakázání.\nPodržte posuvník pro změnu pořadí. První sekce bude ve výchozím nastavení zobrazena</string>

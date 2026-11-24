@@ -12,6 +12,7 @@ import android.content.Intent
 import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -39,6 +40,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -263,8 +265,9 @@ fun SettingsScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(MaterialTheme.colorScheme.surfaceContainer),
+                        .clip(RoundedCornerShape(24.dp))
+                        .background(MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.92f))
+                        .border(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.18f), RoundedCornerShape(24.dp)),
                 ) {
                     filtered.forEachIndexed { i, row ->
                         if (i > 0) {
@@ -334,7 +337,11 @@ fun SettingsScreen(
     }
 
     TopAppBar(
-        title = { Text(stringResource(R.string.settings)) },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.88f),
+            titleContentColor = MaterialTheme.colorScheme.onSurface,
+        ),
+        title = { Text(stringResource(R.string.settings), fontWeight = FontWeight.SemiBold) },
         navigationIcon = {
             IconButton(
                 onClick = navController::navigateUp,
@@ -364,8 +371,10 @@ private fun BlazeSettingRow(row: SettingRow, colorIndex: Int) {
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
             .clickable(onClick = row.onClick)
-            .padding(horizontal = 14.dp, vertical = 12.dp),
+            .animateContentSize()
+            .padding(horizontal = 14.dp, vertical = 13.dp),
     ) {
         Box(
             modifier = Modifier

@@ -6,10 +6,9 @@
 
 package com.blazify.music.ui.component
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.ui.Alignment
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.foundation.background
@@ -17,6 +16,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -48,6 +48,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalViewConfiguration
@@ -173,20 +174,22 @@ private fun NavItemContent(
     val accent = MaterialTheme.colorScheme.primary
     val onAccent = MaterialTheme.colorScheme.onPrimary
     val idle = MaterialTheme.colorScheme.onSurfaceVariant
-    val selectedProgress by animateFloatAsState(
-        targetValue = if (selected) 1f else 0f,
-        animationSpec = tween(durationMillis = 220),
-        label = "strixNavigationSelection",
-    )
-    val animatedTint by animateColorAsState(
-        targetValue = if (selected) accent else idle,
-        animationSpec = tween(durationMillis = 220),
-        label = "strixNavigationTint",
+    val selectedScale by animateFloatAsState(
+        targetValue = if (selected) 1.07f else 1f,
+        animationSpec = spring(dampingRatio = 0.72f, stiffness = 420f),
+        label = "strix-nav-selection-scale",
     )
 
     when (style) {
         NavBarStyle.PILL -> {
-            Icon(painter = painterResource(id = iconRes), contentDescription = label)
+            Icon(
+                painter = painterResource(id = iconRes),
+                contentDescription = label,
+                modifier = Modifier.graphicsLayer {
+                    scaleX = selectedScale
+                    scaleY = selectedScale
+                },
+            )
         }
 
         NavBarStyle.GRADIENT -> {
@@ -196,28 +199,36 @@ private fun NavItemContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(2.dp),
                 modifier = Modifier
+                    .graphicsLayer {
+                        scaleX = selectedScale
+                        scaleY = selectedScale
+                    }
                     .clip(shape)
-                    .background(
-                        Brush.horizontalGradient(
-                            listOf(
-                                accent.copy(alpha = 0.85f * selectedProgress),
-                                MaterialTheme.colorScheme.tertiary.copy(alpha = 0.85f * selectedProgress),
-                            ),
-                        ),
+                    .then(
+                        if (selected) {
+                            Modifier
+                                .background(
+                                    Brush.horizontalGradient(
+                                        listOf(accent.copy(alpha = 0.85f), MaterialTheme.colorScheme.tertiary.copy(alpha = 0.85f)),
+                                    ),
+                                )
+                                .border(1.dp, accent.copy(alpha = 0.55f), shape)
+                        } else {
+                            Modifier
+                        },
                     )
-                    .border(1.dp, accent.copy(alpha = 0.55f * selectedProgress), shape)
                     .padding(horizontal = 12.dp, vertical = 5.dp),
             ) {
                 Icon(
                     painter = painterResource(id = iconRes),
                     contentDescription = label,
-                    tint = if (selected) onAccent else animatedTint,
+                    tint = if (selected) onAccent else idle,
                     modifier = Modifier.size(20.dp),
                 )
                 if (!slimNav) {
                     Text(
                         text = label,
-                        color = if (selected) onAccent else animatedTint,
+                        color = if (selected) onAccent else idle,
                         fontSize = 11.sp,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
@@ -233,21 +244,32 @@ private fun NavItemContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(2.dp),
                 modifier = Modifier
+                    .graphicsLayer {
+                        scaleX = selectedScale
+                        scaleY = selectedScale
+                    }
                     .clip(shape)
-                    .background(accent.copy(alpha = 0.14f * selectedProgress))
-                    .border(1.dp, accent.copy(alpha = 0.7f * selectedProgress), shape)
+                    .then(
+                        if (selected) {
+                            Modifier
+                                .background(accent.copy(alpha = 0.14f))
+                                .border(1.dp, accent.copy(alpha = 0.7f), shape)
+                        } else {
+                            Modifier
+                        },
+                    )
                     .padding(horizontal = 12.dp, vertical = 5.dp),
             ) {
                 Icon(
                     painter = painterResource(id = iconRes),
                     contentDescription = label,
-                    tint = animatedTint,
+                    tint = if (selected) accent else idle,
                     modifier = Modifier.size(20.dp),
                 )
                 if (!slimNav) {
                     Text(
                         text = label,
-                        color = animatedTint,
+                        color = if (selected) accent else idle,
                         fontSize = 11.sp,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
@@ -264,13 +286,13 @@ private fun NavItemContent(
                 Icon(
                     painter = painterResource(id = iconRes),
                     contentDescription = label,
-                    tint = animatedTint,
+                    tint = if (selected) accent else idle,
                     modifier = Modifier.size(22.dp),
                 )
                 if (!slimNav) {
                     Text(
                         text = label,
-                        color = animatedTint,
+                        color = if (selected) accent else idle,
                         fontSize = 11.sp,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
@@ -278,10 +300,10 @@ private fun NavItemContent(
                 }
                 Box(
                     modifier = Modifier
-                        .width(18.dp * selectedProgress)
+                        .width(if (selected) 18.dp else 0.dp)
                         .height(2.5.dp)
                         .clip(RoundedCornerShape(2.dp))
-                        .background(accent.copy(alpha = selectedProgress)),
+                        .background(if (selected) accent else Color.Transparent),
                 )
             }
         }
@@ -298,23 +320,26 @@ fun AppNavigationBar(
     slimNav: Boolean = false,
     onSearchLongClick: (() -> Unit)? = null
 ) {
+    val containerColor = Color.Transparent
     val contentColor = if (pureBlack) Color.White else MaterialTheme.colorScheme.onSurfaceVariant
+    val glassShape = RoundedCornerShape(30.dp)
+    val glassSurface = if (pureBlack) Color(0xD9101012) else MaterialTheme.colorScheme.surface.copy(alpha = 0.78f)
     val haptics = LocalHapticFeedback.current
     val viewConfiguration = LocalViewConfiguration.current
     val navBarStyle by rememberEnumPreference(NavBarStyleKey, NavBarStyle.PILL)
-    // Strix glass dock: translucent burgundy-tinted surface with a fine glass edge.
-    val glassShape = RoundedCornerShape(30.dp)
-    val glassTop = if (pureBlack) Color(0xFF171015).copy(alpha = 0.92f)
-        else MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.88f)
-    val glassBottom = if (pureBlack) Color(0xFF080608).copy(alpha = 0.86f)
-        else MaterialTheme.colorScheme.surface.copy(alpha = 0.78f)
 
     NavigationBar(
         modifier = modifier
+            .padding(horizontal = 12.dp, vertical = 7.dp)
+            .shadow(16.dp, glassShape)
             .clip(glassShape)
-            .background(Brush.verticalGradient(listOf(glassTop, glassBottom)))
-            .border(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.42f), glassShape),
-        containerColor = Color.Transparent,
+            .background(
+                Brush.verticalGradient(
+                    listOf(glassSurface.copy(alpha = 0.94f), glassSurface.copy(alpha = 0.76f)),
+                ),
+            )
+            .border(1.dp, Color.White.copy(alpha = 0.12f), glassShape),
+        containerColor = containerColor,
         contentColor = contentColor
     ) {
         navigationItems.forEach { screen ->

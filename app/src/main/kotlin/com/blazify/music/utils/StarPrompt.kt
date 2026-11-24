@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit
  * - Reopening the app many times in a day asks once: an ask counts only once it is shown.
  */
 object StarPrompt {
-    const val REPO = "https://github.com/mbohana2817/Strix-Music"
+    const val REPO = "https://github.com/rajendra7169/blazify"
 
     /** Days after a version is first opened for each of its asks. */
     val ASK_DAYS = listOf(10L, 30L)

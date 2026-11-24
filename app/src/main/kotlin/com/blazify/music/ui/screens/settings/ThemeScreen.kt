@@ -98,6 +98,7 @@ import com.blazify.music.constants.GridItemSize
 import com.blazify.music.constants.GridItemsSizeKey
 import com.blazify.music.constants.MiniPlayerBackgroundStyle
 import com.blazify.music.constants.MiniPlayerBackgroundStyleKey
+import com.blazify.music.constants.AppBackgroundStyle
 import com.blazify.music.constants.MiniPlayerDesignKey
 import com.blazify.music.constants.NavBarStyle
 import com.blazify.music.constants.NavBarStyleKey
@@ -119,9 +120,11 @@ data class ThemePalette(
 
 val PaletteColors = listOf(
     ThemePalette(R.string.palette_dynamic, Color.Transparent), // Sentinel for System/Dynamic colors
-    ThemePalette(R.string.palette_strix, BlazeThemeColor), // Strix Burgundy brand color (default)
-    ThemePalette(R.string.palette_midnight, Color(0xFF35304F)),
-    ThemePalette(R.string.palette_rosewood, Color(0xFF9B3D54)),
+    ThemePalette(R.string.palette_blaze, BlazeThemeColor), // Strix Music brand color (default)
+    ThemePalette(R.string.palette_midnight, Color(0xFF343044)),
+    ThemePalette(R.string.palette_rosewood, Color(0xFF8D3B55)),
+    ThemePalette(R.string.palette_ocean, Color(0xFF24566B)),
+    ThemePalette(R.string.palette_forest, Color(0xFF315B49)),
     ThemePalette(R.string.palette_crimson, Color(0xFFEC5464)), // Slightly shifted from DefaultThemeColor (0xFFED5564) to avoid conflict
     ThemePalette(R.string.palette_rose, Color(0xFFD81B60)),
     ThemePalette(R.string.palette_purple, Color(0xFF8E24AA)),
@@ -150,7 +153,9 @@ fun ThemeControls(
     pureBlack: Boolean,
     onPureBlackChange: (Boolean) -> Unit,
     selectedThemeColor: Color,
-    onSelectedThemeColorChange: (Color) -> Unit
+    onSelectedThemeColorChange: (Color) -> Unit,
+    appBackgroundStyle: AppBackgroundStyle = AppBackgroundStyle.STRIX_BURGUNDY,
+    onAppBackgroundStyleChange: (AppBackgroundStyle) -> Unit = {},
 ) {
     Card(
         modifier = Modifier
@@ -296,6 +301,75 @@ fun ThemeControls(
                             showColorPicker = false
                         },
                     )
+                }
+            }
+
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Text(
+                    text = "App background",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+                Text(
+                    text = "Choose the atmosphere behind your music and settings. Selecting a colored preset turns off Pure Black; AMOLED keeps true black.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    contentPadding = PaddingValues(horizontal = 2.dp),
+                ) {
+                    items(AppBackgroundStyle.entries) { style ->
+                        val selected = style == appBackgroundStyle
+                        val swatch = when (style) {
+                            AppBackgroundStyle.STRIX_BURGUNDY -> Color(0xFF32121E)
+                            AppBackgroundStyle.MIDNIGHT_PLUM -> Color(0xFF211A2D)
+                            AppBackgroundStyle.DEEP_OCEAN -> Color(0xFF142630)
+                            AppBackgroundStyle.FOREST -> Color(0xFF1A2A20)
+                            AppBackgroundStyle.AMOLED -> Color.Black
+                        }
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(6.dp),
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(16.dp))
+                                .clickable {
+                                    onAppBackgroundStyleChange(style)
+                                    onPureBlackChange(style == AppBackgroundStyle.AMOLED)
+                                }
+                                .padding(4.dp),
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(width = 58.dp, height = 42.dp)
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .background(Brush.linearGradient(listOf(swatch, swatch.copy(alpha = 0.72f))))
+                                    .then(if (selected) Modifier.border(2.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(12.dp)) else Modifier),
+                                contentAlignment = Alignment.Center,
+                            ) {
+                                if (selected) {
+                                    Icon(
+                                        painter = painterResource(R.drawable.check),
+                                        contentDescription = "Selected",
+                                        tint = Color.White,
+                                        modifier = Modifier.size(18.dp),
+                                    )
+                                }
+                            }
+                            Text(
+                                text = when (style) {
+                                    AppBackgroundStyle.STRIX_BURGUNDY -> "Strix"
+                                    AppBackgroundStyle.MIDNIGHT_PLUM -> "Plum"
+                                    AppBackgroundStyle.DEEP_OCEAN -> "Ocean"
+                                    AppBackgroundStyle.FOREST -> "Forest"
+                                    AppBackgroundStyle.AMOLED -> "AMOLED"
+                                },
+                                style = MaterialTheme.typography.labelSmall,
+                                color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                                fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -666,6 +740,7 @@ internal fun ThemePhonePreview(
     darkMode: DarkMode,
     pureBlack: Boolean,
     themeColor: Color,
+    backgroundStyle: AppBackgroundStyle = AppBackgroundStyle.STRIX_BURGUNDY,
 ) {
     val isSystemDark = isSystemInDarkTheme()
     val useDark = when (darkMode) {
@@ -691,7 +766,7 @@ internal fun ThemePhonePreview(
     val (showGreetingCard) = rememberPreference(ShowHomeGreetingKey, defaultValue = true)
     val (showSearchPill) = rememberPreference(ShowHomeSearchBarKey, defaultValue = true)
     val (navStyle) = rememberEnumPreference(NavBarStyleKey, NavBarStyle.PILL)
-    BlazifyTheme(darkTheme = useDark, pureBlack = pureBlack, themeColor = themeColor) {
+    BlazifyTheme(darkTheme = useDark, pureBlack = pureBlack, themeColor = themeColor, backgroundStyle = backgroundStyle) {
         val cs = MaterialTheme.colorScheme
         Column(
             modifier = Modifier

@@ -72,6 +72,8 @@ import com.blazify.music.BuildConfig
 import com.blazify.music.R
 import com.blazify.music.constants.AppBarHeight
 import com.blazify.music.constants.DarkModeKey
+import com.blazify.music.constants.AppBackgroundStyle
+import com.blazify.music.constants.AppBackgroundStyleKey
 import com.blazify.music.constants.DefaultOpenTabKey
 import com.blazify.music.constants.DynamicThemeKey
 import com.blazify.music.constants.GridItemSize
@@ -131,6 +133,10 @@ fun LookAndFeelScreen(
         rememberPreference(SelectedThemeColorKey, BlazeThemeColor.toArgb())
     val (_, onDynamicThemeChange) = rememberPreference(DynamicThemeKey, defaultValue = true)
     val selectedThemeColor = Color(selectedThemeColorInt)
+    val (appBackgroundStyle, onAppBackgroundStyleChange) = rememberEnumPreference(
+        AppBackgroundStyleKey,
+        AppBackgroundStyle.STRIX_BURGUNDY,
+    )
 
     val onPureBlackChange: (Boolean) -> Unit = { enabled ->
         onPureBlackChangeRaw(enabled)
@@ -210,6 +216,8 @@ fun LookAndFeelScreen(
                             onPureBlackChange = onPureBlackChange,
                             selectedThemeColor = selectedThemeColor,
                             onSelectedThemeColorChange = handleColorSelection,
+                            appBackgroundStyle = appBackgroundStyle,
+                            onAppBackgroundStyleChange = onAppBackgroundStyleChange,
                         )
 
                     LookFeelTab.PLAYER ->
@@ -339,6 +347,7 @@ fun LookAndFeelScreen(
                     darkMode = darkMode,
                     pureBlack = pureBlack,
                     themeColor = selectedThemeColor,
+                    backgroundStyle = appBackgroundStyle,
                 )
             }
         }

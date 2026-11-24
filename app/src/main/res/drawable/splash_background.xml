@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Window background for the cold-start splash: pure black with the Blazify
+<!-- Window background for the cold-start splash: deep burgundy with the Strix Music
      glyph centred, so the very first frame is already branded instead of blank.
-     The animated Compose splash takes over from here. -->
+     The app header fades in after the first frame. -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@android:color/black" />
+    <item android:drawable="@color/ic_launcher_background" />
     <item
         android:width="96dp"
         android:height="96dp"
-        android:drawable="@drawable/blaze_logo"
+        android:drawable="@drawable/blaze_logo_white"
         android:gravity="center" />
 </layer-list>

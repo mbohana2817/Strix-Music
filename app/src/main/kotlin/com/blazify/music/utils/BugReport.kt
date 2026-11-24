@@ -1,5 +1,5 @@
 /**
- * Blazify Project (C) 2026
+ * Strix Music Project (C) 2026
  * Licensed under GPL-3.0 | See NOTICE for contributors
  */
 
@@ -30,13 +30,13 @@ import java.util.Locale
  * this app exists to avoid, even when the facts are harmless.
  */
 object BugReport {
-    private const val ISSUES = "https://github.com/mbohana2817/Strix-Music/issues/new"
+    private const val ISSUES = "https://github.com/rajendra7169/blazify/issues/new"
     private const val EMAIL = "rajendrapandey199971@gmail.com"
 
     /** Everything that would otherwise be the first three questions of a reply. */
     fun details(): String =
         buildString {
-            appendLine("Blazify ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE}, ${BuildConfig.FLAVOR})")
+            appendLine("Strix Music ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE}, ${BuildConfig.FLAVOR})")
             appendLine("Android ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})")
             appendLine("${Build.MANUFACTURER} ${Build.MODEL}")
             append("Language ${Locale.getDefault()}")
@@ -69,12 +69,12 @@ object BugReport {
         // mailto: client reads its query string and Gmail ignores EXTRA_SUBJECT
         // and EXTRA_TEXT entirely, which opens a correctly addressed but
         // completely empty message.
-        val subject = encode("Blazify ${BuildConfig.VERSION_NAME}: ")
+        val subject = encode("Strix Music ${BuildConfig.VERSION_NAME}: ")
         val body = encode(plainBody())
         val intent =
             Intent(Intent.ACTION_SENDTO, "mailto:$EMAIL?subject=$subject&body=$body".toUri()).apply {
                 // Kept as well, for the clients that prefer extras.
-                putExtra(Intent.EXTRA_SUBJECT, "Blazify ${BuildConfig.VERSION_NAME}: ")
+                putExtra(Intent.EXTRA_SUBJECT, "Strix Music ${BuildConfig.VERSION_NAME}: ")
                 putExtra(Intent.EXTRA_TEXT, plainBody())
             }
         return runCatching {
@@ -89,7 +89,7 @@ object BugReport {
     /** For anyone without a GitHub account, or without a connection right now. */
     fun copyDetails(context: Context) {
         context.getSystemService<ClipboardManager>()
-            ?.setPrimaryClip(ClipData.newPlainText("Blazify", plainBody()))
+            ?.setPrimaryClip(ClipData.newPlainText("Strix Music", plainBody()))
     }
 
     /** The same questions without the markdown, which an email client will not render. */

@@ -1,5 +1,5 @@
 /**
- * Blazify Project (C) 2026
+ * Strix Music Project (C) 2026
  * Metrolist Project (C) 2026
  * Licensed under GPL-3.0 | See NOTICE for contributors
  */
@@ -174,7 +174,7 @@ fun PlaybackError(
                         streamClient = streamClient,
                     )
                     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                    clipboard.setPrimaryClip(ClipData.newPlainText("Blazify playback report", report))
+                    clipboard.setPrimaryClip(ClipData.newPlainText("Strix Music playback report", report))
                     // Android 13 and newer confirm a copy on their own.
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
                         Toast.makeText(context, R.string.copied_to_clipboard, Toast.LENGTH_SHORT).show()
@@ -211,7 +211,7 @@ internal fun playbackErrorReport(
     song: String?,
     streamClient: String?,
 ): String = buildString {
-    appendLine("Blazify playback report")
+    appendLine("Strix Music playback report")
     appendLine("Time: ${Instant.ofEpochMilli(timestampMs)}")
     appendLine("App: $app")
     appendLine("Android: $android")

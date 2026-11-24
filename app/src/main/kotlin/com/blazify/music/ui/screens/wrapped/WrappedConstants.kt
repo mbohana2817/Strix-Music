@@ -1,5 +1,5 @@
 /**
- * Blazify Project (C) 2026
+ * Strix Music Project (C) 2026
  * Metrolist Project (C) 2026
  * Licensed under GPL-3.0 | See NOTICE for contributors
  */
@@ -24,7 +24,7 @@ object WrappedConstants {
     fun isSeason(today: LocalDate = LocalDate.now()): Boolean =
         today.month == Month.DECEMBER || today.month == Month.JANUARY
 
-    fun playlistName(year: Int): String = "Blazify $year"
+    fun playlistName(year: Int): String = "Strix Music $year"
 
     fun start(year: Int): LocalDateTime = LocalDateTime.of(year, 1, 1, 0, 0, 0)
 

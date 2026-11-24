@@ -1,17 +1,3 @@
-/**
- * Blazify Project (C) 2026
- * Licensed under GPL-3.0 | See NOTICE for contributors
- *
- * Blazify's loading animation: the logo telling a short story, over and over.
- * A play button settles into place, the flame grows around it, the headband
- * sweeps over and the ear cups come down and bounce, sound rolls out of them
- * and music notes drift up, and then it all eases back into the play button.
- * Something is always about to happen, so a wait is watched rather than
- * counted. One component, so every place that waits shows the same thing.
- * The signature is drop-in compatible with CircularProgressIndicator so
- * existing call sites keep working.
- */
-
 package com.blazify.music.ui.component
 
 import androidx.compose.foundation.Canvas
@@ -47,6 +33,15 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlin.math.PI
 import kotlin.math.sin
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.drawscope.StrokeCap
+
 
 /** The logo's parts, parsed once for the whole app. */
 private object LogoPaths {
@@ -68,7 +63,7 @@ private object LogoPaths {
 private const val STORY_SECONDS = 4f
 
 @Composable
-fun BlazeLoader(
+private fun BlazeLegacyLoader(
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified,
     // Compatibility with CircularProgressIndicator call sites — ignored.
@@ -346,5 +341,45 @@ private fun DrawScope.drawDownload(t: Float, c: LoaderPalette) {
         scale(1f + 0.06f * land, 1f - 0.10f * land, Offset(512f, 770f))
     }) {
         drawPath(TrayShape, lerp(c.cups, c.top, land), style = Stroke(width = 46f, cap = StrokeCap.Round, join = StrokeJoin.Round))
+    }
+}
+
+// Strix Music waveform loader
+@Suppress("UNUSED_PARAMETER")
+@Composable
+fun BlazeLoader(
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified,
+    strokeWidth: Dp = Dp.Unspecified,
+    trackColor: Color = Color.Unspecified,
+    strokeCap: StrokeCap = StrokeCap.Round,
+) {
+    val accent = if (color.isSpecified) color else Color(0xFF9B3156)
+    val transition = rememberInfiniteTransition(label = "strix-waveform-loader")
+    val phase by transition.animateFloat(
+        initialValue = 0f,
+        targetValue = (2.0 * PI).toFloat(),
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 1050, easing = LinearEasing),
+        ),
+        label = "strix-waveform-phase",
+    )
+    Canvas(modifier = modifier.size(44.dp)) {
+        val count = 5
+        val barWidth = size.width * 0.105f
+        val gap = (size.width - count * barWidth) / (count + 1)
+        val centerY = size.height / 2f
+        for (index in 0 until count) {
+            val wave = (sin((phase + index * 0.82f).toDouble()).toFloat() + 1f) / 2f
+            val barHeight = size.height * (0.28f + 0.62f * wave)
+            val left = gap * (index + 1) + barWidth * index
+            val tint = lerp(accent, Color.White, 0.12f + index * 0.035f)
+            drawRoundRect(
+                color = tint,
+                topLeft = Offset(left, centerY - barHeight / 2f),
+                size = Size(barWidth, barHeight),
+                cornerRadius = CornerRadius(barWidth / 2f, barWidth / 2f),
+            )
+        }
     }
 }

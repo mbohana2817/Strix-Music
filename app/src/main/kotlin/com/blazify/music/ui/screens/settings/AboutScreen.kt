@@ -69,10 +69,8 @@ import com.blazify.music.R
 import com.blazify.music.ui.component.IconButton
 import com.blazify.music.ui.utils.backToMain
 
-private const val WEBSITE_URL = "https://github.com/mbohana2817"
-private const val GITHUB_URL = "https://github.com/mbohana2817/Strix-Music"
-// The project, not the profile. The social row above is about who made it;
-// this is about the thing itself.
+private const val GITHUB_URL = "https://github.com/mbohana2817"
+// The project repository is kept separate from the developer profile.
 private const val PROJECT_URL = "https://github.com/mbohana2817/Strix-Music"
 private const val LICENSE_URL = "https://github.com/mbohana2817/Strix-Music/blob/main/LICENSE"
 private const val GITHUB_AVATAR = "https://github.com/mbohana2817.png"
@@ -119,9 +117,8 @@ fun AboutScreen(
                     modifier = Modifier.size(88.dp),
                 )
                 Spacer(Modifier.height(12.dp))
-                val blazifyName = stringResource(R.string.blazify)
                 Text(
-                    text = blazifyName,
+                    text = "Strix Music",
                     style = MaterialTheme.typography.headlineLarge,
                     fontWeight = FontWeight.Black,
                     color = onHero,
@@ -191,8 +188,8 @@ fun AboutScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
-                    SocialButton(Modifier.weight(1f), R.drawable.github, stringResource(R.string.social_website)) { uriHandler.openUri(WEBSITE_URL) }
                     SocialButton(Modifier.weight(1f), R.drawable.github, stringResource(R.string.social_github)) { uriHandler.openUri(GITHUB_URL) }
+                    SocialButton(Modifier.weight(1f), R.drawable.github, stringResource(R.string.credits_view_repo)) { uriHandler.openUri(PROJECT_URL) }
                 }
 
                 Spacer(Modifier.height(20.dp))

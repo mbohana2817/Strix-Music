@@ -178,6 +178,8 @@ import com.blazify.music.constants.PreferredLyricsProviderKey
 import com.blazify.music.constants.PureBlackKey
 import com.blazify.music.constants.SYSTEM_DEFAULT
 import com.blazify.music.constants.SelectedThemeColorKey
+import com.blazify.music.constants.AppBackgroundStyle
+import com.blazify.music.constants.AppBackgroundStyleKey
 import com.blazify.music.constants.SimpMusicMigrationDoneKey
 import com.blazify.music.constants.SlimNavBarHeight
 import com.blazify.music.constants.SlimNavBarKey
@@ -757,6 +759,10 @@ class MainActivity : ComponentActivity() {
 
         val (selectedThemeColorInt) = rememberPreference(SelectedThemeColorKey, defaultValue = BlazeThemeColor.toArgb())
         val selectedThemeColor = Color(selectedThemeColorInt)
+        val (appBackgroundStyle) = rememberEnumPreference(
+            AppBackgroundStyleKey,
+            defaultValue = AppBackgroundStyle.STRIX_BURGUNDY,
+        )
 
         val showChangelog = rememberSaveable { mutableStateOf(false) }
 
@@ -822,6 +828,7 @@ class MainActivity : ComponentActivity() {
             darkTheme = useDarkTheme,
             pureBlack = pureBlack,
             themeColor = themeColor,
+            backgroundStyle = appBackgroundStyle,
         ) {
             val currentDensity = LocalDensity.current
             val windowInfo = LocalWindowInfo.current
@@ -1324,7 +1331,7 @@ class MainActivity : ComponentActivity() {
                                     TopAppBar(
                                         title = {
                                             if (navBackStackEntry?.destination?.route == Screens.Home.route) {
-                                                // Blazify gradient wordmark on the home screen
+                                                // Strix Music gradient wordmark on the home screen
                                                 Text(
                                                     text = "Strix Music",
                                                     style = MaterialTheme.typography.titleLarge.copy(
