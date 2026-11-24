@@ -346,6 +346,7 @@ fun AppNavigationBar(
     val containerColor = Color.Transparent
     val contentColor = if (pureBlack) Color.White else MaterialTheme.colorScheme.onSurfaceVariant
     val glassShape = RoundedCornerShape(30.dp)
+    val glassTheme by com.blazify.music.utils.rememberPreference(GlassThemeKey, true)
     // iOS-style glass is opt-in. When disabled, keep a crisp Material surface with
     // no translucent overlay, which also prevents the selected tab from looking blurred.
     val glassSurface = if (glassTheme) {
@@ -356,8 +357,6 @@ fun AppNavigationBar(
     val haptics = LocalHapticFeedback.current
     val viewConfiguration = LocalViewConfiguration.current
     val navBarStyle by rememberEnumPreference(NavBarStyleKey, NavBarStyle.PILL)
-    val glassTheme by com.blazify.music.utils.rememberPreference(GlassThemeKey, true)
-
     NavigationBar(
         modifier = modifier
             .padding(horizontal = 12.dp, vertical = 7.dp)
