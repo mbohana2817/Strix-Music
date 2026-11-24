@@ -31,12 +31,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Dispatchers
 import com.blazify.music.ui.theme.PlayerColorExtractor
 import com.blazify.music.LocalPlayerConnection
+import com.blazify.music.LocalDatabase
 import coil3.toBitmap
 import coil3.request.ImageRequest
 import coil3.request.allowHardware
@@ -91,6 +93,7 @@ import com.blazify.music.ui.theme.BlazeThemeColor
 import com.blazify.music.utils.rememberEnumPreference
 import com.blazify.music.utils.rememberPreference
 import java.util.Calendar
+import java.time.LocalDateTime
 
 private val SearchRowHeight = 52.dp
 
@@ -202,132 +205,14 @@ fun BlazeHomeHeader(
 
         Spacer(Modifier.height(8.dp))
 
-        // Greeting card: the song's own colours, text left, hero image overflowing
-        // the top. The mini player and the full player draw their gradient from
-        // the artwork — two or three of its colours, not one — and the card used
-        // to take only the theme's primary and darken it, so it never quite
-        // matched the player below it. It reads the same colours from the same
-        // artwork now, and falls back to the theme's primary when nothing plays.
-        val context = LocalContext.current
-        val playerConnection = LocalPlayerConnection.current
-        val mediaMetadata = playerConnection?.mediaMetadata?.collectAsState()?.value
-        var artColors by remember { mutableStateOf<List<Color>>(emptyList()) }
-        LaunchedEffect(mediaMetadata?.id) {
-            val url = mediaMetadata?.thumbnailUrl
-            if (url == null) {
-                artColors = emptyList()
-                return@LaunchedEffect
-            }
-            val extracted =
-                withContext(Dispatchers.IO) {
-                    val request =
-                        ImageRequest.Builder(context)
-                            .data(url)
-                            .size(100, 100)
-                            .allowHardware(false)
-                            .build()
-                    val bitmap = runCatching { context.imageLoader.execute(request) }.getOrNull().loadedBitmap()
-                        ?: return@withContext emptyList()
-                    val palette =
-                        withContext(Dispatchers.Default) {
-                            Palette.from(bitmap).maximumColorCount(8).resizeBitmapArea(100 * 100).generate()
-                        }
-                    PlayerColorExtractor.extractGradientColors(palette = palette, fallbackColor = 0xFF000000.toInt())
-                }
-            artColors = extracted
+        // Compact listening dashboard replaces the decorative hero artwork.
+        // The duration comes from the app's real listening-history events.
+        val cardStart = MaterialTheme.colorScheme.primary
+        val cardEnd = MaterialTheme.colorScheme.tertiary
+        val onCard = Color.White
+        if (showGreeting) {
+            ListeningProgressCard(userName = userName)
         }
-        // Only the artwork's colour is borrowed, not the player's whole gradient: that
-        // one runs down to black to melt into a full screen, and on this card its dark
-        // end melted into the page instead. The card keeps its own shape, its colour
-        // and the same colour a little darker, so both ends stay lit.
-        val cardStart = artColors.firstOrNull() ?: MaterialTheme.colorScheme.primary
-        val cardColors = listOf(cardStart, lerp(cardStart, Color.Black, if (isDark) 0.30f else 0.20f))
-        val cardEnd = cardColors.last()
-        val onCard = if (cardStart.luminance() > 0.6f) Color.Black else Color.White
-        // The buttons' fill: the card's colour where they sit, darkened (or lightened
-        // under dark text). Solid, because a shadow shows through a see-through fill.
-        val cardMiddle = lerp(cardStart, cardEnd, 0.5f)
-        val buttonFill =
-            if (onCard.luminance() > 0.5f) lerp(cardMiddle, Color.Black, 0.30f) else lerp(cardMiddle, Color.White, 0.40f)
-        if (showGreeting) BoxWithConstraints(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp)
-                .height(160.dp),
-        ) {
-            // Her full size on any ordinary phone. On a very narrow screen she shrinks with the
-            // card, or she would cover all of it and the name and buttons with it.
-            val photoWidth = minOf(200.dp, maxWidth * 0.62f)
-            val photoHeight = photoWidth * 1.2f
-            // Where the photo begins. Words that reach it go behind her and fade out.
-            val photoLeft = maxWidth - photoWidth
-            val greeting = stringResource(greetingRes())
-            val hasButtons = onForYouClick != null || onSpeedDialClick != null
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(160.dp)
-                    .clip(RoundedCornerShape(20.dp))
-                    .background(
-                        Brush.linearGradient(cardColors),
-                    ),
-            )
-
-            // The words come first, so she stands in front of them: a long name, or a
-            // greeting that runs long in another language, stays on its line and fades
-            // out behind her instead of wrapping onto a new one.
-            CardWords(
-                greeting = greeting,
-                userName = userName,
-                onCard = onCard,
-                showWords = true,
-                hasButtons = hasButtons,
-                photoLeft = photoLeft,
-                modifier = Modifier.align(Alignment.CenterStart),
-            )
-
-            // Hero image: bottom-aligned with the card, spilling above it
-            Image(
-                painter = painterResource(
-                    if (isDark) R.drawable.blaze_home_dark else R.drawable.blaze_home_light,
-                ),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .requiredWidth(photoWidth)
-                    .requiredHeight(photoHeight)
-                    // requiredHeight overflows evenly, top and bottom;
-                    // shift up so the bottom edge sits flush with the card
-                    .offset(y = (160.dp - photoHeight) / 2)
-                    .clip(RoundedCornerShape(12.dp)),
-            )
-
-            // The buttons come last, in front of her. They are laid out as a copy of the
-            // words with the words hidden, so they sit exactly where one column puts them.
-            if (hasButtons) {
-                CardWords(
-                    greeting = greeting,
-                    userName = userName,
-                    onCard = onCard,
-                    showWords = false,
-                    hasButtons = true,
-                    photoLeft = photoLeft,
-                    modifier = Modifier.align(Alignment.CenterStart),
-                ) {
-                    onForYouClick?.let {
-                        CardButton(forYouArt, R.drawable.star, stringResource(R.string.home_for_you), onCard, buttonFill, it)
-                    }
-                    // Just the cover: the label would crowd the photo, and a cover with
-                    // a play mark next to For you already says what it does.
-                    onSpeedDialClick?.let {
-                        CardButton(speedDialArt, R.drawable.grid_view, stringResource(R.string.speed_dial), onCard, buttonFill, it, showLabel = false)
-                    }
-                }
-            }
-        }
-
 
         // Search, and beside it its own round button for finding the song that's playing near
         // you. The pill stays plain so it always reads the same; the button takes the colour of
@@ -390,6 +275,82 @@ fun BlazeHomeHeader(
                     modifier = Modifier.size(24.dp),
                 )
             }
+        }
+    }
+}
+
+
+@Composable
+private fun ListeningProgressCard(userName: String) {
+    val database = LocalDatabase.current
+    val now = remember { LocalDateTime.now() }
+    val startOfDay = remember { now.toLocalDate().atStartOfDay() }
+    val weekStart = remember { now.toLocalDate().minusDays(6).atStartOfDay() }
+    val todayMs by database.getTotalPlayTimeInRange(startOfDay, now).collectAsState(initial = 0L)
+    val weekMs by database.getTotalPlayTimeInRange(weekStart, now).collectAsState(initial = 0L)
+    val todayMinutes = (todayMs ?: 0L).coerceAtLeast(0L) / 60_000L
+    val weekMinutes = (weekMs ?: 0L).coerceAtLeast(0L) / 60_000L
+    val targetMinutes = 180L
+    val progress by androidx.compose.animation.core.animateFloatAsState(
+        targetValue = (todayMinutes.toFloat() / targetMinutes).coerceIn(0f, 1f),
+        animationSpec = androidx.compose.animation.core.tween(850),
+        label = "dailyListeningProgress",
+    )
+    fun durationLabel(minutes: Long): String {
+        val hours = minutes / 60
+        val mins = minutes % 60
+        return if (hours > 0) "${hours}j ${mins}m" else "${mins}m"
+    }
+    val greeting = when (java.time.LocalTime.now().hour) {
+        in 4..10 -> "Selamat pagi"
+        in 11..14 -> "Selamat siang"
+        in 15..17 -> "Selamat sore"
+        else -> "Selamat malam"
+    }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 10.dp)
+            .clip(RoundedCornerShape(24.dp))
+            .background(Brush.linearGradient(listOf(Color(0xFF28232A), Color(0xFF151416), Color(0xFF21191F))))
+            .padding(18.dp),
+        verticalArrangement = Arrangement.spacedBy(13.dp),
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(greeting, color = Color.White.copy(alpha = 0.72f), fontSize = 13.sp, fontWeight = FontWeight.Medium)
+                Text(
+                    userName.takeIf { it.isNotBlank() } ?: "Pencinta Musik",
+                    color = Color.White, fontSize = 21.sp, fontWeight = FontWeight.Bold,
+                    maxLines = 1, overflow = TextOverflow.Ellipsis,
+                )
+            }
+            Box(
+                modifier = Modifier.size(42.dp).clip(CircleShape).background(Color(0xFFDAA1B7).copy(alpha = 0.18f)),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(painter = painterResource(R.drawable.sound_wave), contentDescription = null, tint = Color(0xFFE8AFC4), modifier = Modifier.size(23.dp))
+            }
+        }
+        Row(verticalAlignment = Alignment.Bottom) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text("WAKTU MENDENGARKAN HARI INI", color = Color(0xFFBBAEB5), fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
+                Text(durationLabel(todayMinutes), color = Color.White, fontSize = 30.sp, fontWeight = FontWeight.Bold)
+            }
+            Text("Target 3 jam", color = Color(0xFFE8AFC4), fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
+        }
+        LinearProgressIndicator(
+            progress = { progress },
+            modifier = Modifier.fillMaxWidth().height(8.dp).clip(CircleShape),
+            color = Color(0xFFE5A9BF),
+            trackColor = Color.White.copy(alpha = 0.12f),
+        )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                if (todayMinutes >= targetMinutes) "Target harian tercapai!" else "${durationLabel((targetMinutes - todayMinutes).coerceAtLeast(0))} lagi menuju target",
+                color = Color.White.copy(alpha = 0.68f), fontSize = 11.sp, modifier = Modifier.weight(1f),
+            )
+            Text("7 hari: ${durationLabel(weekMinutes)}", color = Color.White.copy(alpha = 0.82f), fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
         }
     }
 }

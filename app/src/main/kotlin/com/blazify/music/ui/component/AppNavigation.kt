@@ -182,14 +182,36 @@ private fun NavItemContent(
 
     when (style) {
         NavBarStyle.PILL -> {
-            Icon(
-                painter = painterResource(id = iconRes),
-                contentDescription = label,
-                modifier = Modifier.graphicsLayer {
-                    scaleX = selectedScale
-                    scaleY = selectedScale
-                },
-            )
+            val shape = RoundedCornerShape(16.dp)
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(3.dp),
+                modifier = Modifier
+                    .graphicsLayer {
+                        scaleX = selectedScale
+                        scaleY = selectedScale
+                    }
+                    .clip(shape)
+                    .background(if (selected) accent.copy(alpha = 0.22f) else Color.Transparent)
+                    .padding(horizontal = 12.dp, vertical = 5.dp),
+            ) {
+                Icon(
+                    painter = painterResource(id = iconRes),
+                    contentDescription = label,
+                    tint = if (selected) accent else idle,
+                    modifier = Modifier.size(22.dp),
+                )
+                if (!slimNav) {
+                    Text(
+                        text = label,
+                        color = if (selected) accent else idle,
+                        fontSize = 11.sp,
+                        fontWeight = if (selected) androidx.compose.ui.text.font.FontWeight.SemiBold else androidx.compose.ui.text.font.FontWeight.Medium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+            }
         }
 
         NavBarStyle.GRADIENT -> {
@@ -407,15 +429,7 @@ fun AppNavigationBar(
                 },
                 // Only the Material style uses the separate label slot; the others
                 // draw the label inside their own highlight.
-                label = if (navBarStyle == NavBarStyle.PILL && !slimNav) {
-                    {
-                        Text(
-                            text = label,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    }
-                } else null
+                label = null
             )
         }
     }

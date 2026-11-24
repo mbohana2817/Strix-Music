@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- The launch icon Android shows while Blazify starts, drawn from the traced logo and told as a
+<!-- The Strix Music launch mark Android shows while the app starts, drawn from the branded audio mark and told as a
      short story: the play button settles, the flame grows round it, the headband rises over and the
      ear cups drop in. 750 ms; Android cuts it short if the app is ready first, and MainActivity
-     then glides it into the logo in Home's header. -->
+     then glides into the Strix Music home experience. -->
 <animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aapt="http://schemas.android.com/aapt">
     <aapt:attr name="android:drawable">
