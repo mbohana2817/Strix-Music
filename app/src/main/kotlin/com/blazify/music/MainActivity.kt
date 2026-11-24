@@ -179,6 +179,7 @@ import com.blazify.music.constants.PureBlackKey
 import com.blazify.music.constants.SYSTEM_DEFAULT
 import com.blazify.music.constants.SelectedThemeColorKey
 import com.blazify.music.constants.AppBackgroundStyle
+import com.blazify.music.constants.AuroraAnimationKey
 import com.blazify.music.constants.AppBackgroundStyleKey
 import com.blazify.music.constants.SimpMusicMigrationDoneKey
 import com.blazify.music.constants.SlimNavBarHeight
@@ -567,16 +568,31 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            // No splash of our own: Android's launch screen (the logo on black)
-            // covers the real loading, and the app opens straight onto Home.
-            BlazifyApp(
-                latestVersionName = latestVersionName,
-                onLatestVersionNameChange = { latestVersionName = it },
-                playerConnection = playerConnectionSnapshot,
-                database = database,
-                downloadUtil = downloadUtil,
-                syncUtils = syncUtils,
-            )
+            var showStrixSplash by remember { mutableStateOf(true) }
+
+            LaunchedEffect(Unit) {
+                delay(4500)
+                showStrixSplash = false
+            }
+
+            Box(modifier = Modifier.fillMaxSize()) {
+                BlazifyApp(
+                    latestVersionName = latestVersionName,
+                    onLatestVersionNameChange = { latestVersionName = it },
+                    playerConnection = playerConnectionSnapshot,
+                    database = database,
+                    downloadUtil = downloadUtil,
+                    syncUtils = syncUtils,
+                )
+
+                AnimatedVisibility(
+                    visible = showStrixSplash,
+                    enter = fadeIn(tween(180)),
+                    exit = fadeOut(tween(260)),
+                ) {
+                    StrixMusicSplashScreen()
+                }
+            }
 
             // First run: introduce what the app does before dropping into it. Until the saved
             // answer is read it is unknown, not "not yet": taken as "not yet", every launch built
@@ -588,6 +604,70 @@ class MainActivity : ComponentActivity() {
                 OnboardingScreen(onFinish = {
                     lifecycleScope.launch { safeDataStoreEdit { it[OnboardingCompletedKey] = true } }
                 })
+            }
+        }
+    }
+
+    @Composable
+    private fun StrixMusicSplashScreen() {
+        val progress = remember { androidx.compose.animation.core.Animatable(0f) }
+
+        LaunchedEffect(Unit) {
+            progress.animateTo(1f, tween(4200))
+        }
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black),
+            contentAlignment = Alignment.Center,
+        ) {
+            AsyncImage(
+                model = ImageRequest.Builder(this@MainActivity)
+                    .data(R.drawable.strix_splash)
+                    .crossfade(false)
+                    .build(),
+                contentDescription = "Strix Music splash",
+                modifier = Modifier.fillMaxSize(),
+                contentScale = androidx.compose.ui.layout.ContentScale.Crop,
+            )
+
+            Column(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .padding(start = 32.dp, end = 32.dp, bottom = 54.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(6.dp)
+                        .clip(RoundedCornerShape(50))
+                        .background(Color.White.copy(alpha = 0.18f)),
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(progress.value)
+                            .height(6.dp)
+                            .clip(RoundedCornerShape(50))
+                            .background(Color(0xFFFF176B)),
+                    )
+                }
+
+                Spacer(Modifier.height(14.dp))
+                Text(
+                    text = "Please Wait",
+                    color = Color.White,
+                    fontSize = 15.sp,
+                    fontWeight = androidx.compose.ui.text.font.FontWeight.Medium,
+                )
+                Text(
+                    text = "Connect To Server",
+                    color = Color.White.copy(alpha = 0.65f),
+                    fontSize = 12.sp,
+                    modifier = Modifier.padding(top = 3.dp),
+                )
             }
         }
     }
@@ -763,6 +843,10 @@ class MainActivity : ComponentActivity() {
             AppBackgroundStyleKey,
             defaultValue = AppBackgroundStyle.STRIX_BURGUNDY,
         )
+        val (auroraAnimation) = rememberPreference(
+            AuroraAnimationKey,
+            defaultValue = true,
+        )
 
         val showChangelog = rememberSaveable { mutableStateOf(false) }
 
@@ -829,6 +913,7 @@ class MainActivity : ComponentActivity() {
             pureBlack = pureBlack,
             themeColor = themeColor,
             backgroundStyle = appBackgroundStyle,
+            auroraEnabled = auroraAnimation,
         ) {
             val currentDensity = LocalDensity.current
             val windowInfo = LocalWindowInfo.current
@@ -954,7 +1039,6 @@ class MainActivity : ComponentActivity() {
                             Screens.Library.route,
                             Screens.Yours.route,
                             Screens.ListenTogether.route,
-                            "settings",
                         )
                     }
 
@@ -1210,7 +1294,7 @@ class MainActivity : ComponentActivity() {
                             Screens.Home.route -> R.string.home
                             Screens.Search.route -> R.string.search
                             Screens.Library.route -> R.string.filter_library
-                            Screens.Yours.route -> R.string.yours
+                            Screens.Yours.route -> R.string.settings
                             Screens.ListenTogether.route -> R.string.together
                             else -> null
                         }

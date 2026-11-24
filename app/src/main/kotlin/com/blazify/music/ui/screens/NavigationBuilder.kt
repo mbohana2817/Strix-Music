@@ -153,16 +153,6 @@ fun NavGraphBuilder.navigationBuilder(
         LibraryScreen()
     }
 
-    composable(
-        Screens.Yours.route,
-        enterTransition = { fadeIn(tween(280)) + slideInVertically(tween(280)) { it / 28 } },
-        exitTransition = { fadeOut(tween(190)) + slideOutVertically(tween(190)) { -it / 36 } },
-        popEnterTransition = { fadeIn(tween(260)) + slideInVertically(tween(260)) { it / 32 } },
-        popExitTransition = { fadeOut(tween(180)) },
-    ) {
-        YoursScreen()
-    }
-
     composable("yours/playlists") {
         var showSpotifyImport by rememberSaveable { mutableStateOf(false) }
         if (showSpotifyImport) {

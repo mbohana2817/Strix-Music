@@ -8,6 +8,7 @@ package com.blazify.music
 
 import com.blazify.music.ui.component.ArtPlaceholderDrawable
 import coil3.asImage
+import coil3.gif.GifDecoder
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -411,7 +412,10 @@ class App :
                 error { ArtPlaceholderDrawable(this@App).asImage() }
                 fallback { ArtPlaceholderDrawable(this@App).asImage() }
                 // Downloaded songs keep their covers on the phone, for use offline and online.
-                components { add(OfflineCovers.Serve(this@App)) }
+                components {
+                    add(GifDecoder.Factory())
+                    add(OfflineCovers.Serve(this@App))
+                }
                 // Memory cache for fast image loading (prevents network requests on recomposition)
                 memoryCache {
                     MemoryCache

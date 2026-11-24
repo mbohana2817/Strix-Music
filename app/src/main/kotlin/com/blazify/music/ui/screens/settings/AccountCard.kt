@@ -11,6 +11,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -40,6 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -104,6 +106,10 @@ internal fun AccountCard(
 
     var expanded by remember { mutableStateOf(false) }
     val turn by animateFloatAsState(if (expanded) 180f else 0f, label = "account_arrow")
+    val cardScale by animateFloatAsState(
+        targetValue = if (expanded) 1.005f else 1f,
+        label = "strix-profile-scale",
+    )
 
     // The list is read before it opens, with the arrow turning while it is, so it opens
     // complete instead of opening on a spinner and jumping as the rows arrive.
@@ -133,10 +139,28 @@ internal fun AccountCard(
         onAddAccount()
     }
 
+    val cardShape = RoundedCornerShape(24.dp)
     Surface(
-        shape = RoundedCornerShape(20.dp),
-        color = MaterialTheme.colorScheme.surfaceContainerHigh,
-        modifier = Modifier.fillMaxWidth(),
+        shape = cardShape,
+        color = Color.Transparent,
+        modifier = Modifier
+            .fillMaxWidth()
+            .graphicsLayer { scaleX = cardScale; scaleY = cardScale }
+            .clip(cardShape)
+            .background(
+                Brush.linearGradient(
+                    listOf(
+                        MaterialTheme.colorScheme.primary.copy(alpha = 0.16f),
+                        MaterialTheme.colorScheme.surfaceContainerHigh,
+                        MaterialTheme.colorScheme.tertiary.copy(alpha = 0.10f),
+                    ),
+                ),
+            )
+            .border(
+                1.dp,
+                MaterialTheme.colorScheme.primary.copy(alpha = 0.20f),
+                cardShape,
+            ),
     ) {
         Column {
             Row(
@@ -156,7 +180,7 @@ internal fun AccountCard(
                             model = photo,
                             contentDescription = null,
                             contentScale = ContentScale.Crop,
-                            modifier = Modifier.size(44.dp).clip(CircleShape),
+                            modifier = Modifier.size(48.dp).clip(CircleShape),
                         )
                     } else {
                         Box(

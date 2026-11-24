@@ -1,5 +1,7 @@
 package com.blazify.music.ui.screens.settings
 
+import com.blazify.music.ui.component.Material3SettingsItem
+
 import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
@@ -51,6 +53,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.Switch
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.ripple
@@ -94,6 +97,8 @@ import com.blazify.music.ui.component.ColorPickerDialog
 import com.blazify.music.models.MediaMetadata
 import kotlinx.coroutines.flow.MutableStateFlow
 import com.blazify.music.constants.DefaultOpenTabKey
+import com.blazify.music.constants.AuroraAnimationKey
+import com.blazify.music.constants.GlassThemeKey
 import com.blazify.music.constants.GridItemSize
 import com.blazify.music.constants.GridItemsSizeKey
 import com.blazify.music.constants.MiniPlayerBackgroundStyle
@@ -371,6 +376,41 @@ fun ThemeControls(
                         }
                     }
                 }
+            }
+
+            // Strix visual effects: kept as explicit toggles so low-end devices can
+            // turn off the animated/translucent layer without losing the base theme.
+            val (glassTheme, onGlassThemeChange) =
+                rememberPreference(GlassThemeKey, defaultValue = true)
+            val (auroraAnimation, onAuroraAnimationChange) =
+                rememberPreference(AuroraAnimationKey, defaultValue = true)
+
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(
+                    text = "Strix Visual Effects",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+                Material3SettingsItem(
+                    title = { Text("Glass Theme · iOS") },
+                    icon = painterResource(R.drawable.gradient),
+                    trailingContent = {
+                        Switch(
+                            checked = glassTheme,
+                            onCheckedChange = onGlassThemeChange,
+                        )
+                    },
+                )
+                Material3SettingsItem(
+                    title = { Text("Aurora Animation") },
+                    icon = painterResource(R.drawable.gradient),
+                    trailingContent = {
+                        Switch(
+                            checked = auroraAnimation,
+                            onCheckedChange = onAuroraAnimationChange,
+                        )
+                    },
+                )
             }
         }
     }

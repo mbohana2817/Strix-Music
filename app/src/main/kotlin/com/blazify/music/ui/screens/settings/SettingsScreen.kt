@@ -156,6 +156,9 @@ fun SettingsScreen(
             SettingRow(R.drawable.play, stringResource(R.string.player_and_audio), stringResource(R.string.hint_player)) {
                 navController.navigate("settings/player")
             },
+            SettingRow(R.drawable.security, stringResource(R.string.background_access), stringResource(R.string.background_access_desc)) {
+                requestBackgroundPlaybackAccess(context)
+            },
         ),
         stringResource(R.string.settings_group_content) to buildList {
             add(SettingRow(R.drawable.language, stringResource(R.string.content), stringResource(R.string.hint_content)) {
@@ -544,6 +547,26 @@ private fun SettingsSearchField(query: String, onQueryChange: (String) -> Unit) 
                 modifier = Modifier.fillMaxWidth(),
             )
         }
+    }
+}
+
+private fun requestBackgroundPlaybackAccess(context: Context) {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return
+
+    val powerManager = context.getSystemService(android.os.PowerManager::class.java)
+    val packageName = context.packageName
+    if (powerManager?.isIgnoringBatteryOptimizations(packageName) == true) {
+        Toast.makeText(context, context.getString(R.string.background_access_already_enabled), Toast.LENGTH_SHORT).show()
+        return
+    }
+
+    try {
+        context.startActivity(
+            Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
+                .setData("package:$packageName".toUri())
+        )
+    } catch (_: ActivityNotFoundException) {
+        context.startActivity(Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS))
     }
 }
 

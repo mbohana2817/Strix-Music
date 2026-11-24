@@ -808,6 +808,12 @@ class MusicService :
                 ): MediaNotification {
                     val trackingCallback =
                         MediaNotification.Provider.Callback { notification ->
+                            // Keep the playback notification as a non-dismissible foreground
+                            // media notification while music is active. Some Android skins
+                            // otherwise allow the shade entry to be swiped away, which makes
+                            // playback look like it has stopped even though the player is alive.
+                            notification.notification.flags =
+                                notification.notification.flags or Notification.FLAG_ONGOING_EVENT
                             latestMediaNotification = notification.notification
                             onNotificationChangedCallback.onNotificationChanged(notification)
                         }

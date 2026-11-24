@@ -279,6 +279,9 @@
     <string name="restart_to_take_effect">Restart to take effect</string>
 
     <string name="player_and_audio">Player and audio</string>
+    <string name="background_access">Background playback</string>
+    <string name="background_access_desc">Allow Strix Music to keep playing and keep the media notification active when the screen is off.</string>
+    <string name="background_access_already_enabled">Background playback access is already enabled.</string>
     <string name="audio_quality">Audio quality</string>
     <string name="audio_quality_auto">Auto</string>
     <string name="audio_quality_high">High</string>

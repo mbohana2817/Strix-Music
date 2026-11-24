@@ -9,6 +9,13 @@ package com.blazify.music.ui.theme
 import android.graphics.Bitmap
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.dynamicDarkColorScheme
@@ -18,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
@@ -56,6 +64,7 @@ fun BlazifyTheme(
     pureBlack: Boolean = false,
     themeColor: Color = DefaultThemeColor,
     backgroundStyle: AppBackgroundStyle = AppBackgroundStyle.STRIX_BURGUNDY,
+    auroraEnabled: Boolean = true,
     content: @Composable () -> Unit,
 ) {
     val context = LocalContext.current
@@ -124,9 +133,58 @@ fun BlazifyTheme(
     // Use standard MaterialTheme instead of MaterialExpressiveTheme
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = AppTypography, // Use the defined AppTypography
-        content = content
+        typography = AppTypography,
+    ) {
+        if (auroraEnabled && !pureBlack) {
+            AuroraBackdrop(
+                style = backgroundStyle,
+                darkTheme = darkTheme,
+                content = content,
+            )
+        } else {
+            content()
+        }
+    }
+}
+
+@Composable
+private fun AuroraBackdrop(
+    style: AppBackgroundStyle,
+    darkTheme: Boolean,
+    content: @Composable () -> Unit,
+) {
+    val transition = rememberInfiniteTransition(label = "strix-aurora")
+    val shift by transition.animateFloat(
+        initialValue = 0f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(9000),
+            repeatMode = RepeatMode.Reverse,
+        ),
+        label = "strix-aurora-shift",
     )
+    val base = when (style) {
+        AppBackgroundStyle.STRIX_BURGUNDY -> listOf(Color(0xFF12080E), Color(0xFF3B1224), Color(0xFF180B15))
+        AppBackgroundStyle.MIDNIGHT_PLUM -> listOf(Color(0xFF0C0A13), Color(0xFF302044), Color(0xFF15101F))
+        AppBackgroundStyle.DEEP_OCEAN -> listOf(Color(0xFF071116), Color(0xFF143847), Color(0xFF0B1820))
+        AppBackgroundStyle.FOREST -> listOf(Color(0xFF08110C), Color(0xFF173624), Color(0xFF0D1C14))
+        AppBackgroundStyle.AMOLED -> listOf(Color.Black, Color.Black, Color(0xFF080808))
+    }
+    val a = base[0].copy(alpha = if (darkTheme) 0.94f else 0.62f)
+    val b = base[1].copy(alpha = if (darkTheme) 0.54f else 0.36f)
+    val c = base[2].copy(alpha = if (darkTheme) 0.78f else 0.42f)
+    val x = 0.18f + shift * 0.22f
+    Box(
+        modifier = Modifier.background(
+            Brush.linearGradient(
+                colors = listOf(a, b, c, a),
+                start = androidx.compose.ui.geometry.Offset(x * 900f, 0f),
+                end = androidx.compose.ui.geometry.Offset((1f - x) * 900f, 1400f),
+            )
+        ),
+    ) {
+        content()
+    }
 }
 
 fun Bitmap.extractThemeColor(): Color {

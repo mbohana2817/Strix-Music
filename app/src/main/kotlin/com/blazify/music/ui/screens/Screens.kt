@@ -40,10 +40,10 @@ sealed class Screens(
     )
 
     object Yours : Screens(
-        titleId = R.string.profile,
-        iconIdInactive = R.drawable.strix_nav_profile,
-        iconIdActive = R.drawable.strix_nav_profile,
-        route = "yours"
+        titleId = R.string.settings,
+        iconIdInactive = R.drawable.settings,
+        iconIdActive = R.drawable.settings,
+        route = "settings"
     )
 
     object Library : Screens(
