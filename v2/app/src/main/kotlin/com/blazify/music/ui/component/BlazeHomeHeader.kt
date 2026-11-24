@@ -106,7 +106,7 @@ private val SearchRowHeight = 52.dp
 fun BlazeHomeHeader(
     userName: String = stringResource(R.string.blaze_greeting_default_name),
     onAccountClick: () -> Unit = {},
-    onSettingsClick: () -> Unit = {},
+    onSettingsClick: (() -> Unit)? = {},
     onSearchClick: () -> Unit = {},
     onMicClick: () -> Unit = {},
     // Two ways to start music from the card itself, each showing the cover of the
@@ -193,13 +193,15 @@ fun BlazeHomeHeader(
                     ),
                 )
             }
-            IconButton(onClick = onSettingsClick) {
-                Icon(
-                    painter = painterResource(R.drawable.settings),
-                    contentDescription = stringResource(R.string.settings),
-                    tint = iconTint,
-                    modifier = Modifier.size(28.dp),
-                )
+            onSettingsClick?.let { openSettings ->
+                IconButton(onClick = openSettings) {
+                    Icon(
+                        painter = painterResource(R.drawable.settings),
+                        contentDescription = stringResource(R.string.settings),
+                        tint = iconTint,
+                        modifier = Modifier.size(28.dp),
+                    )
+                }
             }
         }
 

@@ -1114,7 +1114,7 @@
     <string name="credits_view_repo">View repository</string>
     <string name="app_version_info">%1$s • %2$s</string>
     <string name="like_what_i_do">Like what I do?</string>
-    <string name="buy_mo_a_coffee">Buy me a coffee!</string>
+    <string name="buy_mo_a_coffee">Donate</string>
     <string name="community_and_info">Community &amp; Info</string>
     <string name="blazify">Strix Music</string>
     <string name="wanna_play_favorite_song">Want to play their favorite song?</string>
@@ -1263,7 +1263,7 @@
     <!-- About page -->
     <string name="about_developer_role">Strix Music Developer</string>
     <string name="about_me_body">Strix Music is customized and maintained by Muhammad Bohana (Han), an alumnus of Al-Hidayah, Cirebon City, TKJ 2. This app builds on an open-source upstream project; original contributors and license notices remain credited.</string>
-    <string name="buy_me_a_coffee">Buy me a coffee</string>
+    <string name="buy_me_a_coffee">Donate</string>
     <string name="coffee_dialog_subtitle">Scan the code to support Strix Music</string>
     <string name="made_with_love">Made with care by Muhammad Bohana (Han)</string>
     <string name="about_open_source">Free and open source under GPL-3.0</string>

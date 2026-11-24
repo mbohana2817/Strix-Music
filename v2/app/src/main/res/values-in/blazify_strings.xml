@@ -1022,7 +1022,7 @@
     <string name="no_recommendations">Belum ada rekomendasi.</string>
     <string name="about_developer_role">Pengembang Strix Music</string>
     <string name="about_me_body">Strix Music dikembangkan dan dikustomisasi oleh Muhammad Bohana (Han), Alumni Siswa Al-Hidayah Kota Cirebon, TKJ 2. Aplikasi ini merupakan pengembangan dari proyek open-source; kredit dan lisensi kontributor upstream tetap dihormati.</string>
-    <string name="buy_me_a_coffee">Traktir saya kopi</string>
+    <string name="buy_me_a_coffee">Donate</string>
     <string name="coffee_dialog_subtitle">Pindai kode untuk mendukung Strix Music</string>
     <string name="made_with_love">Dibuat dengan perhatian oleh Muhammad Bohana (Han)</string>
     <string name="arrange">Atur</string>

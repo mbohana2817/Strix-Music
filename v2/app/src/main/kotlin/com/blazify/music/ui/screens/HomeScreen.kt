@@ -1351,7 +1351,7 @@ fun HomeScreen(
                         // settings, and jumping straight to the login page put
                         // all of that behind a step nobody asked for.
                         onAccountClick = { showAccountDialog = true },
-                        onSettingsClick = { navController.navigate("settings") },
+                        onSettingsClick = null,
                         onSearchClick = {
                             navController.navigate(Screens.Search.route)
                             // A search bar is for typing, so Search opens with the keyboard up.

@@ -31,6 +31,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -69,6 +70,7 @@ import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -570,6 +572,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             // No splash of our own: Android's launch screen (the logo on black)
             // covers the real loading, and the app opens straight onto Home.
+            var showStrixSplash by rememberSaveable { mutableStateOf(true) }
+            LaunchedEffect(Unit) {
+                delay(1250)
+                showStrixSplash = false
+            }
+
             BlazifyApp(
                 latestVersionName = latestVersionName,
                 onLatestVersionNameChange = { latestVersionName = it },
@@ -589,6 +597,82 @@ class MainActivity : ComponentActivity() {
                 OnboardingScreen(onFinish = {
                     lifecycleScope.launch { safeDataStoreEdit { it[OnboardingCompletedKey] = true } }
                 })
+            }
+
+            AnimatedVisibility(
+                visible = showStrixSplash,
+                enter = fadeIn(tween(220)),
+                exit = fadeOut(tween(420)),
+            ) {
+                StrixStartupSplash()
+            }
+        }
+    }
+
+    @Composable
+    private fun StrixStartupSplash() {
+        val progress by animateFloatAsState(
+            targetValue = 1f,
+            animationSpec = tween(1150),
+            label = "strix-startup-progress",
+        )
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(0xFF08070D)),
+            contentAlignment = Alignment.Center,
+        ) {
+            AsyncImage(
+                model = R.drawable.strix_splash_anime,
+                contentDescription = null,
+                contentScale = androidx.compose.ui.layout.ContentScale.Crop,
+                modifier = Modifier.fillMaxSize().graphicsLayer { alpha = 0.52f },
+            )
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        androidx.compose.ui.graphics.Brush.verticalGradient(
+                            listOf(Color.Transparent, Color(0xFF08070D).copy(alpha = 0.96f)),
+                        ),
+                    ),
+            )
+            Column(
+                modifier = Modifier.padding(horizontal = 34.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.strix_music_logo),
+                    contentDescription = "Strix Music",
+                    modifier = Modifier.size(176.dp).clip(RoundedCornerShape(38.dp)),
+                )
+                Spacer(Modifier.height(18.dp))
+                Text(
+                    text = "STRIX MUSIC",
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = androidx.compose.ui.text.font.FontWeight.Black,
+                    color = Color.White,
+                    letterSpacing = 2.sp,
+                )
+                Spacer(Modifier.height(6.dp))
+                Text(
+                    text = "Music, refined.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.White.copy(alpha = 0.70f),
+                )
+                Spacer(Modifier.height(28.dp))
+                LinearProgressIndicator(
+                    progress = { progress },
+                    modifier = Modifier.fillMaxWidth().height(5.dp).clip(RoundedCornerShape(5.dp)),
+                    color = MaterialTheme.colorScheme.primary,
+                    trackColor = Color.White.copy(alpha = 0.12f),
+                )
+                Spacer(Modifier.height(10.dp))
+                Text(
+                    text = "Loading ${((progress * 100).toInt()).coerceIn(0, 100)}%",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = Color.White.copy(alpha = 0.55f),
+                )
             }
         }
     }
@@ -1216,7 +1300,7 @@ class MainActivity : ComponentActivity() {
                             Screens.Home.route -> R.string.home
                             Screens.Search.route -> R.string.search
                             Screens.Library.route -> R.string.filter_library
-                            Screens.Yours.route -> R.string.yours
+                            Screens.Yours.route -> R.string.settings
                             Screens.ListenTogether.route -> R.string.together
                             else -> null
                         }

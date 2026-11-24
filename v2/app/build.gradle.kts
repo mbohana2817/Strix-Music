@@ -109,7 +109,7 @@ android {
         minSdk = 26
         targetSdk = 36
         versionCode = 165
-        versionName = "9.20.0"
+        versionName = "9.21.0"
         resValue("string", "app_name", appNameOverride ?: "Strix Music")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -430,6 +430,7 @@ dependencies {
 
     implementation(libs.coil)
     implementation(libs.coil.network.okhttp)
+    implementation("io.coil-kt.coil3:coil-gif:3.4.0")
     implementation(libs.browser)
 
     implementation(libs.ucrop)

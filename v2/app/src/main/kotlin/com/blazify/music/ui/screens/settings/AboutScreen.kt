@@ -111,7 +111,7 @@ fun AboutScreen(
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Image(
-                    painter = painterResource(R.drawable.blaze_logo_white),
+                    painter = painterResource(R.drawable.strix_music_logo),
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(onHero),
                     modifier = Modifier.size(88.dp),
@@ -154,7 +154,7 @@ fun AboutScreen(
                     ) {
                         val fallback = painterResource(R.drawable.person)
                         AsyncImage(
-                            model = GITHUB_AVATAR,
+                            model = R.drawable.strix_developer_photo,
                             contentDescription = "Muhammad Bohana (Han)",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.fillMaxSize(),
@@ -359,7 +359,7 @@ private fun CoffeeQrDialog(onDismiss: () -> Unit) {
                     color = Color.White,
                 ) {
                     Image(
-                        painter = painterResource(R.drawable.coffee_qr),
+                        painter = painterResource(R.drawable.strix_donate_qr),
                         contentDescription = null,
                         contentScale = ContentScale.Fit,
                         modifier = Modifier
