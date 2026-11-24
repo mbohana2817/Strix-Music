@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.unit.sp
 import com.blazify.music.constants.NavBarStyle
+import com.blazify.music.constants.GlassThemeKey
 import com.blazify.music.constants.NavBarStyleKey
 import com.blazify.music.utils.rememberEnumPreference
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -345,22 +346,38 @@ fun AppNavigationBar(
     val containerColor = Color.Transparent
     val contentColor = if (pureBlack) Color.White else MaterialTheme.colorScheme.onSurfaceVariant
     val glassShape = RoundedCornerShape(30.dp)
-    val glassSurface = if (pureBlack) Color(0xD9101012) else MaterialTheme.colorScheme.surface.copy(alpha = 0.78f)
+    // iOS-style glass is opt-in. When disabled, keep a crisp Material surface with
+    // no translucent overlay, which also prevents the selected tab from looking blurred.
+    val glassSurface = if (glassTheme) {
+        if (pureBlack) Color(0xCC101012) else MaterialTheme.colorScheme.surface.copy(alpha = 0.82f)
+    } else {
+        if (pureBlack) Color.Black else MaterialTheme.colorScheme.surfaceContainer
+    }
     val haptics = LocalHapticFeedback.current
     val viewConfiguration = LocalViewConfiguration.current
     val navBarStyle by rememberEnumPreference(NavBarStyleKey, NavBarStyle.PILL)
+    val glassTheme by com.blazify.music.utils.rememberPreference(GlassThemeKey, true)
 
     NavigationBar(
         modifier = modifier
             .padding(horizontal = 12.dp, vertical = 7.dp)
-            .shadow(16.dp, glassShape)
+            .shadow(if (glassTheme) 16.dp else 6.dp, glassShape)
             .clip(glassShape)
             .background(
-                Brush.verticalGradient(
-                    listOf(glassSurface.copy(alpha = 0.94f), glassSurface.copy(alpha = 0.76f)),
-                ),
+                if (glassTheme) {
+                    Brush.verticalGradient(
+                        listOf(glassSurface.copy(alpha = 0.96f), glassSurface.copy(alpha = 0.76f)),
+                    )
+                } else {
+                    Brush.verticalGradient(listOf(glassSurface, glassSurface))
+                },
             )
-            .border(1.dp, Color.White.copy(alpha = 0.12f), glassShape),
+            .border(
+                1.dp,
+                if (glassTheme) Color.White.copy(alpha = 0.14f)
+                else MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f),
+                glassShape,
+            ),
         containerColor = containerColor,
         contentColor = contentColor
     ) {

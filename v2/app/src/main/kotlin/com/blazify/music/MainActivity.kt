@@ -179,6 +179,7 @@ import com.blazify.music.constants.PureBlackKey
 import com.blazify.music.constants.SYSTEM_DEFAULT
 import com.blazify.music.constants.SelectedThemeColorKey
 import com.blazify.music.constants.AppBackgroundStyle
+import com.blazify.music.constants.AuroraAnimationKey
 import com.blazify.music.constants.AppBackgroundStyleKey
 import com.blazify.music.constants.SimpMusicMigrationDoneKey
 import com.blazify.music.constants.SlimNavBarHeight
@@ -763,6 +764,10 @@ class MainActivity : ComponentActivity() {
             AppBackgroundStyleKey,
             defaultValue = AppBackgroundStyle.STRIX_BURGUNDY,
         )
+        val (auroraAnimation) = rememberPreference(
+            AuroraAnimationKey,
+            defaultValue = true,
+        )
 
         val showChangelog = rememberSaveable { mutableStateOf(false) }
 
@@ -829,6 +834,7 @@ class MainActivity : ComponentActivity() {
             pureBlack = pureBlack,
             themeColor = themeColor,
             backgroundStyle = appBackgroundStyle,
+            auroraEnabled = auroraAnimation,
         ) {
             val currentDensity = LocalDensity.current
             val windowInfo = LocalWindowInfo.current

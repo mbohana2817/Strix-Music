@@ -46,6 +46,9 @@ val PureBlackKey = booleanPreferencesKey("pureBlack")
 val PureBlackMiniPlayerKey = booleanPreferencesKey("pureBlackMiniPlayer")
 val MiniPlayerBackgroundStyleKey = stringPreferencesKey("miniPlayerBackgroundStyle")
 val AppBackgroundStyleKey = stringPreferencesKey("appBackgroundStyle")
+/** Strix visual effects: optional iOS-style translucent surfaces and animated aurora. */
+val GlassThemeKey = booleanPreferencesKey("glassTheme")
+val AuroraAnimationKey = booleanPreferencesKey("auroraAnimation")
 
 enum class AppBackgroundStyle {
     STRIX_BURGUNDY,
