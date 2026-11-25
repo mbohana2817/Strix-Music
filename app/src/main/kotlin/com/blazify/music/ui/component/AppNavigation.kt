@@ -344,13 +344,14 @@ fun AppNavigationBar(
     onSearchLongClick: (() -> Unit)? = null
 ) {
     val glassTheme by com.blazify.music.utils.rememberPreference(GlassThemeKey, true)
+    val bitChordTheme by com.blazify.music.utils.rememberPreference(com.blazify.music.constants.BitChordThemeKey, false)
     val haptics = LocalHapticFeedback.current
     val viewConfiguration = LocalViewConfiguration.current
     val selectedIndex = navigationItems.indexOfFirst { screen ->
         isRouteSelected(currentRoute, screen.route, navigationItems)
     }.coerceAtLeast(0)
     val itemCount = navigationItems.size.coerceAtLeast(1)
-    val pillShape = RoundedCornerShape(percent = 50)
+    val pillShape = if (bitChordTheme) RoundedCornerShape(28.dp) else RoundedCornerShape(percent = 50)
     val indicatorOffset by animateFloatAsState(
         targetValue = selectedIndex.toFloat(),
         animationSpec = spring(dampingRatio = 0.72f, stiffness = 320f),
@@ -362,11 +363,12 @@ fun AppNavigationBar(
     BoxWithConstraints(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 18.dp, vertical = 7.dp)
-            .shadow(18.dp, pillShape)
+            .padding(horizontal = if (bitChordTheme) 14.dp else 18.dp, vertical = 7.dp)
+            .shadow(if (bitChordTheme) 24.dp else 18.dp, pillShape)
             .clip(pillShape)
             .background(
-                Brush.verticalGradient(listOf(surfaceTop, surfaceBottom)),
+                if (bitChordTheme) Brush.verticalGradient(listOf(Color(0xEE25232D), Color(0xD916151D)))
+                else Brush.verticalGradient(listOf(surfaceTop, surfaceBottom)),
             )
             .border(1.dp, Color.White.copy(alpha = if (glassTheme) 0.20f else 0.10f), pillShape)
             .padding(5.dp),
@@ -377,8 +379,8 @@ fun AppNavigationBar(
             modifier = Modifier
                 .offset(x = (slotWidth * indicatorOffset) + 1.dp)
                 .width(indicatorWidth)
-                .height(53.dp)
-                .clip(RoundedCornerShape(percent = 50))
+                .height(if (bitChordTheme) 56.dp else 53.dp)
+                .clip(if (bitChordTheme) RoundedCornerShape(22.dp) else RoundedCornerShape(percent = 50))
                 .background(
                     Brush.verticalGradient(
                         listOf(Color.White.copy(alpha = 0.20f), Color.White.copy(alpha = 0.075f)),
@@ -421,8 +423,8 @@ fun AppNavigationBar(
                 Column(
                     modifier = Modifier
                         .weight(1f)
-                        .height(53.dp)
-                        .clip(RoundedCornerShape(22.dp))
+                        .height(if (bitChordTheme) 56.dp else 53.dp)
+                        .clip(if (bitChordTheme) RoundedCornerShape(20.dp) else RoundedCornerShape(22.dp))
                         .clickable(
                             interactionSource = interactionSource,
                             indication = null,

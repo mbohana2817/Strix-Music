@@ -188,6 +188,7 @@ fun LookAndFeelScreen(
         rememberEnumPreference(GridItemsSizeKey, GridItemSize.SMALL)
     var showGridSizeDialog by rememberSaveable { mutableStateOf(false) }
     val (slimNavBar, onSlimNavBarChange) = rememberPreference(SlimNavBarKey, defaultValue = false)
+    val (bitChordTheme, onBitChordThemeChange) = rememberPreference(com.blazify.music.constants.BitChordThemeKey, defaultValue = false)
     val (navBarStyle, onNavBarStyleChange) = rememberEnumPreference(NavBarStyleKey, NavBarStyle.PILL)
     var showNavBarStyleDialog by rememberSaveable { mutableStateOf(false) }
     val (showHomeGreeting, onShowHomeGreetingChange) = rememberPreference(ShowHomeGreetingKey, defaultValue = true)
@@ -279,6 +280,15 @@ fun LookAndFeelScreen(
                                         title = { Text(stringResource(R.string.nav_bar_style)) },
                                         description = { Text(navBarStyle.label()) },
                                         onClick = { showNavBarStyleDialog = true },
+                                    ),
+                                    Material3SettingsItem(
+                                        icon = painterResource(R.drawable.nav_bar),
+                                        title = { Text("New Theme · BitChord Theme") },
+                                        description = { Text("Gunakan gaya floating glass dan animasi navbar BitChord") },
+                                        trailingContent = {
+                                            Switch(checked = bitChordTheme, onCheckedChange = onBitChordThemeChange)
+                                        },
+                                        onClick = { onBitChordThemeChange(!bitChordTheme) },
                                     ),
                                     Material3SettingsItem(
                                         icon = painterResource(R.drawable.nav_bar),
