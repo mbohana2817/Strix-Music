@@ -346,4 +346,6 @@
     <string name="new_version_available">New version available</string>
     <string name="translation_models">Translation Models</string>
     <string name="clear_translation_models">Clear translation models</string>
+    <string name="keep_playing_after_clear">Keep playing after app is cleared</string>
+    <string name="keep_playing_after_clear_desc">Keep music playing when you swipe Strix Music away from Recent Apps. Turn off to stop playback when cleared.</string>
 </resources>

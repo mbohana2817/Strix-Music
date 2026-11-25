@@ -1204,16 +1204,16 @@ fun PlayerSettings(
             items = listOf(
                 Material3SettingsItem(
                     icon = painterResource(R.drawable.clear_all),
-                    title = { Text(stringResource(R.string.stop_music_on_task_clear)) },
-                    description = { Text(stringResource(R.string.stop_music_on_task_clear_desc)) },
+                    title = { Text(stringResource(R.string.keep_playing_after_clear)) },
+                    description = { Text(stringResource(R.string.keep_playing_after_clear_desc)) },
                     trailingContent = {
                         Switch(
-                            checked = stopMusicOnTaskClear,
-                            onCheckedChange = onStopMusicOnTaskClearChange,
+                            checked = !stopMusicOnTaskClear,
+                            onCheckedChange = { onStopMusicOnTaskClearChange(!it) },
                             thumbContent = {
                                 Icon(
                                     painter = painterResource(
-                                        id = if (stopMusicOnTaskClear) R.drawable.check else R.drawable.close
+                                        id = if (!stopMusicOnTaskClear) R.drawable.check else R.drawable.close
                                     ),
                                     contentDescription = null,
                                     modifier = Modifier.size(SwitchDefaults.IconSize)
