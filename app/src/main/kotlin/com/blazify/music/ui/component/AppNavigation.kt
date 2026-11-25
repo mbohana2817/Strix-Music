@@ -10,24 +10,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.ui.unit.dp
-import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.draw.shadow
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.unit.sp
 import com.blazify.music.constants.NavBarStyle
@@ -37,8 +37,6 @@ import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Text
@@ -195,18 +193,19 @@ private fun NavItemContent(
                         scaleY = selectedScale
                     }
                     .clip(shape)
+                    .background(if (selected) accent.copy(alpha = 0.22f) else Color.Transparent)
                     .padding(horizontal = 12.dp, vertical = 5.dp),
             ) {
                 Icon(
                     painter = painterResource(id = iconRes),
                     contentDescription = label,
-                    tint = if (selected) Color.White else idle,
+                    tint = if (selected) accent else idle,
                     modifier = Modifier.size(22.dp),
                 )
                 if (!slimNav) {
                     Text(
                         text = label,
-                        color = if (selected) Color.White else idle,
+                        color = if (selected) accent else idle,
                         fontSize = 11.sp,
                         fontWeight = if (selected) androidx.compose.ui.text.font.FontWeight.SemiBold else androidx.compose.ui.text.font.FontWeight.Medium,
                         maxLines = 1,
@@ -344,164 +343,118 @@ fun AppNavigationBar(
     slimNav: Boolean = false,
     onSearchLongClick: (() -> Unit)? = null
 ) {
-    val containerColor = Color.Transparent
-    val contentColor = if (pureBlack) Color.White else MaterialTheme.colorScheme.onSurfaceVariant
-    val navAccent = MaterialTheme.colorScheme.primary
-    val glassShape = RoundedCornerShape(30.dp)
     val glassTheme by com.blazify.music.utils.rememberPreference(GlassThemeKey, true)
-    // iOS-style glass is opt-in. When disabled, keep a crisp Material surface with
-    // no translucent overlay, which also prevents the selected tab from looking blurred.
-    val glassSurface = if (glassTheme) {
-        if (pureBlack) Color(0xF2101012) else MaterialTheme.colorScheme.surface.copy(alpha = 0.94f)
-    } else {
-        if (pureBlack) Color.Black else MaterialTheme.colorScheme.surfaceContainer
-    }
     val haptics = LocalHapticFeedback.current
     val viewConfiguration = LocalViewConfiguration.current
-    val navBarStyle = NavBarStyle.PILL // Strix iOS glass navigation is the default app-wide
-    val selectedIndex = navigationItems.indexOfFirst {
-        isRouteSelected(currentRoute, it.route, navigationItems)
+    val selectedIndex = navigationItems.indexOfFirst { screen ->
+        isRouteSelected(currentRoute, screen.route, navigationItems)
     }.coerceAtLeast(0)
-    val animatedIndex by animateFloatAsState(
+    val itemCount = navigationItems.size.coerceAtLeast(1)
+    val pillShape = RoundedCornerShape(percent = 50)
+    val indicatorOffset by animateFloatAsState(
         targetValue = selectedIndex.toFloat(),
-        animationSpec = spring(dampingRatio = 0.82f, stiffness = 360f),
-        label = "strix-ios-nav-indicator",
+        animationSpec = spring(dampingRatio = 0.72f, stiffness = 320f),
+        label = "strix-liquid-glass-indicator",
     )
-    NavigationBar(
+    val surfaceTop = if (pureBlack) Color(0xE91A1A20) else MaterialTheme.colorScheme.surface.copy(alpha = 0.78f)
+    val surfaceBottom = if (pureBlack) Color(0xD9101015) else MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.68f)
+
+    BoxWithConstraints(
         modifier = modifier
-            .padding(horizontal = 12.dp, vertical = 7.dp)
-            .shadow(if (glassTheme) 16.dp else 6.dp, glassShape)
-            .clip(glassShape)
+            .fillMaxWidth()
+            .padding(horizontal = 18.dp, vertical = 7.dp)
+            .shadow(18.dp, pillShape)
+            .clip(pillShape)
             .background(
-                if (glassTheme) {
-                    Brush.verticalGradient(
-                        listOf(glassSurface.copy(alpha = 0.92f), glassSurface.copy(alpha = 0.72f)),
-                    )
-                } else {
-                    Brush.verticalGradient(listOf(glassSurface, glassSurface))
-                },
+                Brush.verticalGradient(listOf(surfaceTop, surfaceBottom)),
             )
-            .drawBehind {
-                if (navigationItems.isNotEmpty()) {
-                    val slotWidth = size.width / navigationItems.size
-                    val insetX = 7.dp.toPx()
-                    val insetY = 6.dp.toPx()
-                    val indicatorTop = insetY
-                    val indicatorSize = Size(
-                        (slotWidth - insetX * 2).coerceAtLeast(0f),
-                        (size.height - insetY * 2).coerceAtLeast(0f),
-                    )
-                    drawRoundRect(
-                        brush = if (glassTheme) {
-                            Brush.linearGradient(
-                                colors = listOf(
-                                    Color.White.copy(alpha = 0.25f),
-                                    Color.White.copy(alpha = 0.09f),
-                                ),
-                                start = Offset(slotWidth * animatedIndex, 0f),
-                                end = Offset(slotWidth * (animatedIndex + 1f), size.height),
-                            )
-                        } else {
-                            Brush.linearGradient(
-                                colors = listOf(
-                                    navAccent.copy(alpha = 0.22f),
-                                    navAccent.copy(alpha = 0.12f),
-                                ),
-                            )
-                        },
-                        topLeft = Offset(slotWidth * animatedIndex + insetX, indicatorTop),
-                        size = indicatorSize,
-                        cornerRadius = CornerRadius(22.dp.toPx(), 22.dp.toPx()),
-                    )
-                    if (glassTheme) {
-                        drawRoundRect(
-                            color = Color.White.copy(alpha = 0.16f),
-                            topLeft = Offset(slotWidth * animatedIndex + insetX, indicatorTop),
-                            size = indicatorSize,
-                            cornerRadius = CornerRadius(22.dp.toPx(), 22.dp.toPx()),
-                            style = androidx.compose.ui.graphics.drawscope.Stroke(1.dp.toPx()),
-                        )
-                    }
-                }
-            }
-            .border(
-                1.dp,
-                if (glassTheme) Color.White.copy(alpha = 0.14f)
-                else MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f),
-                glassShape,
-            ),
-        containerColor = containerColor,
-        contentColor = contentColor
+            .border(1.dp, Color.White.copy(alpha = if (glassTheme) 0.20f else 0.10f), pillShape)
+            .padding(5.dp),
     ) {
-        navigationItems.forEach { screen ->
-            val isSelected = remember(currentRoute, screen.route) {
-                isRouteSelected(currentRoute, screen.route, navigationItems)
-            }
-            val currentIsSelected by rememberUpdatedState(isSelected)
-            val iconRes = remember(isSelected, screen) {
-                if (isSelected) screen.iconIdActive else screen.iconIdInactive
-            }
+        val slotWidth = maxWidth / itemCount
+        val indicatorWidth = slotWidth - 2.dp
+        Box(
+            modifier = Modifier
+                .offset(x = (slotWidth * indicatorOffset) + 1.dp)
+                .width(indicatorWidth)
+                .height(53.dp)
+                .clip(RoundedCornerShape(percent = 50))
+                .background(
+                    Brush.verticalGradient(
+                        listOf(Color.White.copy(alpha = 0.20f), Color.White.copy(alpha = 0.075f)),
+                    ),
+                )
+                .border(1.dp, Color.White.copy(alpha = 0.19f), RoundedCornerShape(percent = 50)),
+        )
 
-            val isSearchItem = screen == Screens.Search && onSearchLongClick != null
-            val interactionSource = remember { MutableInteractionSource() }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            navigationItems.forEach { screen ->
+                val isSelected = isRouteSelected(currentRoute, screen.route, navigationItems)
+                val currentIsSelected by rememberUpdatedState(isSelected)
+                val iconRes = if (isSelected) screen.iconIdActive else screen.iconIdInactive
+                val label = stringResource(screen.titleId)
+                val isSearchItem = screen == Screens.Search && onSearchLongClick != null
+                val interactionSource = remember(screen.route) { MutableInteractionSource() }
 
-            // Long press detection using InteractionSource
-            if (isSearchItem) {
-                LaunchedEffect(interactionSource) {
-                    var isLongClick = false
-                    interactionSource.interactions.collectLatest { interaction ->
-                        when (interaction) {
-                            is PressInteraction.Press -> {
-                                isLongClick = false
-                                delay(viewConfiguration.longPressTimeoutMillis)
-                                isLongClick = true
-                                haptics.performHapticFeedback(HapticFeedbackType.LongPress)
-                                onSearchLongClick.invoke()
-                            }
-                            is PressInteraction.Release -> {
-                                if (!isLongClick) {
-                                    onItemClick(screen, currentIsSelected)
+                if (isSearchItem) {
+                    LaunchedEffect(interactionSource) {
+                        var longPressed = false
+                        interactionSource.interactions.collectLatest { interaction ->
+                            when (interaction) {
+                                is PressInteraction.Press -> {
+                                    longPressed = false
+                                    delay(viewConfiguration.longPressTimeoutMillis)
+                                    longPressed = true
+                                    haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                                    onSearchLongClick.invoke()
                                 }
-                            }
-                            is PressInteraction.Cancel -> {
-                                isLongClick = false
+                                is PressInteraction.Release -> if (!longPressed) onItemClick(screen, currentIsSelected)
+                                is PressInteraction.Cancel -> longPressed = false
                             }
                         }
                     }
                 }
-            }
 
-            val label = stringResource(screen.titleId)
-            NavigationBarItem(
-                selected = isSelected,
-                onClick = {
-                    if (!isSearchItem) {
-                        onItemClick(screen, currentIsSelected)
-                    }
-                    // For search item, click is handled via InteractionSource
-                },
-                interactionSource = interactionSource,
-                // Custom styles draw their own highlight, so hide the Material pill.
-                colors = NavigationBarItemDefaults.colors(
-                    indicatorColor = Color.Transparent,
-                    selectedIconColor = Color.White,
-                    selectedTextColor = Color.White,
-                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                ),
-                icon = {
-                    NavItemContent(
-                        style = navBarStyle,
-                        iconRes = iconRes,
-                        label = label,
-                        selected = isSelected,
-                        slimNav = slimNav,
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(53.dp)
+                        .clip(RoundedCornerShape(22.dp))
+                        .clickable(
+                            interactionSource = interactionSource,
+                            indication = null,
+                            onClick = { if (!isSearchItem) onItemClick(screen, currentIsSelected) },
+                        ),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                ) {
+                    Icon(
+                        painter = painterResource(iconRes),
+                        contentDescription = label,
+                        tint = if (isSelected) Color.White else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.76f),
+                        modifier = Modifier
+                            .size(23.dp)
+                            .graphicsLayer {
+                                val scale = if (isSelected) 1.07f else 1f
+                                scaleX = scale
+                                scaleY = scale
+                            },
                     )
-                },
-                // Only the Material style uses the separate label slot; the others
-                // draw the label inside their own highlight.
-                label = null
-            )
+                    if (!slimNav) {
+                        Text(
+                            text = label,
+                            color = if (isSelected) Color.White else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.82f),
+                            fontSize = 10.sp,
+                            fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    }
+                }
+            }
         }
     }
 }
