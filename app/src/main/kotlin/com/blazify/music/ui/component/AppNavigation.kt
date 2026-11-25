@@ -16,6 +16,10 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.draw.shadow
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -28,8 +32,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.unit.sp
 import com.blazify.music.constants.NavBarStyle
 import com.blazify.music.constants.GlassThemeKey
-import com.blazify.music.constants.NavBarStyleKey
-import com.blazify.music.utils.rememberEnumPreference
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Spacer
@@ -193,19 +195,18 @@ private fun NavItemContent(
                         scaleY = selectedScale
                     }
                     .clip(shape)
-                    .background(if (selected) accent.copy(alpha = 0.22f) else Color.Transparent)
                     .padding(horizontal = 12.dp, vertical = 5.dp),
             ) {
                 Icon(
                     painter = painterResource(id = iconRes),
                     contentDescription = label,
-                    tint = if (selected) accent else idle,
+                    tint = if (selected) Color.White else idle,
                     modifier = Modifier.size(22.dp),
                 )
                 if (!slimNav) {
                     Text(
                         text = label,
-                        color = if (selected) accent else idle,
+                        color = if (selected) Color.White else idle,
                         fontSize = 11.sp,
                         fontWeight = if (selected) androidx.compose.ui.text.font.FontWeight.SemiBold else androidx.compose.ui.text.font.FontWeight.Medium,
                         maxLines = 1,
@@ -350,13 +351,21 @@ fun AppNavigationBar(
     // iOS-style glass is opt-in. When disabled, keep a crisp Material surface with
     // no translucent overlay, which also prevents the selected tab from looking blurred.
     val glassSurface = if (glassTheme) {
-        if (pureBlack) Color(0xCC101012) else MaterialTheme.colorScheme.surface.copy(alpha = 0.82f)
+        if (pureBlack) Color(0xF2101012) else MaterialTheme.colorScheme.surface.copy(alpha = 0.94f)
     } else {
         if (pureBlack) Color.Black else MaterialTheme.colorScheme.surfaceContainer
     }
     val haptics = LocalHapticFeedback.current
     val viewConfiguration = LocalViewConfiguration.current
-    val navBarStyle by rememberEnumPreference(NavBarStyleKey, NavBarStyle.PILL)
+    val navBarStyle = NavBarStyle.PILL // Strix iOS glass navigation is the default app-wide
+    val selectedIndex = navigationItems.indexOfFirst {
+        isRouteSelected(currentRoute, it.route, navigationItems)
+    }.coerceAtLeast(0)
+    val animatedIndex by animateFloatAsState(
+        targetValue = selectedIndex.toFloat(),
+        animationSpec = spring(dampingRatio = 0.82f, stiffness = 360f),
+        label = "strix-ios-nav-indicator",
+    )
     NavigationBar(
         modifier = modifier
             .padding(horizontal = 12.dp, vertical = 7.dp)
@@ -365,12 +374,28 @@ fun AppNavigationBar(
             .background(
                 if (glassTheme) {
                     Brush.verticalGradient(
-                        listOf(glassSurface.copy(alpha = 0.96f), glassSurface.copy(alpha = 0.76f)),
+                        listOf(glassSurface.copy(alpha = 0.98f), glassSurface.copy(alpha = 0.90f)),
                     )
                 } else {
                     Brush.verticalGradient(listOf(glassSurface, glassSurface))
                 },
             )
+            .drawBehind {
+                if (navigationItems.isNotEmpty()) {
+                    val slotWidth = size.width / navigationItems.size
+                    val insetX = 7.dp.toPx()
+                    val insetY = 6.dp.toPx()
+                    drawRoundRect(
+                        color = Color.White.copy(alpha = 0.14f),
+                        topLeft = Offset(slotWidth * animatedIndex + insetX, insetY),
+                        size = Size(
+                            (slotWidth - insetX * 2).coerceAtLeast(0f),
+                            (size.height - insetY * 2).coerceAtLeast(0f),
+                        ),
+                        cornerRadius = CornerRadius(22.dp.toPx(), 22.dp.toPx()),
+                    )
+                }
+            }
             .border(
                 1.dp,
                 if (glassTheme) Color.White.copy(alpha = 0.14f)

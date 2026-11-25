@@ -13,8 +13,8 @@
 
     <!-- Android 12+: the system launch screen shows the Strix Music waveform mark while the app loads. -->
     <style name="Theme.Blazify.Splash" parent="Theme.Blazify">
-        <item name="android:windowBackground">#260B16</item>
-        <item name="android:windowSplashScreenBackground">#260B16</item>
+        <item name="android:windowBackground">#090A0E</item>
+        <item name="android:windowSplashScreenBackground">#090A0E</item>
         <item name="android:windowSplashScreenAnimatedIcon">@drawable/strix_waveform_mark</item>
         <item name="android:windowSplashScreenAnimationDuration">750</item>
     </style>

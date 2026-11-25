@@ -1,0 +1,110 @@
+diff --git a/app/src/main/kotlin/com/blazify/music/ui/screens/settings/LookAndFeelScreen.kt b/app/src/main/kotlin/com/blazify/music/ui/screens/settings/LookAndFeelScreen.kt
+index 6fba3f4..f2337b7 100644
+--- a/app/src/main/kotlin/com/blazify/music/ui/screens/settings/LookAndFeelScreen.kt
++++ b/app/src/main/kotlin/com/blazify/music/ui/screens/settings/LookAndFeelScreen.kt
+@@ -84,6 +84,11 @@ import com.blazify.music.constants.GridItemSize
+ import com.blazify.music.constants.GridItemsSizeKey
+ import com.blazify.music.constants.LyricsTextPositionKey
+ import com.blazify.music.constants.MiniPlayerDesignKey
++import com.blazify.music.constants.MiniPlayerBackgroundStyle
++import com.blazify.music.constants.MiniPlayerBackgroundStyleKey
++import com.blazify.music.constants.IosGlassMiniPlayerKey
++import com.blazify.music.constants.GlassThemeKey
++import com.blazify.music.constants.AuroraAnimationKey
+ import com.blazify.music.constants.NavBarStyle
+ import com.blazify.music.constants.NavBarStyleKey
+ import com.blazify.music.constants.PlayerDesignKey
+@@ -152,6 +157,14 @@ fun LookAndFeelScreen(
+     }
+ 
+     // ── Mini-player state ──
++    val (iosGlassMiniPlayer, setIosGlassMiniPlayer) = rememberPreference(IosGlassMiniPlayerKey, false)
++    val (_, setGlassTheme) = rememberPreference(GlassThemeKey, true)
++    val (_, setAuroraAnimation) = rememberPreference(AuroraAnimationKey, true)
++    val onIosGlassModeChange: (Boolean) -> Unit = { enabled ->
++        setIosGlassMiniPlayer(enabled)
++        setGlassTheme(enabled)
++        setAuroraAnimation(enabled)
++    }
+     val (miniPlayerDesignId, onMiniPlayerDesignChange) =
+         rememberPreference(MiniPlayerDesignKey, defaultValue = "")
+     val (useNewMiniPlayerDesign) = rememberPreference(UseNewMiniPlayerDesignKey, defaultValue = true)
+@@ -321,12 +334,28 @@ fun LookAndFeelScreen(
+ 
+                     LookFeelTab.MINI ->
+                         Column(Modifier.fillMaxWidth()) {
++                            Box(Modifier.padding(horizontal = 16.dp)) {
++                                Material3SettingsGroup(
++                                    items = listOf(
++                                        Material3SettingsItem(
++                                            icon = painterResource(R.drawable.palette),
++                                            title = { Text("iOS Full Mode") },
++                                            description = { Text("Glass navbar, animasi latar, dan mini player iOS dalam satu toggle") },
++                                            trailingContent = { Switch(checked = iosGlassMiniPlayer, onCheckedChange = onIosGlassModeChange) },
++                                            onClick = { onIosGlassModeChange(!iosGlassMiniPlayer) },
++                                        ),
++                                    ),
++                                )
++                            }
++                            Spacer(Modifier.height(8.dp))
+                             MiniPlayerDesignPicker(
+                                 selected = selectedMiniPlayerDesign,
+                                 onSelect = { onMiniPlayerDesignChange(it.id) },
+                             )
+                             Spacer(Modifier.height(8.dp))
+                             MiniPlayerButtonsPicker(design = selectedMiniPlayerDesign)
++                            Spacer(Modifier.height(18.dp))
++                            MiniPlayerHudStylePicker()
+                         }
+                 }
+             }
+@@ -751,3 +780,49 @@ private fun LookFeelTabRow(
+         }
+     }
+ }
++
++
++@OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
++@Composable
++private fun MiniPlayerHudStylePicker() {
++    val (style, onStyleChange) = rememberEnumPreference(
++        MiniPlayerBackgroundStyleKey,
++        MiniPlayerBackgroundStyle.GRADIENT,
++    )
++    val options = listOf(
++        MiniPlayerBackgroundStyle.DEFAULT to "Default",
++        MiniPlayerBackgroundStyle.TRANSPARENT to "Transparent",
++        MiniPlayerBackgroundStyle.BLUR to "Blur",
++        MiniPlayerBackgroundStyle.GLASS to "Glass / Kaca",
++        MiniPlayerBackgroundStyle.GRADIENT to "Gradient",
++        MiniPlayerBackgroundStyle.PURE_BLACK to "Pure Black",
++    )
++    Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
++        Text(
++            text = "HUD Mini Player",
++            style = MaterialTheme.typography.titleMedium,
++            fontWeight = FontWeight.Bold,
++        )
++        Text(
++            text = "Atur bentuk, efek kaca/blur, dan tampilan tombol mini player ala iOS.",
++            style = MaterialTheme.typography.bodySmall,
++            color = MaterialTheme.colorScheme.onSurfaceVariant,
++        )
++        Spacer(Modifier.height(10.dp))
++        FlowRow(
++            horizontalArrangement = Arrangement.spacedBy(8.dp),
++            verticalArrangement = Arrangement.spacedBy(8.dp),
++        ) {
++            options.forEach { (value, label) ->
++                androidx.compose.material3.FilterChip(
++                    selected = style == value,
++                    onClick = { onStyleChange(value) },
++                    label = { Text(label) },
++                    leadingIcon = if (style == value) {
++                        { Icon(painterResource(R.drawable.check), contentDescription = null, modifier = Modifier.size(16.dp)) }
++                    } else null,
++                )
++            }
++        }
++    }
++}

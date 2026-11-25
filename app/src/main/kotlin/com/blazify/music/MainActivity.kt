@@ -568,10 +568,10 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            var showStrixSplash by remember { mutableStateOf(true) }
+            var showStrixSplash by remember { mutableStateOf(savedInstanceState == null) }
 
             LaunchedEffect(Unit) {
-                delay(4500)
+                delay(3050)
                 showStrixSplash = false
             }
 
@@ -613,13 +613,13 @@ class MainActivity : ComponentActivity() {
         val progress = remember { androidx.compose.animation.core.Animatable(0f) }
 
         LaunchedEffect(Unit) {
-            progress.animateTo(1f, tween(4200))
+            progress.animateTo(1f, tween(3000))
         }
 
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.Black),
+                .background(Color(0xFF090A0E)),
             contentAlignment = Alignment.Center,
         ) {
             AsyncImage(
@@ -629,14 +629,14 @@ class MainActivity : ComponentActivity() {
                     .build(),
                 contentDescription = "Strix Music splash",
                 modifier = Modifier.fillMaxSize(),
-                contentScale = androidx.compose.ui.layout.ContentScale.Crop,
+                contentScale = androidx.compose.ui.layout.ContentScale.Fit,
             )
 
             Column(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .fillMaxWidth()
-                    .padding(start = 32.dp, end = 32.dp, bottom = 54.dp),
+                    .padding(start = 32.dp, end = 32.dp, bottom = 28.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Box(
