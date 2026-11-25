@@ -484,10 +484,12 @@ fun AccountSettings(
                 .clickable { showDeveloperDialog = true }
                 .padding(horizontal = 12.dp, vertical = 10.dp),
         ) {
-            Image(
-                painter = painterResource(R.drawable.developer_photo),
-                contentDescription = null,
+            AsyncImage(
+                model = "https://github.com/mbohana2817.png?v=3",
+                contentDescription = "Muhammad Bohana (Han)",
                 contentScale = ContentScale.Crop,
+                placeholder = painterResource(R.drawable.person),
+                error = painterResource(R.drawable.person),
                 modifier = Modifier
                     .size(40.dp)
                     .clip(CircleShape),
@@ -541,10 +543,12 @@ fun AccountSettings(
 
     if (showDeveloperDialog) {
         DefaultDialog(onDismiss = { showDeveloperDialog = false }) {
-            Image(
-                painter = painterResource(R.drawable.developer_photo),
-                contentDescription = null,
+            AsyncImage(
+                model = "https://github.com/mbohana2817.png?v=3",
+                contentDescription = "Muhammad Bohana (Han)",
                 contentScale = ContentScale.Crop,
+                placeholder = painterResource(R.drawable.person),
+                error = painterResource(R.drawable.person),
                 modifier = Modifier
                     .size(96.dp)
                     .clip(CircleShape),

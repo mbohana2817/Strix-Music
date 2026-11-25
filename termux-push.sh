@@ -7,10 +7,12 @@ if [[ -z "$ZIP_PATH" || ! -f "$ZIP_PATH" ]]; then
   exit 2
 fi
 
-if ! command -v unzip >/dev/null 2>&1 || ! command -v git >/dev/null 2>&1; then
-  pkg update -y
-  pkg install -y unzip git
-fi
+for tool in unzip git tar mktemp find; do
+  command -v "$tool" >/dev/null 2>&1 || {
+    echo "ERROR: Perintah $tool belum tersedia di Termux."
+    exit 2
+  }
+done
 
 if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   echo "ERROR: Jalankan script dari folder hasil git clone repo Strix Music."

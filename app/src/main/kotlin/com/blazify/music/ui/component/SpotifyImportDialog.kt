@@ -341,7 +341,7 @@ private fun TravellingSongs(
             glowColor = accent,
         ) {
             Image(
-                painter = painterResource(R.drawable.blaze_logo),
+                painter = painterResource(R.drawable.strix_logo_mark),
                 contentDescription = null,
                 // The flame sits inside its own margin, so it is drawn a little larger to
                 // stand level with Spotify's mark rather than looking smaller than it.

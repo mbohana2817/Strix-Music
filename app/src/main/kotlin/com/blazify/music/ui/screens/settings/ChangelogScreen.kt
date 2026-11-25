@@ -152,7 +152,7 @@ fun ChangelogScreen(
                         )
                         Image(
                             painter = painterResource(
-                                if (dark) R.drawable.blaze_logo_white else R.drawable.blaze_logo,
+                                if (dark) R.drawable.strix_logo_mark else R.drawable.strix_logo_mark,
                             ),
                             contentDescription = null,
                             modifier = Modifier

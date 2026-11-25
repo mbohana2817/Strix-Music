@@ -65,7 +65,7 @@ class ArtPlaceholderDrawable(context: Context) : Drawable() {
 
         fun get(context: Context): Bitmap? =
             bitmap ?: runCatching {
-                BitmapFactory.decodeResource(context.resources, R.drawable.blaze_logo)
+                BitmapFactory.decodeResource(context.resources, R.drawable.strix_logo_mark)
             }.getOrNull()?.also { bitmap = it }
     }
 }

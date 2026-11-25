@@ -823,7 +823,7 @@ internal fun ThemePhonePreview(
                 Icon(painterResource(R.drawable.person), null, tint = cs.onSurface.copy(alpha = 0.75f), modifier = Modifier.size(13.dp))
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(3.dp)) {
                     Image(
-                        painter = painterResource(if (useDark) R.drawable.blaze_logo_white else R.drawable.blaze_logo),
+                        painter = painterResource(if (useDark) R.drawable.strix_logo_mark else R.drawable.strix_logo_mark),
                         contentDescription = null,
                         modifier = Modifier.size(13.dp),
                     )

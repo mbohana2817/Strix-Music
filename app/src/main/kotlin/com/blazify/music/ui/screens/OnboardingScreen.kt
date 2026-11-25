@@ -412,7 +412,7 @@ private fun TogetherSampleInterior(accent: Color, pureBlack: Boolean) {
             ) {
                 Icon(painterResource(R.drawable.arrow_back), null, tint = cs.onSurface, modifier = Modifier.size(10.dp))
                 Spacer(Modifier.width(6.dp))
-                Image(painterResource(R.drawable.blaze_logo), null, modifier = Modifier.size(9.dp))
+                Image(painterResource(R.drawable.strix_logo_mark), null, modifier = Modifier.size(9.dp))
                 Spacer(Modifier.width(4.dp))
                 Text(stringResource(R.string.blaze_together), color = cs.onSurface, fontSize = 9.sp, lineHeight = 10.sp)
             }

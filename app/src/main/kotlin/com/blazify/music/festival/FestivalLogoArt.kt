@@ -75,9 +75,9 @@ fun FestivalLogoArt(
     )
     val t = if (still) 1.3f else running
 
-    val logo = ImageBitmap.imageResource(if (isDark) R.drawable.blaze_logo_white else R.drawable.blaze_logo)
+    val logo = ImageBitmap.imageResource(if (isDark) R.drawable.strix_logo_mark else R.drawable.strix_logo_mark)
     val headphones =
-        ImageBitmap.imageResource(if (isDark) R.drawable.blaze_logo_headphones_white else R.drawable.blaze_logo_headphones)
+        ImageBitmap.imageResource(if (isDark) R.drawable.strix_logo_mark else R.drawable.strix_logo_mark)
 
     Canvas(modifier.size(size)) {
         val k = this.size.minDimension / 256f

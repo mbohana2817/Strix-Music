@@ -346,6 +346,7 @@ fun AppNavigationBar(
 ) {
     val containerColor = Color.Transparent
     val contentColor = if (pureBlack) Color.White else MaterialTheme.colorScheme.onSurfaceVariant
+    val navAccent = MaterialTheme.colorScheme.primary
     val glassShape = RoundedCornerShape(30.dp)
     val glassTheme by com.blazify.music.utils.rememberPreference(GlassThemeKey, true)
     // iOS-style glass is opt-in. When disabled, keep a crisp Material surface with
@@ -374,7 +375,7 @@ fun AppNavigationBar(
             .background(
                 if (glassTheme) {
                     Brush.verticalGradient(
-                        listOf(glassSurface.copy(alpha = 0.98f), glassSurface.copy(alpha = 0.90f)),
+                        listOf(glassSurface.copy(alpha = 0.92f), glassSurface.copy(alpha = 0.72f)),
                     )
                 } else {
                     Brush.verticalGradient(listOf(glassSurface, glassSurface))
@@ -385,15 +386,42 @@ fun AppNavigationBar(
                     val slotWidth = size.width / navigationItems.size
                     val insetX = 7.dp.toPx()
                     val insetY = 6.dp.toPx()
+                    val indicatorTop = insetY
+                    val indicatorSize = Size(
+                        (slotWidth - insetX * 2).coerceAtLeast(0f),
+                        (size.height - insetY * 2).coerceAtLeast(0f),
+                    )
                     drawRoundRect(
-                        color = Color.White.copy(alpha = 0.14f),
-                        topLeft = Offset(slotWidth * animatedIndex + insetX, insetY),
-                        size = Size(
-                            (slotWidth - insetX * 2).coerceAtLeast(0f),
-                            (size.height - insetY * 2).coerceAtLeast(0f),
-                        ),
+                        brush = if (glassTheme) {
+                            Brush.linearGradient(
+                                colors = listOf(
+                                    Color.White.copy(alpha = 0.25f),
+                                    Color.White.copy(alpha = 0.09f),
+                                ),
+                                start = Offset(slotWidth * animatedIndex, 0f),
+                                end = Offset(slotWidth * (animatedIndex + 1f), size.height),
+                            )
+                        } else {
+                            Brush.linearGradient(
+                                colors = listOf(
+                                    navAccent.copy(alpha = 0.22f),
+                                    navAccent.copy(alpha = 0.12f),
+                                ),
+                            )
+                        },
+                        topLeft = Offset(slotWidth * animatedIndex + insetX, indicatorTop),
+                        size = indicatorSize,
                         cornerRadius = CornerRadius(22.dp.toPx(), 22.dp.toPx()),
                     )
+                    if (glassTheme) {
+                        drawRoundRect(
+                            color = Color.White.copy(alpha = 0.16f),
+                            topLeft = Offset(slotWidth * animatedIndex + insetX, indicatorTop),
+                            size = indicatorSize,
+                            cornerRadius = CornerRadius(22.dp.toPx(), 22.dp.toPx()),
+                            style = androidx.compose.ui.graphics.drawscope.Stroke(1.dp.toPx()),
+                        )
+                    }
                 }
             }
             .border(
@@ -454,11 +482,13 @@ fun AppNavigationBar(
                 },
                 interactionSource = interactionSource,
                 // Custom styles draw their own highlight, so hide the Material pill.
-                colors = if (navBarStyle == NavBarStyle.PILL) {
-                    NavigationBarItemDefaults.colors()
-                } else {
-                    NavigationBarItemDefaults.colors(indicatorColor = Color.Transparent)
-                },
+                colors = NavigationBarItemDefaults.colors(
+                    indicatorColor = Color.Transparent,
+                    selectedIconColor = Color.White,
+                    selectedTextColor = Color.White,
+                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                ),
                 icon = {
                     NavItemContent(
                         style = navBarStyle,

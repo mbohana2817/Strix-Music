@@ -39,6 +39,7 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -198,9 +199,7 @@ import com.blazify.music.playback.PlayerConnection
 import com.blazify.music.playback.queues.YouTubeQueue
 import androidx.compose.ui.platform.LocalUriHandler
 import com.blazify.music.utils.StarPrompt
-import com.blazify.music.constants.OnboardingCompletedKey
 import com.blazify.music.ui.component.BlazeSnackbarHost
-import com.blazify.music.ui.screens.OnboardingScreen
 import com.blazify.music.ui.component.AccountSettingsDialog
 import com.blazify.music.ui.component.AppNavigationBar
 import com.blazify.music.ui.component.AppNavigationRail
@@ -594,17 +593,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
-            // First run: introduce what the app does before dropping into it. Until the saved
-            // answer is read it is unknown, not "not yet": taken as "not yet", every launch built
-            // the whole introduction behind the first frame and threw it away a moment later.
-            val onboardingCompleted by remember {
-                dataStore.data.map { it[OnboardingCompletedKey] ?: false }.distinctUntilChanged()
-            }.collectAsState(initial = settingsSnapshot?.let { it[OnboardingCompletedKey] ?: false })
-            if (onboardingCompleted == false) {
-                OnboardingScreen(onFinish = {
-                    lifecycleScope.launch { safeDataStoreEdit { it[OnboardingCompletedKey] = true } }
-                })
-            }
+
         }
     }
 
@@ -613,60 +602,92 @@ class MainActivity : ComponentActivity() {
         val progress = remember { androidx.compose.animation.core.Animatable(0f) }
 
         LaunchedEffect(Unit) {
-            progress.animateTo(1f, tween(3000))
+            progress.animateTo(1f, tween(2950))
         }
 
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color(0xFF090A0E)),
-            contentAlignment = Alignment.Center,
         ) {
+            // Keep the complete 16:9 anime GIF visible on portrait screens.
+            // Fit + fixed aspect ratio avoids the aggressive center-crop that
+            // previously cut off the artwork.
             AsyncImage(
                 model = ImageRequest.Builder(this@MainActivity)
                     .data(R.drawable.strix_splash)
                     .crossfade(false)
+                    .memoryCachePolicy(coil3.request.CachePolicy.DISABLED)
                     .build(),
-                contentDescription = "Strix Music splash",
-                modifier = Modifier.fillMaxSize(),
+                contentDescription = "Strix Music anime splash",
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .fillMaxWidth()
+                    .aspectRatio(16f / 9f),
                 contentScale = androidx.compose.ui.layout.ContentScale.Fit,
+            )
+
+            // Soft vignette keeps the loading text legible without covering the GIF.
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        androidx.compose.ui.graphics.Brush.verticalGradient(
+                            0f to Color.Transparent,
+                            0.58f to Color.Transparent,
+                            1f to Color(0xEE090A0E),
+                        ),
+                    ),
             )
 
             Column(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .fillMaxWidth()
-                    .padding(start = 32.dp, end = 32.dp, bottom = 28.dp),
+                    .padding(start = 30.dp, end = 30.dp, bottom = 38.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
+                Text(
+                    text = "STRIX MUSIC",
+                    color = Color.White,
+                    fontSize = 19.sp,
+                    fontWeight = androidx.compose.ui.text.font.FontWeight.Black,
+                    letterSpacing = 3.sp,
+                )
+                Spacer(Modifier.height(7.dp))
+                Text(
+                    text = "CONNECTING TO STRIX MUSIC",
+                    color = Color(0xFFC8B5FF),
+                    fontSize = 10.sp,
+                    fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                    letterSpacing = 1.8.sp,
+                )
+                Spacer(Modifier.height(18.dp))
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(6.dp)
+                        .height(5.dp)
                         .clip(RoundedCornerShape(50))
-                        .background(Color.White.copy(alpha = 0.18f)),
+                        .background(Color.White.copy(alpha = 0.16f)),
                 ) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth(progress.value)
-                            .height(6.dp)
+                            .height(5.dp)
                             .clip(RoundedCornerShape(50))
-                            .background(Color(0xFFFF176B)),
+                            .background(
+                                androidx.compose.ui.graphics.Brush.horizontalGradient(
+                                    listOf(Color(0xFF8E69FF), Color(0xFFE2C9FF)),
+                                ),
+                            ),
                     )
                 }
-
-                Spacer(Modifier.height(14.dp))
+                Spacer(Modifier.height(10.dp))
                 Text(
-                    text = "Please Wait",
-                    color = Color.White,
-                    fontSize = 15.sp,
+                    text = "Preparing your music experience",
+                    color = Color.White.copy(alpha = 0.56f),
+                    fontSize = 11.sp,
                     fontWeight = androidx.compose.ui.text.font.FontWeight.Medium,
-                )
-                Text(
-                    text = "Connect To Server",
-                    color = Color.White.copy(alpha = 0.65f),
-                    fontSize = 12.sp,
-                    modifier = Modifier.padding(top = 3.dp),
                 )
             }
         }
@@ -1468,7 +1489,7 @@ class MainActivity : ComponentActivity() {
                                                     onClick = { navController.navigate("listen_together_from_topbar") },
                                                 ) {
                                                     Image(
-                                                        painter = painterResource(R.drawable.blaze_logo),
+                                                        painter = painterResource(R.drawable.strix_logo_mark),
                                                         contentDescription = null,
                                                         modifier = Modifier.size(20.dp),
                                                     )

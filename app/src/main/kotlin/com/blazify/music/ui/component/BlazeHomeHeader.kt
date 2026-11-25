@@ -171,7 +171,7 @@ fun BlazeHomeHeader(
                 } else {
                     Image(
                         painter = painterResource(
-                            if (isDark) R.drawable.blaze_logo_white else R.drawable.blaze_logo,
+                            if (isDark) R.drawable.strix_logo_mark else R.drawable.strix_logo_mark,
                         ),
                         contentDescription = null,
                         modifier = logoModifier,

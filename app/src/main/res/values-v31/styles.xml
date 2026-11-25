@@ -15,7 +15,7 @@
     <style name="Theme.Blazify.Splash" parent="Theme.Blazify">
         <item name="android:windowBackground">#090A0E</item>
         <item name="android:windowSplashScreenBackground">#090A0E</item>
-        <item name="android:windowSplashScreenAnimatedIcon">@drawable/strix_waveform_mark</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/strix_logo_mark</item>
         <item name="android:windowSplashScreenAnimationDuration">750</item>
     </style>
 </resources>

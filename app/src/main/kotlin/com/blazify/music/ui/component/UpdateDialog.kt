@@ -125,7 +125,7 @@ fun UpdateDialog(
     }
 
     val version = release.tagName.removePrefix("v")
-    val logo = ImageBitmap.imageResource(R.drawable.blaze_logo_white)
+    val logo = ImageBitmap.imageResource(R.drawable.strix_logo_mark)
     val later = stringResource(R.string.update_later)
     val buttons =
         when (val s = stage) {

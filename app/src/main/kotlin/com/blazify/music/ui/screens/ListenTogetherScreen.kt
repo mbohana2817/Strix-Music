@@ -451,7 +451,7 @@ fun ListenTogetherScreen(
             title = {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Image(
-                        painter = painterResource(R.drawable.blaze_logo),
+                        painter = painterResource(R.drawable.strix_logo_mark),
                         contentDescription = null,
                         modifier = Modifier.size(26.dp),
                     )
