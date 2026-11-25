@@ -622,7 +622,7 @@
     <string name="logout_dialog_message">Apakah Anda ingin menyimpan playlist dan data perpustakaan Anda? Lagu yang diunduh akan selalu disimpan</string>
     <string name="logout_keep">Simpan</string>
     <string name="logout_clear">Hapus</string>
-    <string name="credits_lead_developer">Pengembang utama</string>
+    <string name="credits_lead_developer">Developer utama</string>
     <string name="credits_collaborator">Kolaborator</string>
     <string name="credits_collaborators_section">Para Kolaborator</string>
     <string name="credits_license_name">Lisensi Publik Umum GNU v3.0</string>
@@ -933,9 +933,9 @@
     <string name="custom_color">Warna kustom</string>
     <string name="custom_color_hex">Hex</string>
     <string name="custom_color_hsv">H %1$d°  ·  S %2$d%%  ·  V %3$d%%</string>
-    <string name="developer_heading">Kenali pengembangnya</string>
-    <string name="developer_role">Pengembang Strix Music • Cirebon, Indonesia</string>
-    <string name="developer_role_short">Pengembang • Cirebon</string>
+    <string name="developer_heading">Developer</string>
+    <string name="developer_role">Developer Strix Music • Cirebon, Indonesia</string>
+    <string name="developer_role_short">Developer • Cirebon</string>
     <string name="developer_star">Bintang</string>
     <string name="update_check_idle">Ketuk untuk memeriksa</string>
     <string name="update_check_running">Memeriksa…</string>
@@ -1020,10 +1020,10 @@
     <string name="downloads">Unduhan</string>
     <string name="no_recently_played">Belum ada lagu yang baru diputar.</string>
     <string name="no_recommendations">Belum ada rekomendasi.</string>
-    <string name="about_developer_role">Pengembang Strix Music</string>
+    <string name="about_developer_role">Developer Strix Music</string>
     <string name="about_me_body">Strix Music dikembangkan dan dikustomisasi oleh Muhammad Bohana (Han), Alumni Siswa Al-Hidayah Kota Cirebon, TKJ 2. Aplikasi ini merupakan pengembangan dari proyek open-source; kredit dan lisensi kontributor upstream tetap dihormati.</string>
     <string name="buy_me_a_coffee">Traktir saya kopi</string>
-    <string name="coffee_dialog_subtitle">Pindai kode untuk mendukung Strix Music</string>
+    <string name="coffee_dialog_subtitle">Scan QRIS untuk mendukung Developer Strix Music</string>
     <string name="made_with_love">Dibuat dengan perhatian oleh Muhammad Bohana (Han)</string>
     <string name="arrange">Atur</string>
     <string name="created_by_you">Dibuat oleh Anda</string>
@@ -1140,7 +1140,7 @@
     <string name="hint_privacy">Riwayat, jeda, data mendengarkan</string>
     <string name="hint_storage">Cache, unduhan, hapus data</string>
     <string name="hint_backup">Ekspor atau impor pustaka Anda</string>
-    <string name="hint_about">Versi dan pengembang</string>
+    <string name="hint_about">Versi dan Developer</string>
     <string name="hint_changelog">Yang baru di versi ini</string>
     <string name="hint_links">Buka tautan Strix Music secara default</string>
     <string name="hint_updater">Periksa pembaruan</string>

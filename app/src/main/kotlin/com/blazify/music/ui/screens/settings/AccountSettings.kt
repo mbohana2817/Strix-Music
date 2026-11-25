@@ -132,9 +132,6 @@ fun AccountSettings(
             }
         }
     }
-    val repoUrl = stringResource(R.string.blazify_repo_url)
-    val websiteUrl = stringResource(R.string.developer_website_url)
-    val devGithubUrl = stringResource(R.string.developer_github_url)
     val uriHandler = LocalUriHandler.current
 
     val (accountNamePref, onAccountNameChange) = rememberPreference(AccountNameKey, "")
@@ -484,15 +481,11 @@ fun AccountSettings(
                 .clickable { showDeveloperDialog = true }
                 .padding(horizontal = 12.dp, vertical = 10.dp),
         ) {
-            AsyncImage(
-                model = "https://github.com/mbohana2817.png?v=3",
-                contentDescription = "Muhammad Bohana (Han)",
+            Image(
+                painter = painterResource(R.drawable.developer_portrait),
+                contentDescription = "Developer Strix Music",
                 contentScale = ContentScale.Crop,
-                placeholder = painterResource(R.drawable.person),
-                error = painterResource(R.drawable.person),
-                modifier = Modifier
-                    .size(40.dp)
-                    .clip(CircleShape),
+                modifier = Modifier.size(40.dp).clip(CircleShape),
             )
 
             Spacer(Modifier.width(12.dp))
@@ -518,24 +511,12 @@ fun AccountSettings(
             Spacer(Modifier.width(8.dp))
 
             OutlinedButton(
-                onClick = { uriHandler.openUri(repoUrl) },
+                onClick = { uriHandler.openUri("https://wa.me/6287883666802") },
                 colors = ButtonDefaults.outlinedButtonColors(
                     containerColor = MaterialTheme.colorScheme.surface,
                     contentColor = MaterialTheme.colorScheme.onSurface,
                 ),
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.github),
-                    contentDescription = null,
-                    modifier = Modifier.size(16.dp),
-                )
-                Spacer(Modifier.width(6.dp))
-                Text(
-                    text = stringResource(R.string.developer_star),
-                    style = MaterialTheme.typography.labelMedium,
-                    maxLines = 1,
-                )
-            }
+            ) { Text("WhatsApp") }
         }
 
         Spacer(Modifier.height(8.dp))
@@ -543,15 +524,11 @@ fun AccountSettings(
 
     if (showDeveloperDialog) {
         DefaultDialog(onDismiss = { showDeveloperDialog = false }) {
-            AsyncImage(
-                model = "https://github.com/mbohana2817.png?v=3",
-                contentDescription = "Muhammad Bohana (Han)",
+            Image(
+                painter = painterResource(R.drawable.developer_portrait),
+                contentDescription = "Developer Strix Music",
                 contentScale = ContentScale.Crop,
-                placeholder = painterResource(R.drawable.person),
-                error = painterResource(R.drawable.person),
-                modifier = Modifier
-                    .size(96.dp)
-                    .clip(CircleShape),
+                modifier = Modifier.size(96.dp).clip(CircleShape),
             )
 
             Spacer(Modifier.height(12.dp))
@@ -586,12 +563,12 @@ fun AccountSettings(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
             ) {
-                TextButton(onClick = { uriHandler.openUri(websiteUrl) }) {
-                    Text(stringResource(R.string.developer_website))
+                TextButton(onClick = { uriHandler.openUri("https://wa.me/6287883666802") }) {
+                    Text("WhatsApp")
                 }
                 Spacer(Modifier.width(8.dp))
-                TextButton(onClick = { uriHandler.openUri(devGithubUrl) }) {
-                    Text(stringResource(R.string.developer_github))
+                TextButton(onClick = { uriHandler.openUri("https://t.me/KepoBetDahAnjir") }) {
+                    Text("Telegram")
                 }
             }
 

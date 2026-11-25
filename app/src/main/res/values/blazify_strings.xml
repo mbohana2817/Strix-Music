@@ -340,7 +340,7 @@
         <string name="genres">Genres</string>
 <string name="all_genres">All genres</string>
     <string name="fewer_genres">Fewer genres</string>
-    <string name="developer_heading">Know about the developer</string>
+    <string name="developer_heading">Developer</string>
     <string name="developer_name" translatable="false">Muhammad Bohana (Han)</string>
     <string name="developer_role">Strix Music Developer • Cirebon, Indonesia</string>
     <string name="developer_role_short">Developer • Cirebon</string>
@@ -1263,8 +1263,9 @@
     <!-- About page -->
     <string name="about_developer_role">Strix Music Developer</string>
     <string name="about_me_body">Strix Music is customized and maintained by Muhammad Bohana (Han), an alumnus of Al-Hidayah, Cirebon City, TKJ 2. This app builds on an open-source upstream project; original contributors and license notices remain credited.</string>
-    <string name="buy_me_a_coffee">Buy me a coffee</string>
-    <string name="coffee_dialog_subtitle">Scan the code to support Strix Music</string>
+    <string name="support_developer">Support Developer</string>
+    <string name="buy_me_a_coffee">Support Developer</string>
+    <string name="coffee_dialog_subtitle">Scan QRIS untuk mendukung Developer Strix Music</string>
     <string name="made_with_love">Made with care by Muhammad Bohana (Han)</string>
     <string name="about_open_source">Free and open source under GPL-3.0</string>
     <string name="arrange">Arrange</string>
@@ -1335,7 +1336,7 @@
     <string name="edit_tags_note">Shown in Strix Music only. The file itself is left alone, so other apps still see its original tags.</string>
     <string name="local_music_permission">Strix Music needs permission to read audio files</string>
     <string name="blaze_greeting_default_name">Music Lover</string>
-    <string name="star_on_github">Star Strix Music on GitHub</string>
+    <string name="star_on_github">Support Developer</string>
     <string name="star_prompt_title">Getting on with Strix Music?</string>
     <string name="star_prompt_body">It is made by one person and given away, with no ads and nothing tracked. A star on GitHub is most of how anyone else finds it.</string>
     <string name="star_prompt_yes">Star it</string>

@@ -68,11 +68,8 @@ import com.blazify.music.R
 import com.blazify.music.ui.component.IconButton
 import com.blazify.music.ui.utils.backToMain
 
-private const val GITHUB_URL = "https://github.com/mbohana2817"
-// The project repository is kept separate from the developer profile.
-private const val PROJECT_URL = "https://github.com/mbohana2817/Strix-Music"
-private const val LICENSE_URL = "https://github.com/mbohana2817/Strix-Music/blob/main/LICENSE"
-private const val GITHUB_AVATAR = "https://github.com/mbohana2817.png?v=3"
+private const val WHATSAPP_URL = "https://wa.me/6287883666802"
+private const val TELEGRAM_URL = "https://t.me/KepoBetDahAnjir"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -81,7 +78,7 @@ fun AboutScreen(
 ) {
     val uriHandler = LocalUriHandler.current
     val windowInsets = LocalPlayerAwareWindowInsets.current
-    var showCoffeeDialog by remember { mutableStateOf(false) }
+    var showSupportDialog by remember { mutableStateOf(false) }
     var showChannelQrDialog by remember { mutableStateOf(false) }
 
     Column(
@@ -151,15 +148,11 @@ fun AboutScreen(
                         color = MaterialTheme.colorScheme.surfaceContainerHighest,
                         tonalElevation = 4.dp,
                     ) {
-                        val fallback = painterResource(R.drawable.person)
-                        AsyncImage(
-                            model = GITHUB_AVATAR,
-                            contentDescription = "Muhammad Bohana (Han)",
+                        Image(
+                            painter = painterResource(R.drawable.developer_portrait),
+                            contentDescription = "Developer Strix Music",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.fillMaxSize(),
-                            placeholder = fallback,
-                            fallback = fallback,
-                            error = fallback,
                         )
                     }
                     Column(verticalArrangement = Arrangement.Center) {
@@ -182,13 +175,19 @@ fun AboutScreen(
 
                 Spacer(Modifier.height(20.dp))
 
-                // Socials
+                // Direct developer contact; no GitHub profile/repository links in the UI.
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
-                    SocialButton(Modifier.weight(1f), R.drawable.github, stringResource(R.string.social_github)) { uriHandler.openUri(GITHUB_URL) }
-                    SocialButton(Modifier.weight(1f), R.drawable.github, stringResource(R.string.credits_view_repo)) { uriHandler.openUri(PROJECT_URL) }
+                    FilledTonalButton(
+                        onClick = { uriHandler.openUri(WHATSAPP_URL) },
+                        modifier = Modifier.weight(1f).height(48.dp),
+                    ) { Text("WhatsApp") }
+                    FilledTonalButton(
+                        onClick = { uriHandler.openUri(TELEGRAM_URL) },
+                        modifier = Modifier.weight(1f).height(48.dp),
+                    ) { Text("Telegram") }
                 }
 
                 Spacer(Modifier.height(20.dp))
@@ -204,33 +203,7 @@ fun AboutScreen(
                 Spacer(Modifier.height(20.dp))
 
                 Button(
-                    onClick = { uriHandler.openUri(PROJECT_URL) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(52.dp),
-                    shape = CircleShape,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                    ),
-                ) {
-                    Icon(
-                        painterResource(R.drawable.star),
-                        contentDescription = null,
-                        modifier = Modifier.size(20.dp),
-                    )
-                    Spacer(Modifier.width(12.dp))
-                    Text(
-                        stringResource(R.string.star_on_github),
-                        fontWeight = FontWeight.ExtraBold,
-                        fontSize = 16.sp,
-                    )
-                }
-
-                Spacer(Modifier.height(12.dp))
-
-                Button(
-                    onClick = { showCoffeeDialog = true },
+                    onClick = { showSupportDialog = true },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(52.dp),
@@ -241,13 +214,13 @@ fun AboutScreen(
                     ),
                 ) {
                     Icon(
-                        painterResource(R.drawable.buymeacoffee),
+                        painterResource(R.drawable.strix_logo_mark),
                         contentDescription = null,
                         modifier = Modifier.size(20.dp),
                     )
                     Spacer(Modifier.width(12.dp))
                     Text(
-                        stringResource(R.string.buy_me_a_coffee),
+                        stringResource(R.string.support_developer),
                         fontWeight = FontWeight.ExtraBold,
                         fontSize = 16.sp,
                     )
@@ -288,14 +261,11 @@ fun AboutScreen(
 
         Spacer(Modifier.height(8.dp))
 
-        // The licence this app is under, where anybody can read it. The projects
-        // it builds on are named in NOTICE, the README and the file headers.
         Text(
             text = stringResource(R.string.about_open_source),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
             textAlign = TextAlign.Center,
-            modifier = Modifier.clickable { uriHandler.openUri(LICENSE_URL) },
         )
 
         Spacer(Modifier.height(40.dp))
@@ -316,8 +286,8 @@ fun AboutScreen(
         },
     )
 
-    if (showCoffeeDialog) {
-        CoffeeQrDialog(onDismiss = { showCoffeeDialog = false })
+    if (showSupportDialog) {
+        SupportDeveloperQrDialog(onDismiss = { showSupportDialog = false })
     }
     if (showChannelQrDialog) {
         ChannelQrDialog(onDismiss = { showChannelQrDialog = false })
@@ -341,17 +311,7 @@ private fun HeroChip(text: String, ink: Color = Color.White) {
 }
 
 @Composable
-private fun SocialButton(modifier: Modifier = Modifier, iconRes: Int, contentDescription: String? = null, onClick: () -> Unit) {
-    FilledTonalButton(
-        onClick = onClick,
-        modifier = modifier.height(48.dp),
-    ) {
-        Icon(painterResource(iconRes), contentDescription = contentDescription)
-    }
-}
-
-@Composable
-private fun CoffeeQrDialog(onDismiss: () -> Unit) {
+private fun SupportDeveloperQrDialog(onDismiss: () -> Unit) {
     Dialog(onDismissRequest = onDismiss) {
         Surface(
             shape = RoundedCornerShape(28.dp),
@@ -362,14 +322,14 @@ private fun CoffeeQrDialog(onDismiss: () -> Unit) {
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
-                    text = stringResource(R.string.buy_me_a_coffee),
+                    text = stringResource(R.string.support_developer),
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Black,
                     color = MaterialTheme.colorScheme.onSurface,
                 )
                 Spacer(Modifier.height(6.dp))
                 Text(
-                    text = stringResource(R.string.coffee_dialog_subtitle),
+                    text = "Scan QRIS untuk mendukung pengembangan Strix Music.",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
@@ -381,7 +341,7 @@ private fun CoffeeQrDialog(onDismiss: () -> Unit) {
                     color = Color.White,
                 ) {
                     Image(
-                        painter = painterResource(R.drawable.coffee_qr),
+                        painter = painterResource(R.drawable.developer_qris),
                         contentDescription = null,
                         contentScale = ContentScale.Fit,
                         modifier = Modifier
