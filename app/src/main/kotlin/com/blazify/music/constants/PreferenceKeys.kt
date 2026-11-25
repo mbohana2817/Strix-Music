@@ -49,8 +49,6 @@ val AppBackgroundStyleKey = stringPreferencesKey("appBackgroundStyle")
 /** Strix visual effects: optional iOS-style translucent surfaces and animated aurora. */
 val GlassThemeKey = booleanPreferencesKey("glassTheme")
 val AuroraAnimationKey = booleanPreferencesKey("auroraAnimation")
-/** Enables the optional BitChord-inspired floating navigation appearance. */
-val BitChordThemeKey = booleanPreferencesKey("bitChordTheme")
 
 enum class AppBackgroundStyle {
     STRIX_BURGUNDY,
@@ -89,6 +87,8 @@ enum class DensityScale(
 
 val DefaultOpenTabKey = stringPreferencesKey("defaultOpenTab")
 val SlimNavBarKey = booleanPreferencesKey("slimNavBar")
+/** Switch between the classic Strix navigation and the optional BitChord-inspired floating bar. */
+val BitChordThemeKey = booleanPreferencesKey("bitChordTheme")
 val GridItemsSizeKey = stringPreferencesKey("gridItemSize")
 val SliderStyleKey = stringPreferencesKey("sliderStyle")
 val SquigglySliderKey = booleanPreferencesKey("squigglySlider")

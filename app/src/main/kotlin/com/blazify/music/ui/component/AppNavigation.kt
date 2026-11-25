@@ -32,6 +32,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.unit.sp
 import com.blazify.music.constants.NavBarStyle
 import com.blazify.music.constants.GlassThemeKey
+import com.blazify.music.constants.BitChordThemeKey
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Spacer
@@ -343,15 +344,26 @@ fun AppNavigationBar(
     slimNav: Boolean = false,
     onSearchLongClick: (() -> Unit)? = null
 ) {
+    val (bitChordTheme) = com.blazify.music.utils.rememberPreference(BitChordThemeKey, defaultValue = false)
+    if (bitChordTheme) {
+        BitChordInspiredNavigationBar(
+            navigationItems = navigationItems,
+            currentRoute = currentRoute,
+            onItemClick = onItemClick,
+            modifier = modifier,
+            slimNav = slimNav,
+            onSearchLongClick = onSearchLongClick,
+        )
+        return
+    }
     val glassTheme by com.blazify.music.utils.rememberPreference(GlassThemeKey, true)
-    val bitChordTheme by com.blazify.music.utils.rememberPreference(com.blazify.music.constants.BitChordThemeKey, false)
     val haptics = LocalHapticFeedback.current
     val viewConfiguration = LocalViewConfiguration.current
     val selectedIndex = navigationItems.indexOfFirst { screen ->
         isRouteSelected(currentRoute, screen.route, navigationItems)
     }.coerceAtLeast(0)
     val itemCount = navigationItems.size.coerceAtLeast(1)
-    val pillShape = if (bitChordTheme) RoundedCornerShape(28.dp) else RoundedCornerShape(percent = 50)
+    val pillShape = RoundedCornerShape(percent = 50)
     val indicatorOffset by animateFloatAsState(
         targetValue = selectedIndex.toFloat(),
         animationSpec = spring(dampingRatio = 0.72f, stiffness = 320f),
@@ -363,12 +375,11 @@ fun AppNavigationBar(
     BoxWithConstraints(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = if (bitChordTheme) 14.dp else 18.dp, vertical = 7.dp)
-            .shadow(if (bitChordTheme) 24.dp else 18.dp, pillShape)
+            .padding(horizontal = 18.dp, vertical = 7.dp)
+            .shadow(18.dp, pillShape)
             .clip(pillShape)
             .background(
-                if (bitChordTheme) Brush.verticalGradient(listOf(Color(0xEE25232D), Color(0xD916151D)))
-                else Brush.verticalGradient(listOf(surfaceTop, surfaceBottom)),
+                Brush.verticalGradient(listOf(surfaceTop, surfaceBottom)),
             )
             .border(1.dp, Color.White.copy(alpha = if (glassTheme) 0.20f else 0.10f), pillShape)
             .padding(5.dp),
@@ -379,8 +390,8 @@ fun AppNavigationBar(
             modifier = Modifier
                 .offset(x = (slotWidth * indicatorOffset) + 1.dp)
                 .width(indicatorWidth)
-                .height(if (bitChordTheme) 56.dp else 53.dp)
-                .clip(if (bitChordTheme) RoundedCornerShape(22.dp) else RoundedCornerShape(percent = 50))
+                .height(53.dp)
+                .clip(RoundedCornerShape(percent = 50))
                 .background(
                     Brush.verticalGradient(
                         listOf(Color.White.copy(alpha = 0.20f), Color.White.copy(alpha = 0.075f)),
@@ -423,8 +434,8 @@ fun AppNavigationBar(
                 Column(
                     modifier = Modifier
                         .weight(1f)
-                        .height(if (bitChordTheme) 56.dp else 53.dp)
-                        .clip(if (bitChordTheme) RoundedCornerShape(20.dp) else RoundedCornerShape(22.dp))
+                        .height(53.dp)
+                        .clip(RoundedCornerShape(22.dp))
                         .clickable(
                             interactionSource = interactionSource,
                             indication = null,
@@ -455,6 +466,90 @@ fun AppNavigationBar(
                             overflow = TextOverflow.Ellipsis,
                         )
                     }
+                }
+            }
+        }
+    }
+}
+
+
+/** BitChord-inspired floating navigation variant, wired to Strix routes and icons. */
+@Composable
+private fun BitChordInspiredNavigationBar(
+    navigationItems: List<Screens>,
+    currentRoute: String?,
+    onItemClick: (Screens, Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+    slimNav: Boolean = false,
+    onSearchLongClick: (() -> Unit)? = null,
+) {
+    val selectedIndex = navigationItems.indexOfFirst { isRouteSelected(currentRoute, it.route, navigationItems) }.coerceAtLeast(0)
+    val shape = RoundedCornerShape(28.dp)
+    val haptics = LocalHapticFeedback.current
+    val viewConfiguration = LocalViewConfiguration.current
+    val indicator by animateFloatAsState(
+        targetValue = selectedIndex.toFloat(),
+        animationSpec = spring(dampingRatio = 0.78f, stiffness = 360f),
+        label = "bitchord-tab-indicator",
+    )
+    BoxWithConstraints(
+        modifier = modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 9.dp)
+            .shadow(20.dp, shape).clip(shape)
+            .background(Brush.verticalGradient(listOf(Color(0xEE292832), Color(0xE915151D))))
+            .border(1.dp, Color.White.copy(alpha = 0.22f), shape)
+            .padding(6.dp),
+    ) {
+        val slot = maxWidth / navigationItems.size.coerceAtLeast(1)
+        Box(
+            Modifier.offset(x = slot * indicator).width(slot).height(54.dp)
+                .clip(RoundedCornerShape(23.dp))
+                .background(Brush.verticalGradient(listOf(Color.White.copy(alpha = 0.22f), Color.White.copy(alpha = 0.09f))))
+                .border(1.dp, Color.White.copy(alpha = 0.20f), RoundedCornerShape(23.dp)),
+        )
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            navigationItems.forEach { screen ->
+                val selected = isRouteSelected(currentRoute, screen.route, navigationItems)
+                val selectedNow by rememberUpdatedState(selected)
+                val label = stringResource(screen.titleId)
+                val icon = if (selected) screen.iconIdActive else screen.iconIdInactive
+                val isSearch = screen == Screens.Search && onSearchLongClick != null
+                val source = remember(screen.route) { MutableInteractionSource() }
+                if (isSearch) {
+                    LaunchedEffect(source) {
+                        var longPressed = false
+                        source.interactions.collectLatest { interaction ->
+                            when (interaction) {
+                                is PressInteraction.Press -> {
+                                    longPressed = false
+                                    delay(viewConfiguration.longPressTimeoutMillis)
+                                    longPressed = true
+                                    haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                                    onSearchLongClick.invoke()
+                                }
+                                is PressInteraction.Release -> if (!longPressed) onItemClick(screen, selectedNow)
+                                is PressInteraction.Cancel -> longPressed = false
+                            }
+                        }
+                    }
+                }
+                Column(
+                    Modifier.weight(1f).height(54.dp).clip(RoundedCornerShape(22.dp)).clickable(
+                        interactionSource = source, indication = null,
+                        onClick = { if (!isSearch) onItemClick(screen, selectedNow) },
+                    ),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                ) {
+                    Icon(
+                        painter = painterResource(icon), contentDescription = label,
+                        tint = if (selected) Color.White else Color.White.copy(alpha = 0.62f),
+                        modifier = Modifier.size(if (selected) 24.dp else 22.dp),
+                    )
+                    if (!slimNav) Text(
+                        text = label, color = if (selected) Color.White else Color.White.copy(alpha = 0.66f),
+                        fontSize = 10.sp, fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
+                        maxLines = 1, overflow = TextOverflow.Ellipsis,
+                    )
                 }
             }
         }

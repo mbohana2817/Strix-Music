@@ -86,6 +86,7 @@ import com.blazify.music.constants.LyricsTextPositionKey
 import com.blazify.music.constants.MiniPlayerDesignKey
 import com.blazify.music.constants.NavBarStyle
 import com.blazify.music.constants.NavBarStyleKey
+import com.blazify.music.constants.BitChordThemeKey
 import com.blazify.music.constants.PlayerDesignKey
 import com.blazify.music.constants.PureBlackKey
 import com.blazify.music.constants.PureBlackMiniPlayerKey
@@ -188,7 +189,7 @@ fun LookAndFeelScreen(
         rememberEnumPreference(GridItemsSizeKey, GridItemSize.SMALL)
     var showGridSizeDialog by rememberSaveable { mutableStateOf(false) }
     val (slimNavBar, onSlimNavBarChange) = rememberPreference(SlimNavBarKey, defaultValue = false)
-    val (bitChordTheme, onBitChordThemeChange) = rememberPreference(com.blazify.music.constants.BitChordThemeKey, defaultValue = false)
+    val (bitChordTheme, onBitChordThemeChange) = rememberPreference(BitChordThemeKey, defaultValue = false)
     val (navBarStyle, onNavBarStyleChange) = rememberEnumPreference(NavBarStyleKey, NavBarStyle.PILL)
     var showNavBarStyleDialog by rememberSaveable { mutableStateOf(false) }
     val (showHomeGreeting, onShowHomeGreetingChange) = rememberPreference(ShowHomeGreetingKey, defaultValue = true)
@@ -284,7 +285,7 @@ fun LookAndFeelScreen(
                                     Material3SettingsItem(
                                         icon = painterResource(R.drawable.nav_bar),
                                         title = { Text("New Theme · BitChord Theme") },
-                                        description = { Text("Gunakan gaya floating glass dan animasi navbar BitChord") },
+                                        description = { Text(if (bitChordTheme) "BitChord floating navigation is active" else "Use the classic Strix navigation") },
                                         trailingContent = {
                                             Switch(checked = bitChordTheme, onCheckedChange = onBitChordThemeChange)
                                         },
