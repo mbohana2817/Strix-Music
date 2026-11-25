@@ -344,7 +344,10 @@ fun AppNavigationBar(
     slimNav: Boolean = false,
     onSearchLongClick: (() -> Unit)? = null
 ) {
-    val (bitChordTheme) = com.blazify.music.utils.rememberPreference(BitChordThemeKey, defaultValue = false)
+    // Read the preference as Compose State so the navbar recomposes immediately
+    // when the Settings switch changes (rather than capturing a one-time value).
+    val bitChordThemePreference = com.blazify.music.utils.rememberPreference(BitChordThemeKey, defaultValue = false)
+    val bitChordTheme by bitChordThemePreference
     if (bitChordTheme) {
         BitChordInspiredNavigationBar(
             navigationItems = navigationItems,
@@ -495,16 +498,16 @@ private fun BitChordInspiredNavigationBar(
     BoxWithConstraints(
         modifier = modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 9.dp)
             .shadow(20.dp, shape).clip(shape)
-            .background(Brush.verticalGradient(listOf(Color(0xEE292832), Color(0xE915151D))))
-            .border(1.dp, Color.White.copy(alpha = 0.22f), shape)
+            .background(Brush.verticalGradient(listOf(Color(0xF02B2940), Color(0xF0141728))))
+            .border(1.dp, Color(0xFF9B8CFF).copy(alpha = 0.48f), shape)
             .padding(6.dp),
     ) {
         val slot = maxWidth / navigationItems.size.coerceAtLeast(1)
         Box(
             Modifier.offset(x = slot * indicator).width(slot).height(54.dp)
                 .clip(RoundedCornerShape(23.dp))
-                .background(Brush.verticalGradient(listOf(Color.White.copy(alpha = 0.22f), Color.White.copy(alpha = 0.09f))))
-                .border(1.dp, Color.White.copy(alpha = 0.20f), RoundedCornerShape(23.dp)),
+                .background(Brush.verticalGradient(listOf(Color(0xFF8C7BFF).copy(alpha = 0.46f), Color(0xFF4E9CFF).copy(alpha = 0.24f))))
+                .border(1.dp, Color(0xFFB7ABFF).copy(alpha = 0.58f), RoundedCornerShape(23.dp)),
         )
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             navigationItems.forEach { screen ->
