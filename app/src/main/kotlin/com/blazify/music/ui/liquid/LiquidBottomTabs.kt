@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -23,23 +22,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastCoerceIn
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.compose.ui.util.lerp
 import com.kyant.backdrop.Backdrop
-import com.kyant.backdrop.backdrops.layerBackdrop
-import com.kyant.backdrop.backdrops.rememberCombinedBackdrop
-import com.kyant.backdrop.backdrops.rememberLayerBackdrop
 import com.blazify.music.ui.liquid.DampedDragAnimation
 import com.blazify.music.ui.liquid.InteractiveHighlight
 import com.kyant.backdrop.drawBackdrop
@@ -72,8 +66,6 @@ fun LiquidBottomTabs(
     val containerColor =
         if (isLightTheme) Color(0xFFFAFAFA).copy(0.4f)
         else Color(0xFF121212).copy(0.4f)
-
-    val tabsBackdrop = rememberLayerBackdrop()
 
     BoxWithConstraints(
         modifier,
@@ -168,8 +160,8 @@ fun LiquidBottomTabs(
                     shape = { Capsule() },
                     effects = {
                         vibrancy()
-                        blur(8f.dp.toPx())
-                        lens(24f.dp.toPx(), 24f.dp.toPx())
+                        blur(5f.dp.toPx())
+                        lens(16f.dp.toPx(), 16f.dp.toPx())
                     },
                     layerBlock = {
                         val progress = dampedDragAnimation.pressProgress
@@ -187,47 +179,6 @@ fun LiquidBottomTabs(
             content = content
         )
 
-        CompositionLocalProvider(
-            LocalLiquidBottomTabScale provides {
-                lerp(1f, 1.2f, dampedDragAnimation.pressProgress)
-            }
-        ) {
-            Row(
-                Modifier
-                    .clearAndSetSemantics {}
-                    .alpha(0f)
-                    .layerBackdrop(tabsBackdrop)
-                    .graphicsLayer {
-                        translationX = panelOffset
-                    }
-                    .drawBackdrop(
-                        backdrop = backdrop,
-                        shape = { Capsule() },
-                        effects = {
-                            val progress = dampedDragAnimation.pressProgress
-                            vibrancy()
-                            blur(8f.dp.toPx())
-                            lens(
-                                24f.dp.toPx() * progress,
-                                24f.dp.toPx() * progress
-                            )
-                        },
-                        highlight = {
-                            val progress = dampedDragAnimation.pressProgress
-                            Highlight.Default.copy(alpha = progress)
-                        },
-                        onDrawSurface = { drawRect(containerColor) }
-                    )
-                    .then(interactiveHighlight.modifier)
-                    .height(56f.dp)
-                    .fillMaxWidth()
-                    .padding(horizontal = 4f.dp)
-                    .graphicsLayer(colorFilter = ColorFilter.tint(accentColor)),
-                verticalAlignment = Alignment.CenterVertically,
-                content = content
-            )
-        }
-
         Box(
             Modifier
                 .padding(horizontal = 4f.dp)
@@ -239,7 +190,7 @@ fun LiquidBottomTabs(
                 .then(interactiveHighlight.gestureModifier)
                 .then(dampedDragAnimation.modifier)
                 .drawBackdrop(
-                    backdrop = rememberCombinedBackdrop(backdrop, tabsBackdrop),
+                    backdrop = backdrop,
                     shape = { Capsule() },
                     effects = {
                         val progress = dampedDragAnimation.pressProgress

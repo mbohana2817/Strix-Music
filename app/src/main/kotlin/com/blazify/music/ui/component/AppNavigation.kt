@@ -520,7 +520,10 @@ private fun StrixLiquidNavigationBar(
         tabsCount = navigationItems.size.coerceAtLeast(1),
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 18.dp, vertical = 5.dp),
+            .padding(horizontal = 18.dp, vertical = 5.dp)
+            .graphicsLayer {
+                translationY = -8.dp.toPx()
+            },
     ) {
         navigationItems.forEach { screen ->
             val selected = isRouteSelected(currentRoute, screen.route, navigationItems)
