@@ -37,6 +37,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
+import android.provider.Settings
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.datastore.preferences.core.Preferences
@@ -512,6 +513,7 @@ class MusicService :
 
     @Volatile
     private var latestMediaNotification: Notification? = null
+    private var iosMusicBubble: IosMusicBubbleController? = null
 
     private var scrobbleManager: ScrobbleManager? = null
 
@@ -863,6 +865,9 @@ class MusicService :
         player.addListener(sleepTimer!!)
 
         playerInitialized.value = true
+        if (startupPrefs?.get(FloatingMediaNotificationKey) == true && Settings.canDrawOverlays(this)) {
+            iosMusicBubble = IosMusicBubbleController(this).also { it.attach(player) }
+        }
         Timber.tag(TAG).d("Player successfully initialized")
 
         audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
@@ -3555,6 +3560,16 @@ class MusicService :
             syncDiscordState()
         }
 
+        if (events.containsAny(
+                Player.EVENT_IS_PLAYING_CHANGED,
+                Player.EVENT_MEDIA_ITEM_TRANSITION,
+                EVENT_POSITION_DISCONTINUITY,
+                EVENT_TIMELINE_CHANGED,
+            )
+        ) {
+            iosMusicBubble?.update(player)
+        }
+
         if (events.containsAny(Player.EVENT_IS_PLAYING_CHANGED)) {
             scrobbleManager?.onPlayerStateChanged(player.isPlaying, player.currentMetadata, duration = player.duration)
         }
@@ -5652,6 +5667,8 @@ class MusicService :
             }
         }
 
+        iosMusicBubble?.detach()
+        iosMusicBubble = null
         try {
             unregisterReceiver(screenStateReceiver)
         } catch (e: Exception) {

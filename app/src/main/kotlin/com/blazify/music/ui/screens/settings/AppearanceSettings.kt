@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.provider.Settings
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -437,6 +438,9 @@ fun AppearanceSettings(
                                             ContextCompat.checkSelfPermission(activity, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
                                         ) {
                                             ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 2001)
+                                        } else if (!Settings.canDrawOverlays(activity)) {
+                                            onFloatingMediaNotificationChange(true)
+                                            activity.startActivity(android.content.Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, android.net.Uri.parse("package:${activity.packageName}")))
                                         } else {
                                             onFloatingMediaNotificationChange(true)
                                         }
@@ -451,6 +455,9 @@ fun AppearanceSettings(
                                     ContextCompat.checkSelfPermission(activity, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
                                 ) {
                                     ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 2001)
+                                } else if (!Settings.canDrawOverlays(activity)) {
+                                    onFloatingMediaNotificationChange(true)
+                                    activity.startActivity(android.content.Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, android.net.Uri.parse("package:${activity.packageName}")))
                                 } else {
                                     onFloatingMediaNotificationChange(true)
                                 }
