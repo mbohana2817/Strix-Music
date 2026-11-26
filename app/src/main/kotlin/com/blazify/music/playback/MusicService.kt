@@ -5808,6 +5808,10 @@ class MusicService :
         }
 
         when (intent?.action) {
+            ACTION_REFRESH_IOS_BUBBLE -> {
+                refreshIosMusicBubble()
+            }
+
             ACTION_ALARM_TRIGGER -> {
                 handleAlarmTrigger(intent)
             }
@@ -5844,6 +5848,21 @@ class MusicService :
         return super.onStartCommand(intent, flags, startId)
     }
 
+
+    private fun refreshIosMusicBubble() {
+        if (!::player.isInitialized) return
+
+        if (startupPrefs?.get(FloatingMediaNotificationKey) == true && Settings.canDrawOverlays(this)) {
+            if (iosMusicBubble == null) {
+                iosMusicBubble = IosMusicBubbleController(this).also { it.attach(player) }
+            } else {
+                iosMusicBubble?.update(player)
+            }
+        } else {
+            iosMusicBubble?.detach()
+            iosMusicBubble = null
+        }
+    }
 
     private fun handlePlaylistWidgetPlay(intent: Intent) {
         scope.launch {
@@ -6417,6 +6436,7 @@ class MusicService :
         }
 
         const val ACTION_ALARM_TRIGGER = "com.blazify.music.action.ALARM_TRIGGER"
+        const val ACTION_REFRESH_IOS_BUBBLE = "com.blazify.music.action.REFRESH_IOS_BUBBLE"
         const val EXTRA_ALARM_ID = "extra_alarm_id"
         const val EXTRA_ALARM_PLAYLIST_ID = "extra_alarm_playlist_id"
         const val EXTRA_ALARM_RANDOM_SONG = "extra_alarm_random_song"

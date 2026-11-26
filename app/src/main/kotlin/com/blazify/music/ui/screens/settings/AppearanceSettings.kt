@@ -50,6 +50,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableFloatStateOf
@@ -193,6 +196,27 @@ fun AppearanceSettings(
 
     // Density scale preferences
     val context = activity as Context
+
+    // Re-attach the native iOS Now Playing bubble immediately after returning
+    // from Android's overlay-permission screen. The preference is already true
+    // at that point, so waiting for another toggle would leave the bubble absent.
+    DisposableEffect(activity, floatingMediaNotification) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME && floatingMediaNotification) {
+                if (Settings.canDrawOverlays(activity)) {
+                    val intent = Intent(activity, com.blazify.music.playback.MusicService::class.java).apply {
+                        action = com.blazify.music.playback.MusicService.ACTION_REFRESH_IOS_BUBBLE
+                    }
+                    runCatching {
+                        androidx.core.content.ContextCompat.startForegroundService(activity, intent)
+                    }
+                }
+            }
+        }
+        activity.lifecycle.addObserver(observer)
+        onDispose { activity.lifecycle.removeObserver(observer) }
+    }
+
     val sharedPreferences = remember { context.getSharedPreferences("blazify_settings", Context.MODE_PRIVATE) }
     val prefDensityScale =
         remember(sharedPreferences) {
@@ -434,6 +458,10 @@ fun AppearanceSettings(
                                     onCheckedChange = { enabled ->
                                         if (!enabled) {
                                             onFloatingMediaNotificationChange(false)
+                                            val intent = Intent(activity, com.blazify.music.playback.MusicService::class.java).apply {
+                                                action = com.blazify.music.playback.MusicService.ACTION_REFRESH_IOS_BUBBLE
+                                            }
+                                            runCatching { androidx.core.content.ContextCompat.startForegroundService(activity, intent) }
                                         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
                                             ContextCompat.checkSelfPermission(activity, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
                                         ) {
@@ -443,6 +471,10 @@ fun AppearanceSettings(
                                             activity.startActivity(android.content.Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, android.net.Uri.parse("package:${activity.packageName}")))
                                         } else {
                                             onFloatingMediaNotificationChange(true)
+                                            val intent = Intent(activity, com.blazify.music.playback.MusicService::class.java).apply {
+                                                action = com.blazify.music.playback.MusicService.ACTION_REFRESH_IOS_BUBBLE
+                                            }
+                                            runCatching { androidx.core.content.ContextCompat.startForegroundService(activity, intent) }
                                         }
                                     },
                                 )
@@ -451,6 +483,10 @@ fun AppearanceSettings(
                                 val enabled = !floatingMediaNotification
                                 if (!enabled) {
                                     onFloatingMediaNotificationChange(false)
+                                    val intent = Intent(activity, com.blazify.music.playback.MusicService::class.java).apply {
+                                        action = com.blazify.music.playback.MusicService.ACTION_REFRESH_IOS_BUBBLE
+                                    }
+                                    runCatching { androidx.core.content.ContextCompat.startForegroundService(activity, intent) }
                                 } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
                                     ContextCompat.checkSelfPermission(activity, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
                                 ) {
@@ -460,6 +496,10 @@ fun AppearanceSettings(
                                     activity.startActivity(android.content.Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, android.net.Uri.parse("package:${activity.packageName}")))
                                 } else {
                                     onFloatingMediaNotificationChange(true)
+                                    val intent = Intent(activity, com.blazify.music.playback.MusicService::class.java).apply {
+                                        action = com.blazify.music.playback.MusicService.ACTION_REFRESH_IOS_BUBBLE
+                                    }
+                                    runCatching { androidx.core.content.ContextCompat.startForegroundService(activity, intent) }
                                 }
                             },
                         ),
