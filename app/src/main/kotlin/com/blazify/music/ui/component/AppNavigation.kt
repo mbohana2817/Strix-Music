@@ -484,6 +484,7 @@ private fun BitChordInspiredNavigationBar(
     onSearchLongClick: (() -> Unit)? = null,
 ) {
     val selectedIndex = navigationItems.indexOfFirst { isRouteSelected(currentRoute, it.route, navigationItems) }.coerceAtLeast(0)
+    val glassTheme by com.blazify.music.utils.rememberPreference(GlassThemeKey, true)
     val shape = RoundedCornerShape(28.dp)
     val haptics = LocalHapticFeedback.current
     val viewConfiguration = LocalViewConfiguration.current
@@ -495,8 +496,14 @@ private fun BitChordInspiredNavigationBar(
     BoxWithConstraints(
         modifier = modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 9.dp)
             .shadow(20.dp, shape).clip(shape)
-            .background(Brush.verticalGradient(listOf(Color(0xEE292832), Color(0xE915151D))))
-            .border(1.dp, Color.White.copy(alpha = 0.22f), shape)
+            .background(
+                if (glassTheme) {
+                    Brush.verticalGradient(listOf(Color.White.copy(alpha = 0.12f), Color.White.copy(alpha = 0.055f)))
+                } else {
+                    Brush.verticalGradient(listOf(Color(0xEE292832), Color(0xE915151D)))
+                }
+            )
+            .border(1.dp, Color.White.copy(alpha = if (glassTheme) 0.24f else 0.22f), shape)
             .padding(6.dp),
     ) {
         val slot = maxWidth / navigationItems.size.coerceAtLeast(1)

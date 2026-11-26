@@ -8,6 +8,8 @@ package com.blazify.music.ui.theme
 
 import android.graphics.Bitmap
 import android.os.Build
+import android.graphics.RenderEffect
+import android.graphics.Shader
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -30,6 +32,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.palette.graphics.Palette
 import com.materialkolor.PaletteStyle
@@ -37,6 +40,8 @@ import com.materialkolor.dynamiccolor.ColorSpec
 import com.materialkolor.rememberDynamicColorScheme
 import com.materialkolor.score.Score
 import com.blazify.music.constants.AppBackgroundStyle
+import com.blazify.music.constants.GlassThemeKey
+import com.blazify.music.utils.rememberPreference
 
 val DefaultThemeColor = Color(0xFFED5564)
 
@@ -88,7 +93,9 @@ fun BlazifyTheme(
     }
 
     // Apply pureBlack modification if needed, similar to original logic
-    val colorScheme = remember(baseColorScheme, pureBlack, darkTheme, backgroundStyle) {
+    val glassEnabled by rememberPreference(GlassThemeKey, defaultValue = true)
+
+    val colorScheme = remember(baseColorScheme, pureBlack, darkTheme, backgroundStyle, glassEnabled) {
         if (darkTheme && pureBlack) {
             baseColorScheme.pureBlack(true)
         } else {
@@ -119,16 +126,35 @@ fun BlazifyTheme(
                     listOf(Color(0xFFFFFFFF), Color(0xFFF8F8F8), Color(0xFFF0F0F0), Color(0xFFE8E8E8))
                 }
             }
-            baseColorScheme.copy(
-                background = surfaces[0],
-                surface = surfaces[0],
-                surfaceDim = surfaces[0],
-                surfaceContainerLowest = surfaces[0],
-                surfaceContainerLow = surfaces[1],
-                surfaceContainer = surfaces[2],
-                surfaceContainerHigh = surfaces[3],
-                surfaceContainerHighest = surfaces[3],
-            )
+            if (!glassEnabled) {
+                baseColorScheme.copy(
+                    background = surfaces[0],
+                    surface = surfaces[0],
+                    surfaceDim = surfaces[0],
+                    surfaceContainerLowest = surfaces[0],
+                    surfaceContainerLow = surfaces[1],
+                    surfaceContainer = surfaces[2],
+                    surfaceContainerHigh = surfaces[3],
+                    surfaceContainerHighest = surfaces[3],
+                )
+            } else {
+                // iOS-style glass mode: let the animated Aurora remain visible
+                // through the page while Material 3 containers become translucent.
+                // This is intentionally app-wide, not only the bottom navbar.
+                val glass = if (darkTheme) Color.White.copy(alpha = 0.075f) else Color.White.copy(alpha = 0.52f)
+                val glassLow = if (darkTheme) Color.White.copy(alpha = 0.045f) else Color.White.copy(alpha = 0.34f)
+                val glassHigh = if (darkTheme) Color.White.copy(alpha = 0.105f) else Color.White.copy(alpha = 0.64f)
+                baseColorScheme.copy(
+                    background = Color.Transparent,
+                    surface = Color.Transparent,
+                    surfaceDim = Color.Transparent,
+                    surfaceContainerLowest = Color.Transparent,
+                    surfaceContainerLow = glassLow,
+                    surfaceContainer = glass,
+                    surfaceContainerHigh = glassHigh,
+                    surfaceContainerHighest = glassHigh,
+                )
+            }
         }
     }
 
@@ -176,15 +202,26 @@ private fun AuroraBackdrop(
     val b = base[1].copy(alpha = if (darkTheme) 0.54f else 0.36f)
     val c = base[2].copy(alpha = if (darkTheme) 0.78f else 0.42f)
     val x = 0.18f + shift * 0.22f
-    Box(
-        modifier = Modifier.background(
-            Brush.linearGradient(
-                colors = listOf(a, b, c, a),
-                start = androidx.compose.ui.geometry.Offset(x * 900f, 0f),
-                end = androidx.compose.ui.geometry.Offset((1f - x) * 900f, 1400f),
-            )
-        ),
-    ) {
+    Box(modifier = Modifier) {
+        // Keep the moving aurora as a separate layer so the app content can
+        // remain translucent above it. On Android 12+ the backdrop itself is
+        // softly blurred, matching the depth used by iOS glass surfaces.
+        Box(
+            modifier = Modifier
+                .matchParentSize()
+                .graphicsLayer {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        renderEffect = RenderEffect.createBlurEffect(28f, 28f, Shader.TileMode.CLAMP)
+                    }
+                }
+                .background(
+                    Brush.linearGradient(
+                        colors = listOf(a, b, c, a),
+                        start = androidx.compose.ui.geometry.Offset(x * 900f, 0f),
+                        end = androidx.compose.ui.geometry.Offset((1f - x) * 900f, 1400f),
+                    )
+                ),
+        )
         content()
     }
 }
