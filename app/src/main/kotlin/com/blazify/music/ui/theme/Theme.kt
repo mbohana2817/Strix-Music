@@ -8,8 +8,6 @@ package com.blazify.music.ui.theme
 
 import android.graphics.Bitmap
 import android.os.Build
-import android.graphics.RenderEffect
-import android.graphics.Shader
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -28,6 +26,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RenderEffect
+import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.toArgb
@@ -211,7 +211,7 @@ private fun AuroraBackdrop(
                 .matchParentSize()
                 .graphicsLayer {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                        renderEffect = RenderEffect.createBlurEffect(28f, 28f, Shader.TileMode.CLAMP)
+                        renderEffect = RenderEffect.createBlurEffect(28f, 28f, TileMode.Clamp)
                     }
                 }
                 .background(
