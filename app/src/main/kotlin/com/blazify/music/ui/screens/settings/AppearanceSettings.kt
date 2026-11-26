@@ -213,8 +213,9 @@ fun AppearanceSettings(
                 }
             }
         }
-        activity.lifecycle.addObserver(observer)
-        onDispose { activity.lifecycle.removeObserver(observer) }
+        val lifecycleOwner = activity as? androidx.lifecycle.LifecycleOwner
+        lifecycleOwner?.lifecycle?.addObserver(observer)
+        onDispose { lifecycleOwner?.lifecycle?.removeObserver(observer) }
     }
 
     val sharedPreferences = remember { context.getSharedPreferences("blazify_settings", Context.MODE_PRIVATE) }
