@@ -26,6 +26,7 @@ import android.media.AudioFocusRequest
 import android.media.AudioManager
 import android.media.audiofx.AudioEffect
 import com.blazify.music.constants.EnableBetterLyricsKey
+import com.blazify.music.constants.FloatingMediaNotificationKey
 import com.blazify.music.constants.AddToPlaylistAtTopKey
 import com.blazify.music.playback.audio.VolumeNormalizationAudioProcessor
 import com.blazify.music.utils.safeDataStoreEdit
@@ -788,11 +789,18 @@ class MusicService :
 
         seedLoudnessCacheFromPrefs()
 
+        val playbackChannelId =
+            if (startupPrefs?.get(FloatingMediaNotificationKey) == true) {
+                FLOATING_CHANNEL_ID
+            } else {
+                CHANNEL_ID
+            }
+
         val defaultMediaNotificationProvider =
             DefaultMediaNotificationProvider(
                 this,
                 { NOTIFICATION_ID },
-                CHANNEL_ID,
+                playbackChannelId,
                 R.string.music_player,
             ).apply {
                 setSmallIcon(R.drawable.small_icon)
@@ -5555,6 +5563,15 @@ class MusicService :
                 NotificationManager.IMPORTANCE_LOW,
             ),
         )
+        nm?.createNotificationChannel(
+            NotificationChannel(
+                FLOATING_CHANNEL_ID,
+                getString(R.string.floating_media_notification),
+                NotificationManager.IMPORTANCE_HIGH,
+            ).apply {
+                description = getString(R.string.floating_media_notification_desc)
+            },
+        )
     }
 
     private fun createFallbackForegroundNotification(): Notification {
@@ -6390,6 +6407,7 @@ class MusicService :
         const val SHUFFLE_ACTION = "__shuffle__"
 
         const val CHANNEL_ID = "music_channel_01"
+        const val FLOATING_CHANNEL_ID = "music_channel_floating_01"
         const val NOTIFICATION_ID = 888
         const val ERROR_CODE_NO_STREAM = 1000001
         const val CHUNK_LENGTH = 512 * 1024L

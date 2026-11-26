@@ -69,6 +69,7 @@ import com.blazify.music.constants.DensityScale
 import com.blazify.music.constants.DensityScaleKey
 import com.blazify.music.constants.DynamicThemeKey
 import com.blazify.music.constants.EnableHighRefreshRateKey
+import com.blazify.music.constants.FloatingMediaNotificationKey
 import com.blazify.music.constants.EnableLandscapeScalingKey
 import com.blazify.music.constants.HidePlayerThumbnailKey
 import com.blazify.music.constants.ListenTogetherInTopBarKey
@@ -135,6 +136,11 @@ fun AppearanceSettings(
         rememberPreference(
             EnableLandscapeScalingKey,
             defaultValue = false,
+        )
+    val (floatingMediaNotification, onFloatingMediaNotificationChange) =
+        rememberPreference(
+            FloatingMediaNotificationKey,
+            defaultValue = true,
         )
     val (selectedThemeColorInt) =
         rememberPreference(
@@ -410,6 +416,20 @@ fun AppearanceSettings(
                                 )
                             },
                             onClick = { onEnableHighRefreshRateChange(!enableHighRefreshRate) },
+                        ),
+                    )
+                    add(
+                        Material3SettingsItem(
+                            icon = painterResource(R.drawable.notification),
+                            title = { Text(stringResource(R.string.floating_media_notification)) },
+                            description = { Text(stringResource(R.string.floating_media_notification_desc)) },
+                            trailingContent = {
+                                Switch(
+                                    checked = floatingMediaNotification,
+                                    onCheckedChange = onFloatingMediaNotificationChange,
+                                )
+                            },
+                            onClick = { onFloatingMediaNotificationChange(!floatingMediaNotification) },
                         ),
                     )
                     add(

@@ -49,6 +49,8 @@ val AppBackgroundStyleKey = stringPreferencesKey("appBackgroundStyle")
 /** Strix visual effects: optional iOS-style translucent surfaces and animated aurora. */
 val GlassThemeKey = booleanPreferencesKey("glassTheme")
 val AuroraAnimationKey = booleanPreferencesKey("auroraAnimation")
+/** Show the Android media notification as a heads-up/floating notification when possible. */
+val FloatingMediaNotificationKey = booleanPreferencesKey("floatingMediaNotification")
 
 enum class AppBackgroundStyle {
     STRIX_BURGUNDY,
