@@ -18,6 +18,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
 import coil3.SingletonImageLoader
+import coil3.asDrawable
 import coil3.request.ImageRequest
 import androidx.media3.common.Player
 import com.blazify.music.R
@@ -70,10 +71,7 @@ class IosMusicBubbleController(private val service: MusicService) {
     }
 
     fun update(player: Player) {
-        if (!attached) {
-            if (service.startupPrefs?.get(com.blazify.music.constants.FloatingMediaNotificationKey) == true) attach(player)
-            return
-        }
+        if (!attached) return
         view?.update(player)
     }
 
@@ -124,7 +122,7 @@ class IosMusicBubbleController(private val service: MusicService) {
 
         init {
             clipChildren = true
-            background = glassBackground(30f)
+            background = glassBackground(30)
             elevation = dp(16).toFloat()
             setupCompact()
             setupExpanded()
@@ -235,7 +233,8 @@ class IosMusicBubbleController(private val service: MusicService) {
             val art = md.artworkUri
             if (art != null && art != lastArtwork) {
                 lastArtwork = art
-                val request = ImageRequest.Builder(context).data(art).target { drawable ->
+                val request = ImageRequest.Builder(context).data(art).target { image ->
+                    val drawable = image.asDrawable(context.resources)
                     cover.setImageDrawable(drawable)
                     expandedCover.setImageDrawable(drawable)
                 }.build()
