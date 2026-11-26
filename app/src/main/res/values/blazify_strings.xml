@@ -952,8 +952,8 @@
     <string name="cd_system_mode">System mode</string>
     <string name="cd_palette_item">%1$s palette</string>
     <string name="play_all">Play all</string>
-    <string name="floating_media_notification">Floating media notification</string>
-    <string name="floating_media_notification_desc">Show music controls as a heads-up notification outside Strix Music.</string>
+    <string name="floating_media_notification">iOS Floating Music Notification</string>
+    <string name="floating_media_notification_desc">Minta izin notifikasi dulu, lalu tampilkan kontrol musik bergaya iOS saat Strix Music berada di background.</string>
     <string name="enable_high_refresh_rate">Enable high refresh rate</string>
     <string name="enable_high_refresh_rate_desc">Forces the display to run at its highest supported refresh rate (e.g. 120Hz)</string>
     <string name="enable_landscape_scaling">Landscape Scaling</string>

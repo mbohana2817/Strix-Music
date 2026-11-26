@@ -7,6 +7,10 @@
 package com.blazify.music.ui.screens.settings
 
 import android.app.Activity
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -140,7 +144,7 @@ fun AppearanceSettings(
     val (floatingMediaNotification, onFloatingMediaNotificationChange) =
         rememberPreference(
             FloatingMediaNotificationKey,
-            defaultValue = true,
+            defaultValue = false,
         )
     val (selectedThemeColorInt) =
         rememberPreference(
@@ -426,10 +430,31 @@ fun AppearanceSettings(
                             trailingContent = {
                                 Switch(
                                     checked = floatingMediaNotification,
-                                    onCheckedChange = onFloatingMediaNotificationChange,
+                                    onCheckedChange = { enabled ->
+                                        if (!enabled) {
+                                            onFloatingMediaNotificationChange(false)
+                                        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+                                            ContextCompat.checkSelfPermission(activity, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+                                        ) {
+                                            ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 2001)
+                                        } else {
+                                            onFloatingMediaNotificationChange(true)
+                                        }
+                                    },
                                 )
                             },
-                            onClick = { onFloatingMediaNotificationChange(!floatingMediaNotification) },
+                            onClick = {
+                                val enabled = !floatingMediaNotification
+                                if (!enabled) {
+                                    onFloatingMediaNotificationChange(false)
+                                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+                                    ContextCompat.checkSelfPermission(activity, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+                                ) {
+                                    ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 2001)
+                                } else {
+                                    onFloatingMediaNotificationChange(true)
+                                }
+                            },
                         ),
                     )
                     add(

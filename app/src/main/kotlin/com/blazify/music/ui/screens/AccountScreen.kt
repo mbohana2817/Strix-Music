@@ -8,9 +8,21 @@ package com.blazify.music.ui.screens
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.Box
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -33,7 +45,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,7 +55,9 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
@@ -66,6 +79,7 @@ import com.blazify.music.ui.menu.YouTubeArtistMenu
 import com.blazify.music.ui.menu.YouTubePlaylistMenu
 import com.blazify.music.ui.utils.backToMain
 import com.blazify.music.utils.rememberEnumPreference
+import com.blazify.music.utils.StreakManager
 import com.blazify.music.viewmodels.AccountContentType
 import com.blazify.music.viewmodels.AccountViewModel
 
@@ -94,6 +108,13 @@ fun AccountScreen(
         columns = GridCells.Adaptive(minSize = GridThumbnailHeight + if (gridItemSize == GridItemSize.BIG) 24.dp else (-24).dp),
         contentPadding = LocalPlayerAwareWindowInsets.current.asPaddingValues(),
     ) {
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            StreakFireCard(
+                state = StreakManager.read(androidx.compose.ui.platform.LocalContext.current),
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
+            )
+        }
+
         item(span = { GridItemSpan(maxLineSpan) }) {
             ChipsRow(
                 chips =
@@ -500,5 +521,70 @@ private fun PodcastChannelAccountItem(
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.weight(1f),
         )
+    }
+}
+
+
+@Composable
+private fun StreakFireCard(state: StreakManager.State, modifier: Modifier = Modifier) {
+    val transition = rememberInfiniteTransition(label = "streak-fire")
+    val pulse by transition.animateFloat(
+        initialValue = 0.96f,
+        targetValue = 1.04f,
+        animationSpec = infiniteRepeatable(tween(1100), RepeatMode.Reverse),
+        label = "streak-pulse",
+    )
+    val glow by transition.animateFloat(
+        initialValue = 0.20f,
+        targetValue = 0.55f,
+        animationSpec = infiniteRepeatable(tween(1300), RepeatMode.Reverse),
+        label = "streak-glow",
+    )
+    val level = state.current.coerceIn(0, 99)
+    Box(
+        modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(26.dp))
+            .background(
+                Brush.linearGradient(
+                    listOf(Color(0xFF160A2A), Color(0xFF32105F), Color(0xFF120A20)),
+                ),
+            )
+            .border(1.dp, Color(0xFFB56CFF).copy(alpha = 0.34f), RoundedCornerShape(26.dp))
+            .padding(18.dp),
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Box(
+                modifier = Modifier
+                    .size(68.dp)
+                    .graphicsLayer { scaleX = pulse; scaleY = pulse; shadowElevation = 18f; alpha = 0.98f }
+                    .clip(CircleShape)
+                    .background(Color(0xFF7B2CFF).copy(alpha = 0.22f))
+                    .padding(10.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(if (level >= 1) "🔥" else "♨", fontSize = 34.sp)
+            }
+            Spacer(Modifier.width(14.dp))
+            Column(Modifier.weight(1f)) {
+                Text("Streak Api", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = Color.White)
+                Text(
+                    if (level > 0) "${level} hari berturut-turut • Level ${level.coerceAtMost(99)}" else "Mulai streak-mu hari ini",
+                    style = MaterialTheme.typography.bodyMedium, color = Color.White.copy(alpha = 0.72f),
+                )
+                Spacer(Modifier.height(8.dp))
+                Box(Modifier.fillMaxWidth().height(6.dp).clip(RoundedCornerShape(8.dp)).background(Color.White.copy(alpha = 0.10f))) {
+                    Box(Modifier.fillMaxWidth(if (level == 0) 0.03f else level / 99f).height(6.dp).clip(RoundedCornerShape(8.dp)).background(Brush.horizontalGradient(listOf(Color(0xFF9D5CFF), Color(0xFFE2B8FF)))))
+                }
+                Spacer(Modifier.height(6.dp))
+                Text(
+                    if (level >= 1) "✦ PURPLE FLAME AKTIF • Rekor ${state.best.coerceAtMost(99)} hari • Maks. Level 99"
+                    else "Mulai dari Level 1 untuk membuka efek Purple Flame • Maks. Level 99",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = Color(0xFFDDB8FF).copy(alpha = 0.72f),
+                )
+            }
+            Text("Lv.${level}", fontWeight = FontWeight.Black, color = Color(0xFFE0C2FF), modifier = Modifier.graphicsLayer { alpha = 0.75f + glow * 0.45f })
+        }
     }
 }

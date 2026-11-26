@@ -45,6 +45,7 @@ import com.blazify.innertube.models.looksLikeArtistName
 import com.blazify.music.db.MusicDatabase
 import com.blazify.music.utils.safeDataStoreEdit
 import com.blazify.music.utils.settingsSnapshot
+import com.blazify.music.utils.StreakManager
 import com.blazify.music.utils.reportException
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
@@ -112,6 +113,9 @@ class App :
 
         // Install crash handler first
         CrashHandler.install(this)
+
+        // Update the local daily listening streak once per calendar day.
+        StreakManager.touchToday(this)
 
         // preferencesDataStore uses filesDir/datastore; proactive mkdir reduces failures on odd ROM states
         try {

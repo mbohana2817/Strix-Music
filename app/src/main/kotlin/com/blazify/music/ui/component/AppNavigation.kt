@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.unit.sp
@@ -58,6 +59,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import com.blazify.music.ui.screens.Screens
+import com.kyant.backdrop.Backdrop
+import com.blazify.music.ui.liquid.LiquidBottomTabs
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 
@@ -88,7 +91,8 @@ fun AppNavigationRail(
     onItemClick: (Screens, Boolean) -> Unit,
     modifier: Modifier = Modifier,
     pureBlack: Boolean = false,
-    onSearchLongClick: (() -> Unit)? = null
+    onSearchLongClick: (() -> Unit)? = null,
+    liquidBackdrop: Backdrop? = null,
 ) {
     val containerColor = if (pureBlack) Color.Black else MaterialTheme.colorScheme.surfaceContainer
     val haptics = LocalHapticFeedback.current
@@ -342,8 +346,21 @@ fun AppNavigationBar(
     modifier: Modifier = Modifier,
     pureBlack: Boolean = false,
     slimNav: Boolean = false,
-    onSearchLongClick: (() -> Unit)? = null
+    onSearchLongClick: (() -> Unit)? = null,
+    liquidBackdrop: Backdrop? = null,
 ) {
+    if (liquidBackdrop != null) {
+        StrixLiquidNavigationBar(
+            navigationItems = navigationItems,
+            currentRoute = currentRoute,
+            onItemClick = onItemClick,
+            modifier = modifier,
+            slimNav = slimNav,
+            onSearchLongClick = onSearchLongClick,
+            backdrop = liquidBackdrop,
+        )
+        return
+    }
     val (bitChordTheme) = com.blazify.music.utils.rememberPreference(BitChordThemeKey, defaultValue = false)
     if (bitChordTheme) {
         BitChordInspiredNavigationBar(
@@ -472,6 +489,85 @@ fun AppNavigationBar(
     }
 }
 
+
+/**
+ * Strix navigation built from the AndroidLiquidGlass liquid-bottom-tabs primitive.
+ * Only the navigation/HUD surface is borrowed; routes, icons, labels and search behavior
+ * remain native to Strix Music.
+ */
+@Composable
+private fun StrixLiquidNavigationBar(
+    navigationItems: List<Screens>,
+    currentRoute: String?,
+    onItemClick: (Screens, Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+    slimNav: Boolean = false,
+    onSearchLongClick: (() -> Unit)? = null,
+    backdrop: Backdrop,
+) {
+    LiquidBottomTabs(
+        selectedTabIndex = {
+            navigationItems.indexOfFirst { isRouteSelected(currentRoute, it.route, navigationItems) }
+                .coerceAtLeast(0)
+        },
+        onTabSelected = { index ->
+            navigationItems.getOrNull(index)?.let { screen ->
+                val selected = isRouteSelected(currentRoute, screen.route, navigationItems)
+                onItemClick(screen, selected)
+            }
+        },
+        backdrop = backdrop,
+        tabsCount = navigationItems.size.coerceAtLeast(1),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 18.dp, vertical = 5.dp),
+    ) {
+        navigationItems.forEach { screen ->
+            val selected = isRouteSelected(currentRoute, screen.route, navigationItems)
+            val label = stringResource(screen.titleId)
+            val iconRes = if (selected) screen.iconIdActive else screen.iconIdInactive
+            val isSearch = screen == Screens.Search && onSearchLongClick != null
+
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(56.dp)
+                    .clip(RoundedCornerShape(28.dp))
+                    .combinedClickable(
+                        interactionSource = null,
+                        indication = null,
+                        onClick = { onItemClick(screen, selected) },
+                        onLongClick = if (isSearch) onSearchLongClick else null,
+                    ),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+            ) {
+                Icon(
+                    painter = painterResource(iconRes),
+                    contentDescription = label,
+                    tint = if (selected) Color.White else Color.White.copy(alpha = 0.62f),
+                    modifier = Modifier
+                        .size(if (selected) 25.dp else 23.dp)
+                        .graphicsLayer {
+                            val s = if (selected) 1.04f else 1f
+                            scaleX = s
+                            scaleY = s
+                        },
+                )
+                if (!slimNav) {
+                    Text(
+                        text = label,
+                        color = if (selected) Color.White else Color.White.copy(alpha = 0.68f),
+                        fontSize = 10.sp,
+                        fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+            }
+        }
+    }
+}
 
 /** BitChord-inspired floating navigation variant, wired to Strix routes and icons. */
 @Composable

@@ -416,6 +416,9 @@ dependencies {
     // PreviewActivity that any app could open, and Blazify uses none of it
     debugImplementation(libs.compose.ui.tooling)
     implementation(libs.compose.animation)
+    // AndroidLiquidGlass primitives used by the Strix iOS-style HUD/navbar.
+    implementation("io.github.kyant0:shapes:1.2.1")
+    implementation("org.jetbrains:annotations:26.1.0")
     implementation(libs.compose.reorderable)
 
     implementation(libs.viewmodel)

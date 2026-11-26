@@ -94,6 +94,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.rememberCoroutineScope
+import com.kyant.backdrop.backdrops.layerBackdrop
+import com.kyant.backdrop.backdrops.rememberLayerBackdrop
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -1424,6 +1426,8 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
+                    val strixLiquidBackdrop = rememberLayerBackdrop()
+
                     Scaffold(
                         snackbarHost = { BlazeSnackbarHost(snackbarHostState) },
                         topBar = {
@@ -1626,6 +1630,7 @@ class MainActivity : ComponentActivity() {
                                         pureBlack = pureBlack,
                                         slimNav = slimNav,
                                         onSearchLongClick = onSearchLongClick,
+                                        liquidBackdrop = strixLiquidBackdrop,
                                         modifier =
                                             Modifier
                                                 .align(Alignment.BottomCenter)
@@ -1744,7 +1749,11 @@ class MainActivity : ComponentActivity() {
                                     onSearchLongClick = onRailSearchLongClick,
                                 )
                             }
-                            Box(Modifier.weight(1f)) {
+                            Box(
+                                Modifier
+                                    .weight(1f)
+                                    .layerBackdrop(strixLiquidBackdrop),
+                            ) {
                                 // NavHost with animations (Material 3 Expressive style)
                                 NavHost(
                                     navController = navController,
