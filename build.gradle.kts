@@ -23,6 +23,9 @@ tasks.register<Delete>("clean") {
 subprojects {
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
         compilerOptions {
+            // The Liquid Glass backdrop engine uses Kotlin context-parameter
+            // declarations for its DrawScope helpers.
+            freeCompilerArgs.add("-Xcontext-parameters")
             if (project.findProperty("enableComposeCompilerReports") == "true") {
                 arrayOf("reports", "metrics").forEach {
                     freeCompilerArgs.add("-P")

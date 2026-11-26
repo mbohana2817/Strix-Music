@@ -265,6 +265,7 @@ android {
         jvmToolchain(21)
         compilerOptions {
             freeCompilerArgs.add("-Xannotation-default-target=param-property")
+            freeCompilerArgs.add("-Xcontext-parameters")
             jvmTarget.set(JvmTarget.JVM_21)
         }
     }
