@@ -522,7 +522,7 @@ private fun StrixLiquidNavigationBar(
             .fillMaxWidth()
             .padding(horizontal = 18.dp, vertical = 5.dp)
             .graphicsLayer {
-                translationY = -8.dp.toPx()
+                translationY = -11.dp.toPx()
             },
     ) {
         navigationItems.forEach { screen ->

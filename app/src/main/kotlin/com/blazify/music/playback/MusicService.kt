@@ -822,6 +822,13 @@ class MusicService :
                             // playback look like it has stopped even though the player is alive.
                             notification.notification.flags =
                                 notification.notification.flags or Notification.FLAG_ONGOING_EVENT
+
+                            // Keep Media3's real transport controls, but make the Android
+                            // notification behave more like a compact iOS-style media card.
+                            notification.notification.category = Notification.CATEGORY_TRANSPORT
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                notification.notification.visibility = Notification.VISIBILITY_PUBLIC
+                            }
                             latestMediaNotification = notification.notification
                             onNotificationChangedCallback.onNotificationChanged(notification)
                         }

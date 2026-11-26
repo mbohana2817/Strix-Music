@@ -159,9 +159,9 @@ fun LiquidBottomTabs(
                     backdrop = backdrop,
                     shape = { Capsule() },
                     effects = {
+                        // Shared glass surface: keep one backdrop pass cheap.
                         vibrancy()
-                        blur(5f.dp.toPx())
-                        lens(16f.dp.toPx(), 16f.dp.toPx())
+                        blur(3.5f.dp.toPx())
                     },
                     layerBlock = {
                         val progress = dampedDragAnimation.pressProgress
@@ -193,12 +193,16 @@ fun LiquidBottomTabs(
                     backdrop = backdrop,
                     shape = { Capsule() },
                     effects = {
+                        // The backdrop already provides the shared glass. Only add the
+                        // expensive lens distortion while the tab is actively pressed.
                         val progress = dampedDragAnimation.pressProgress
-                        lens(
-                            10f.dp.toPx() * progress,
-                            14f.dp.toPx() * progress,
-                            chromaticAberration = true
-                        )
+                        if (progress > 0.01f) {
+                            lens(
+                                6f.dp.toPx() * progress,
+                                8f.dp.toPx() * progress,
+                                chromaticAberration = false
+                            )
+                        }
                     },
                     highlight = {
                         val progress = dampedDragAnimation.pressProgress
@@ -211,8 +215,8 @@ fun LiquidBottomTabs(
                     innerShadow = {
                         val progress = dampedDragAnimation.pressProgress
                         InnerShadow(
-                            radius = 8f.dp * progress,
-                            alpha = progress
+                            radius = 5f.dp * progress,
+                            alpha = progress * 0.7f
                         )
                     },
                     layerBlock = {
