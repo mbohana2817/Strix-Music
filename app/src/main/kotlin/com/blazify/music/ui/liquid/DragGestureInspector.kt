@@ -1,4 +1,4 @@
-package com.kyant.backdrop.catalog.utils
+package com.blazify.music.ui.liquid
 
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
