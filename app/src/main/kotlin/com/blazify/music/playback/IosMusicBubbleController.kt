@@ -379,7 +379,7 @@ class IosMusicBubbleController(
             return true
         }
 
-        private fun updateWaveform(player: Player) {
+        fun updateWaveform(player: Player) {
             if (!player.isPlaying) {
                 bassLevel = 0f
                 waveformVisualizer?.let { runCatching { it.enabled = false; it.release() } }
@@ -401,7 +401,7 @@ class IosMusicBubbleController(
                 visualizerSessionId = -1
                 waveformVisualizer = runCatching {
                     Visualizer(sessionId).apply {
-                        captureSize = Visualizer.getCaptureSizeRange().first.coerceAtMost(128)
+                        captureSize = Visualizer.getCaptureSizeRange().first().coerceAtMost(128)
                         setDataCaptureListener(object : Visualizer.OnDataCaptureListener {
                             override fun onWaveFormDataCapture(
                                 visualizer: Visualizer,
