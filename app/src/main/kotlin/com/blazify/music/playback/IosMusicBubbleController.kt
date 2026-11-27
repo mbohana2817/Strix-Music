@@ -7,6 +7,7 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
+import android.media.audiofx.Visualizer
 import android.net.Uri
 import android.os.Handler
 import android.os.Looper
@@ -27,6 +28,7 @@ import androidx.media3.common.Player
 import com.blazify.music.constants.BubbleTheme
 import kotlin.math.abs
 import kotlin.math.roundToInt
+import kotlin.math.sin
 import timber.log.Timber
 
 /**
@@ -52,7 +54,10 @@ class IosMusicBubbleController(
     private val progressTicker = object : Runnable {
         override fun run() {
             if (!attached) return
-            player?.let { view?.updateProgressOnly(it) }
+            player?.let { p ->
+                view?.updateProgressOnly(p)
+                view?.updateWaveform(p)
+            }
             handler.postDelayed(this, 750L)
         }
     }
@@ -156,7 +161,10 @@ class IosMusicBubbleController(
 
     fun detach() {
         handler.removeCallbacks(progressTicker)
-        view?.let { runCatching { wm.removeView(it) } }
+        view?.let {
+            it.releaseWaveform()
+            runCatching { wm.removeView(it) }
+        }
         view = null
         player = null
         attached = false
@@ -169,6 +177,35 @@ class IosMusicBubbleController(
         private val title = TextView(context)
         private val artist = TextView(context)
         private val waveform = LinearLayout(context)
+        private val waveformBars = mutableListOf<View>()
+        private val waveformHandler = Handler(Looper.getMainLooper())
+        private var waveformPhase = 0.0
+        private var bassLevel = 0f
+        private var waveformVisualizer: Visualizer? = null
+        private var visualizerSessionId = -1
+        private val waveformFrame = object : Runnable {
+            override fun run() {
+                if (lastPlayer?.isPlaying == true) {
+                    waveformPhase += 0.065 + bassLevel * 0.46
+                    val energy = 0.18f + bassLevel * 0.82f
+                    waveformBars.forEachIndexed { index, bar ->
+                        val phase = waveformPhase + index * 0.72
+                        val wave = ((sin(phase) + 1.0) * 0.5).toFloat()
+                        val scale = (0.28f + wave * energy).coerceIn(0.28f, 1.35f)
+                        bar.scaleY = scale
+                        bar.alpha = (0.40f + scale * 0.45f).coerceIn(0.45f, 1f)
+                    }
+                    waveformHandler.postDelayed(this, 80L)
+                } else {
+                    waveformBars.forEach { bar ->
+                        bar.animate().cancel()
+                        bar.scaleY = 0.28f
+                        bar.alpha = 0.38f
+                    }
+                    waveformHandler.removeCallbacks(this)
+                }
+            }
+        }
         private val previous = ImageView(context)
         private val stop = ImageView(context)
         private val next = ImageView(context)
@@ -255,23 +292,14 @@ class IosMusicBubbleController(
             repeat(count) { i ->
                 val bar = View(context).apply {
                     background = rounded(2f, accent)
-                    alpha = .55f
+                    alpha = .38f
+                    scaleY = .28f
+                    pivotY = dp(15).toFloat()
                 }
+                waveformBars += bar
                 waveform.addView(bar, LayoutParams(dp(2), dp(6 + (i % 4) * 3)).apply {
                     leftMargin = if (i == 0) 0 else dp(2)
                 })
-                android.animation.ValueAnimator.ofFloat(.35f, 1f, .45f).apply {
-                    duration = 480L + i * 55L
-                    startDelay = i * 60L
-                    repeatCount = android.animation.ValueAnimator.INFINITE
-                    interpolator = android.view.animation.PathInterpolator(.22f, .8f, .25f, 1f)
-                    addUpdateListener { a ->
-                        val f = a.animatedValue as Float
-                        bar.scaleY = f
-                        bar.alpha = .45f + f * .5f
-                    }
-                    start()
-                }
             }
             addView(waveform, LayoutParams(if (theme == BubbleTheme.BASIC_LIKE) dp(22) else dp(28), dp(30)))
 
@@ -351,6 +379,75 @@ class IosMusicBubbleController(
             return true
         }
 
+        private fun updateWaveform(player: Player) {
+            if (!player.isPlaying) {
+                bassLevel = 0f
+                waveformVisualizer?.let { runCatching { it.enabled = false; it.release() } }
+                waveformVisualizer = null
+                visualizerSessionId = -1
+                waveformHandler.removeCallbacks(waveformFrame)
+                waveformBars.forEach { bar ->
+                    bar.animate().cancel()
+                    bar.scaleY = 0.28f
+                    bar.alpha = 0.38f
+                }
+                return
+            }
+
+            val sessionId = player.audioSessionId
+            if (sessionId > 0 && sessionId != visualizerSessionId) {
+                waveformVisualizer?.release()
+                waveformVisualizer = null
+                visualizerSessionId = -1
+                waveformVisualizer = runCatching {
+                    Visualizer(sessionId).apply {
+                        captureSize = Visualizer.getCaptureSizeRange().first.coerceAtMost(128)
+                        setDataCaptureListener(object : Visualizer.OnDataCaptureListener {
+                            override fun onWaveFormDataCapture(
+                                visualizer: Visualizer,
+                                waveform: ByteArray,
+                                samplingRate: Int,
+                            ) = Unit
+
+                            override fun onFftDataCapture(
+                                visualizer: Visualizer,
+                                fft: ByteArray,
+                                samplingRate: Int,
+                            ) {
+                                var lowEnergy = 0.0
+                                var totalEnergy = 0.0
+                                var bins = 0
+                                var i = 2
+                                while (i + 1 < fft.size) {
+                                    val re = fft[i].toInt()
+                                    val im = fft[i + 1].toInt()
+                                    val magnitude = kotlin.math.sqrt((re * re + im * im).toDouble())
+                                    totalEnergy += magnitude
+                                    if (bins < 5) lowEnergy += magnitude
+                                    bins++
+                                    i += 2
+                                }
+                                val ratio = if (totalEnergy > 0.0) lowEnergy / totalEnergy else 0.0
+                                val normalized = (ratio * 5.0).coerceIn(0.0, 1.0).toFloat()
+                                bassLevel = bassLevel * 0.72f + normalized * 0.28f
+                            }
+                        }, 16000, false, true)
+                        enabled = true
+                    }.also { visualizerSessionId = sessionId }
+                }.getOrNull()
+            }
+            if (!waveformHandler.hasCallbacks(waveformFrame)) {
+                waveformHandler.post(waveformFrame)
+            }
+        }
+
+        fun releaseWaveform() {
+            waveformHandler.removeCallbacks(waveformFrame)
+            waveformVisualizer?.let { runCatching { it.enabled = false; it.release() } }
+            waveformVisualizer = null
+            visualizerSessionId = -1
+        }
+
         fun update(player: Player) {
             lastPlayer = player
             title.text = player.mediaMetadata.title?.toString().orEmpty().ifBlank { "Strix Music" }
@@ -370,6 +467,7 @@ class IosMusicBubbleController(
                 )
             }
             updateProgressOnly(player)
+            updateWaveform(player)
         }
 
         fun updateProgressOnly(player: Player) {
