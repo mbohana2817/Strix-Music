@@ -267,10 +267,16 @@ class IosMusicBubbleController(
         private val artist = TextView(context)
         private val progressTrack = FrameLayout(context)
         private val progress = View(context)
-        private val previous = ImageView(context)
-        private val stop = ImageView(context)
-        private val play = ImageView(context)
-        private val next = ImageView(context)
+        // Separate views for compact and expanded layouts.
+        // A View cannot belong to two parents; sharing previous/next between
+        // compact and expanded layouts caused BubbleView construction to fail
+        // and made the overlay disappear completely.
+        private val compactPrevious = ImageView(context)
+        private val compactStop = ImageView(context)
+        private val compactNext = ImageView(context)
+        private val expandedPrevious = ImageView(context)
+        private val expandedPlay = ImageView(context)
+        private val expandedNext = ImageView(context)
         private val waveform = LinearLayout(context)
 
         private var downX = 0f
@@ -313,19 +319,10 @@ class IosMusicBubbleController(
         }
 
         override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
-            if (event.actionMasked == MotionEvent.ACTION_DOWN) {
-                // Transport buttons must receive the touch directly. The bubble
-                // itself is intentionally non-expandable: tapping empty glass
-                // only starts a drag gesture.
-                val x = event.x.toInt()
-                val y = event.y.toInt()
-                if (isPointInside(previous, x, y) ||
-                    isPointInside(stop, x, y) ||
-                    isPointInside(play, x, y) ||
-                    isPointInside(next, x, y)
-                ) return false
-            }
-            return true
+            // Never steal the gesture from compact transport buttons.
+            // The root still receives taps/drags on empty glass because it is
+            // clickable, while child ImageViews receive their own click events.
+            return false
         }
 
         private fun isPointInside(child: View, x: Int, y: Int): Boolean {
@@ -446,15 +443,15 @@ class IosMusicBubbleController(
             // Compact transport controls: they are the only clickable area
             // of the floating bubble. Keeping them in the compact state avoids
             // the fragile expanded overlay interaction on low-spec devices.
-            configureCompactTransport(previous, LineIconDrawable.PREV)
-            configureCompactTransport(stop, LineIconDrawable.STOP)
-            configureCompactTransport(next, LineIconDrawable.NEXT)
-            compact.addView(previous, LinearLayout.LayoutParams(dp(20), dp(30)).apply { leftMargin = dp(1) })
-            compact.addView(stop, LinearLayout.LayoutParams(dp(20), dp(30)).apply { leftMargin = dp(1) })
-            compact.addView(next, LinearLayout.LayoutParams(dp(20), dp(30)).apply { leftMargin = dp(1) })
-            previous.setOnClickListener { lastPlayer?.seekToPreviousMediaItem() }
-            stop.setOnClickListener { lastPlayer?.stop() }
-            next.setOnClickListener { lastPlayer?.seekToNextMediaItem() }
+            configureCompactTransport(compactPrevious, LineIconDrawable.PREV)
+            configureCompactTransport(compactStop, LineIconDrawable.STOP)
+            configureCompactTransport(compactNext, LineIconDrawable.NEXT)
+            compact.addView(compactPrevious, LinearLayout.LayoutParams(dp(20), dp(30)).apply { leftMargin = dp(1) })
+            compact.addView(compactStop, LinearLayout.LayoutParams(dp(20), dp(30)).apply { leftMargin = dp(1) })
+            compact.addView(compactNext, LinearLayout.LayoutParams(dp(20), dp(30)).apply { leftMargin = dp(1) })
+            compactPrevious.setOnClickListener { lastPlayer?.seekToPreviousMediaItem() }
+            compactStop.setOnClickListener { lastPlayer?.stop() }
+            compactNext.setOnClickListener { lastPlayer?.seekToNextMediaItem() }
             compactTitle.tag = "compactTitle"
             compactArtist.tag = "compactArtist"
         }
@@ -506,18 +503,18 @@ class IosMusicBubbleController(
                 gravity = Gravity.CENTER
                 orientation = LinearLayout.HORIZONTAL
             }
-            configureTransport(previous, LineIconDrawable.PREV, false)
-            configureTransport(play, LineIconDrawable.PAUSE, true)
-            configureTransport(next, LineIconDrawable.NEXT, false)
+            configureTransport(expandedPrevious, LineIconDrawable.PREV, false)
+            configureTransport(expandedPlay, LineIconDrawable.PAUSE, true)
+            configureTransport(expandedNext, LineIconDrawable.NEXT, false)
 
-            controls.addView(previous, LinearLayout.LayoutParams(dp(42), dp(42)).apply { rightMargin = dp(18) })
-            controls.addView(play, LinearLayout.LayoutParams(dp(46), dp(46)).apply { rightMargin = dp(18) })
-            controls.addView(next, LinearLayout.LayoutParams(dp(42), dp(42)))
+            controls.addView(expandedPrevious, LinearLayout.LayoutParams(dp(42), dp(42)).apply { rightMargin = dp(18) })
+            controls.addView(expandedPlay, LinearLayout.LayoutParams(dp(46), dp(46)).apply { rightMargin = dp(18) })
+            controls.addView(expandedNext, LinearLayout.LayoutParams(dp(42), dp(42)))
             expandedPanel.addView(controls, LinearLayout.LayoutParams(-1, 0, 1f))
 
-            previous.setOnClickListener { lastPlayer?.seekToPreviousMediaItem() }
-            next.setOnClickListener { lastPlayer?.seekToNextMediaItem() }
-            play.setOnClickListener {
+            expandedPrevious.setOnClickListener { lastPlayer?.seekToPreviousMediaItem() }
+            expandedNext.setOnClickListener { lastPlayer?.seekToNextMediaItem() }
+            expandedPlay.setOnClickListener {
                 lastPlayer?.let { p -> if (p.isPlaying) p.pause() else p.play() }
             }
         }
@@ -589,7 +586,7 @@ class IosMusicBubbleController(
                 )
             }
 
-            play.setImageDrawable(
+            expandedPlay.setImageDrawable(
                 LineIconDrawable(
                     if (player.isPlaying) LineIconDrawable.PAUSE else LineIconDrawable.PLAY,
                     if (theme == BubbleTheme.IOS_LIKE || theme == BubbleTheme.MODERN_LIKE) Color.rgb(18,18,20) else Color.WHITE,
