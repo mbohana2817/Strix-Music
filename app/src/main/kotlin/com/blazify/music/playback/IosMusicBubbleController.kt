@@ -214,6 +214,13 @@ class IosMusicBubbleController(
 
         animator?.cancel()
         snapAnimator?.cancel()
+
+        // Keep both layers alive during the whole transition. Hiding the
+        // expanded panel on the first collapse frame caused the artwork to
+        // jump/zoom and removed the smooth iOS-style cross-fade.
+        compactLayerVisible(v, true)
+        expandedLayerVisible(v, true)
+
         v.animate()
             .scaleX(0.985f)
             .scaleY(0.985f)
@@ -235,10 +242,17 @@ class IosMusicBubbleController(
                 override fun onAnimationEnd(animation: android.animation.Animator) {
                     v.scaleX = 1f
                     v.scaleY = 1f
+                    // Only hide the inactive layer after the fade has finished.
+                    compactLayerVisible(v, !expanded)
+                    expandedLayerVisible(v, expanded)
+                    v.alpha = 1f
                 }
                 override fun onAnimationCancel(animation: android.animation.Animator) {
                     v.scaleX = 1f
                     v.scaleY = 1f
+                    v.alpha = 1f
+                    compactLayerVisible(v, !expanded)
+                    expandedLayerVisible(v, expanded)
                 }
             })
             start()
@@ -365,6 +379,7 @@ class IosMusicBubbleController(
             cover.layoutParams = LinearLayout.LayoutParams(dp(artSize), dp(artSize))
             cover.background = rounded(if (theme == BubbleTheme.IOS_LIKE) 9f else 7f)
             cover.scaleType = ImageView.ScaleType.CENTER_CROP
+            cover.adjustViewBounds = false
             compact.addView(cover)
 
             val info = LinearLayout(context).apply {
@@ -439,6 +454,7 @@ class IosMusicBubbleController(
             expandedCover.layoutParams = LinearLayout.LayoutParams(dp(coverSize), dp(coverSize))
             expandedCover.background = rounded(if (theme == BubbleTheme.IOS_LIKE) 16f else 12f)
             expandedCover.scaleType = ImageView.ScaleType.CENTER_CROP
+            expandedCover.adjustViewBounds = false
             header.addView(expandedCover)
 
             val info = LinearLayout(context).apply {
@@ -565,9 +581,22 @@ class IosMusicBubbleController(
         }
 
         fun applyExpanded(isExpanded: Boolean, fraction: Float) {
+            // Both layers stay visible while animating so the artwork never
+            // gets re-laid-out from the compact size mid-transition.
+            compact.isVisible = true
+            expandedPanel.isVisible = true
             compact.alpha = if (isExpanded) 1f - fraction else fraction
             expandedPanel.alpha = if (isExpanded) fraction else 1f - fraction
-            expandedPanel.isVisible = isExpanded || fraction < .99f
+        }
+
+        private fun compactLayerVisible(v: BubbleView, visible: Boolean) {
+            v.compact.isVisible = visible
+            if (!visible) v.compact.alpha = 0f
+        }
+
+        private fun expandedLayerVisible(v: BubbleView, visible: Boolean) {
+            v.expandedPanel.isVisible = visible
+            if (!visible) v.expandedPanel.alpha = 0f
         }
 
         private fun moveWindow(dx: Float, dy: Float) {
