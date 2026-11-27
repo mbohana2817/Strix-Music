@@ -270,6 +270,7 @@ class IosMusicBubbleController(
         private val previous = ImageView(context)
         private val play = ImageView(context)
         private val next = ImageView(context)
+        private val stop = ImageView(context)
         private val waveform = LinearLayout(context)
 
         private var downX = 0f
@@ -279,6 +280,7 @@ class IosMusicBubbleController(
         private var moved = false
         private var lastArtwork: Uri? = null
         private var lastPlayer: Player? = null
+        private val waveformAnimators = mutableListOf<ValueAnimator>()
 
         private val accent = when (theme) {
             BubbleTheme.IOS_LIKE -> Color.WHITE
@@ -300,9 +302,9 @@ class IosMusicBubbleController(
         }
 
         fun themeWidth(expanded: Boolean): Int = when (theme) {
-            BubbleTheme.IOS_LIKE -> dp(if (expanded) 390 else 154)
-            BubbleTheme.MODERN_LIKE -> dp(if (expanded) 400 else 180)
-            BubbleTheme.BASIC_LIKE -> dp(if (expanded) 360 else 166)
+            BubbleTheme.IOS_LIKE -> dp(if (expanded) 390 else 218)
+            BubbleTheme.MODERN_LIKE -> dp(if (expanded) 400 else 224)
+            BubbleTheme.BASIC_LIKE -> dp(if (expanded) 360 else 210)
         }
 
         fun themeHeight(expanded: Boolean): Int = when (theme) {
@@ -312,19 +314,10 @@ class IosMusicBubbleController(
         }
 
         override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
-            if (expanded && event.actionMasked == MotionEvent.ACTION_DOWN) {
-                // Never steal the initial DOWN event from a transport button.
-                // The old fixed Y threshold was fragile across themes/sizes.
-                val x = event.x.toInt()
-                val y = event.y.toInt()
-                if (isPointInside(previous, x, y) ||
-                    isPointInside(play, x, y) ||
-                    isPointInside(next, x, y)
-                ) {
-                    return false
-                }
-            }
-            return true
+            // The bubble itself is not a tap-to-expand control anymore.
+            // Never intercept child touches so the compact transport buttons
+            // receive their normal click events. Empty space remains draggable.
+            return false
         }
 
         private fun isPointInside(child: View, x: Int, y: Int): Boolean {
@@ -352,7 +345,7 @@ class IosMusicBubbleController(
                     return true
                 }
                 MotionEvent.ACTION_UP -> {
-                    if (moved) snap() else toggleExpanded()
+                    if (moved) snap() else snap()
                     return true
                 }
                 MotionEvent.ACTION_CANCEL -> {
@@ -435,9 +428,22 @@ class IosMusicBubbleController(
                 }
             }
             compact.addView(waveform, LinearLayout.LayoutParams(
-                if (theme == BubbleTheme.BASIC_LIKE) dp(22) else dp(39),
+                if (theme == BubbleTheme.BASIC_LIKE) dp(24) else dp(28),
                 dp(30),
             ))
+
+            val compactControls = LinearLayout(context).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = Gravity.CENTER_VERTICAL
+            }
+            configureCompactTransport(previous, LineIconDrawable.PREV)
+            configureCompactTransport(stop, LineIconDrawable.STOP)
+            configureCompactTransport(next, LineIconDrawable.NEXT)
+            compactControls.addView(previous, LinearLayout.LayoutParams(dp(24), dp(30)))
+            compactControls.addView(stop, LinearLayout.LayoutParams(dp(24), dp(30)))
+            compactControls.addView(next, LinearLayout.LayoutParams(dp(24), dp(30)))
+            compact.addView(compactControls, LinearLayout.LayoutParams(dp(72), dp(30)))
+
             compactTitle.tag = "compactTitle"
             compactArtist.tag = "compactArtist"
         }
@@ -502,6 +508,27 @@ class IosMusicBubbleController(
             next.setOnClickListener { lastPlayer?.seekToNextMediaItem() }
             play.setOnClickListener {
                 lastPlayer?.let { p -> if (p.isPlaying) p.pause() else p.play() }
+            }
+        }
+
+        private fun configureCompactTransport(icon: ImageView, type: Int) {
+            icon.setImageDrawable(LineIconDrawable(type, Color.WHITE))
+            icon.setPadding(dp(5), dp(5), dp(5), dp(5))
+            icon.isClickable = true
+            icon.setOnTouchListener { v, e ->
+                when (e.actionMasked) {
+                    MotionEvent.ACTION_DOWN -> v.animate().scaleX(.82f).scaleY(.82f).setDuration(55L).start()
+                    MotionEvent.ACTION_UP -> {
+                        v.animate().scaleX(1f).scaleY(1f).setDuration(130L).start()
+                        when (type) {
+                            LineIconDrawable.PREV -> lastPlayer?.seekToPreviousMediaItem()
+                            LineIconDrawable.NEXT -> lastPlayer?.seekToNextMediaItem()
+                            LineIconDrawable.STOP -> lastPlayer?.stop()
+                        }
+                    }
+                    MotionEvent.ACTION_CANCEL -> v.animate().scaleX(1f).scaleY(1f).setDuration(100L).start()
+                }
+                true
             }
         }
 
@@ -670,6 +697,7 @@ class IosMusicBubbleController(
             const val PAUSE = 3
             const val NEXT = 4
             const val MENU = 5
+            const val STOP = 6
         }
 
         private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -703,6 +731,9 @@ class IosMusicBubbleController(
                 PAUSE -> {
                     canvas.drawRoundRect(cx-w*.20f, cy-h*.24f, cx-w*.03f, cy+h*.24f, 2f,2f,fill)
                     canvas.drawRoundRect(cx+w*.03f, cy-h*.24f, cx+w*.20f, cy+h*.24f, 2f,2f,fill)
+                }
+                STOP -> {
+                    canvas.drawRoundRect(cx-w*.20f, cy-h*.20f, cx+w*.20f, cy+h*.20f, 2.5f, 2.5f, fill)
                 }
                 PREV, NEXT -> {
                     val dir = if (type == PREV) -1f else 1f
