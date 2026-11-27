@@ -206,6 +206,10 @@ fun AppearanceSettings(
                 if (Settings.canDrawOverlays(activity)) {
                     val intent = Intent(activity, com.blazify.music.playback.MusicService::class.java).apply {
                         action = com.blazify.music.playback.MusicService.ACTION_REFRESH_IOS_BUBBLE
+                        putExtra(
+                            com.blazify.music.playback.MusicService.EXTRA_IOS_BUBBLE_ENABLED,
+                            true,
+                        )
                     }
                     runCatching {
                         androidx.core.content.ContextCompat.startForegroundService(activity, intent)
@@ -461,6 +465,10 @@ fun AppearanceSettings(
                                             onFloatingMediaNotificationChange(false)
                                             val intent = Intent(activity, com.blazify.music.playback.MusicService::class.java).apply {
                                                 action = com.blazify.music.playback.MusicService.ACTION_REFRESH_IOS_BUBBLE
+                                                putExtra(
+                                                    com.blazify.music.playback.MusicService.EXTRA_IOS_BUBBLE_ENABLED,
+                                                    false,
+                                                )
                                             }
                                             runCatching { androidx.core.content.ContextCompat.startForegroundService(activity, intent) }
                                         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
@@ -474,6 +482,10 @@ fun AppearanceSettings(
                                             onFloatingMediaNotificationChange(true)
                                             val intent = Intent(activity, com.blazify.music.playback.MusicService::class.java).apply {
                                                 action = com.blazify.music.playback.MusicService.ACTION_REFRESH_IOS_BUBBLE
+                                                putExtra(
+                                                    com.blazify.music.playback.MusicService.EXTRA_IOS_BUBBLE_ENABLED,
+                                                    true,
+                                                )
                                             }
                                             runCatching { androidx.core.content.ContextCompat.startForegroundService(activity, intent) }
                                         }
@@ -486,6 +498,10 @@ fun AppearanceSettings(
                                     onFloatingMediaNotificationChange(false)
                                     val intent = Intent(activity, com.blazify.music.playback.MusicService::class.java).apply {
                                         action = com.blazify.music.playback.MusicService.ACTION_REFRESH_IOS_BUBBLE
+                                        putExtra(
+                                            com.blazify.music.playback.MusicService.EXTRA_IOS_BUBBLE_ENABLED,
+                                            false,
+                                        )
                                     }
                                     runCatching { androidx.core.content.ContextCompat.startForegroundService(activity, intent) }
                                 } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
@@ -499,6 +515,10 @@ fun AppearanceSettings(
                                     onFloatingMediaNotificationChange(true)
                                     val intent = Intent(activity, com.blazify.music.playback.MusicService::class.java).apply {
                                         action = com.blazify.music.playback.MusicService.ACTION_REFRESH_IOS_BUBBLE
+                                        putExtra(
+                                            com.blazify.music.playback.MusicService.EXTRA_IOS_BUBBLE_ENABLED,
+                                            true,
+                                        )
                                     }
                                     runCatching { androidx.core.content.ContextCompat.startForegroundService(activity, intent) }
                                 }

@@ -865,9 +865,8 @@ class MusicService :
         player.addListener(sleepTimer!!)
 
         playerInitialized.value = true
-        if (startupPrefs?.get(FloatingMediaNotificationKey) == true && Settings.canDrawOverlays(this)) {
-            iosMusicBubble = IosMusicBubbleController(this).also { it.attach(player) }
-        }
+        // Attach using the live preference instead of the startup snapshot.
+        refreshIosMusicBubble()
         Timber.tag(TAG).d("Player successfully initialized")
 
         audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
@@ -1295,6 +1294,7 @@ class MusicService :
 
                 player = newPlayer
                 _playerFlow.value = newPlayer
+                iosMusicBubble?.update(newPlayer)
 
                 Timber.tag("MusicService").i("Player recreated with AudioTrackPlaybackParams: $useAudioTrackParams")
             }
@@ -5809,7 +5809,13 @@ class MusicService :
 
         when (intent?.action) {
             ACTION_REFRESH_IOS_BUBBLE -> {
-                refreshIosMusicBubble()
+                val enabledOverride =
+                    if (intent.hasExtra(EXTRA_IOS_BUBBLE_ENABLED)) {
+                        intent.getBooleanExtra(EXTRA_IOS_BUBBLE_ENABLED, false)
+                    } else {
+                        null
+                    }
+                refreshIosMusicBubble(enabledOverride)
             }
 
             ACTION_ALARM_TRIGGER -> {
@@ -5849,18 +5855,40 @@ class MusicService :
     }
 
 
-    private fun refreshIosMusicBubble() {
-        if (!::player.isInitialized) return
+    private fun refreshIosMusicBubble(enabledOverride: Boolean? = null) {
+        // The preference can be changed by Compose while this service instance is
+        // already alive. startupPrefs is only a startup snapshot, so never use it
+        // here; read the current DataStore value instead.
+        scope.launch {
+            val enabled = enabledOverride ?: runCatching {
+                dataStore.data.first()[FloatingMediaNotificationKey] ?: false
+            }.getOrDefault(false)
 
-        if (startupPrefs?.get(FloatingMediaNotificationKey) == true && Settings.canDrawOverlays(this)) {
-            if (iosMusicBubble == null) {
-                iosMusicBubble = IosMusicBubbleController(this).also { it.attach(player) }
-            } else {
-                iosMusicBubble?.update(player)
+            withContext(Dispatchers.Main.immediate) {
+                if (!::player.isInitialized) return@withContext
+
+                val overlayGranted = Settings.canDrawOverlays(this@MusicService)
+                if (enabled && overlayGranted) {
+                    if (iosMusicBubble == null) {
+                        Timber.tag(TAG).i("iOS Now Playing: attaching floating bubble")
+                        iosMusicBubble = IosMusicBubbleController(this@MusicService).also {
+                            it.attach(player)
+                        }
+                    } else {
+                        iosMusicBubble?.update(player)
+                    }
+                } else {
+                    if (iosMusicBubble != null) {
+                        Timber.tag(TAG).i(
+                            "iOS Now Playing: detaching bubble (enabled=%s, overlay=%s)",
+                            enabled,
+                            overlayGranted,
+                        )
+                    }
+                    iosMusicBubble?.detach()
+                    iosMusicBubble = null
+                }
             }
-        } else {
-            iosMusicBubble?.detach()
-            iosMusicBubble = null
         }
     }
 
@@ -6437,6 +6465,7 @@ class MusicService :
 
         const val ACTION_ALARM_TRIGGER = "com.blazify.music.action.ALARM_TRIGGER"
         const val ACTION_REFRESH_IOS_BUBBLE = "com.blazify.music.action.REFRESH_IOS_BUBBLE"
+        const val EXTRA_IOS_BUBBLE_ENABLED = "extra_ios_bubble_enabled"
         const val EXTRA_ALARM_ID = "extra_alarm_id"
         const val EXTRA_ALARM_PLAYLIST_ID = "extra_alarm_playlist_id"
         const val EXTRA_ALARM_RANDOM_SONG = "extra_alarm_random_song"

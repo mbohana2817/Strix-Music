@@ -9,6 +9,8 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.view.Gravity
+import android.view.animation.DecelerateInterpolator
+import android.view.animation.PathInterpolator
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
@@ -25,6 +27,7 @@ import androidx.media3.common.Player
 import com.blazify.music.R
 import kotlin.math.abs
 import kotlin.math.roundToInt
+import timber.log.Timber
 
 /** Native iOS-style Now Playing bubble. The bubble is hosted by MusicService,
  * so it can remain visible while the Activity is removed from recents. */
@@ -40,6 +43,7 @@ class IosMusicBubbleController(private val service: MusicService) {
     private var expanded = false
     private var attached = false
     private var animator: ValueAnimator? = null
+    private var snapAnimator: ValueAnimator? = null
     private var player: Player? = null
 
     private val handler = Handler(Looper.getMainLooper())
@@ -76,15 +80,27 @@ class IosMusicBubbleController(private val service: MusicService) {
             v.update(player)
             handler.removeCallbacks(progressTicker)
             handler.postDelayed(progressTicker, 1000L)
-        }.onFailure {
+            Timber.tag("IosMusicBubble").i("Floating Now Playing bubble attached")
+        }.onFailure { error ->
             view = null
             this.player = null
+            attached = false
+            Timber.tag("IosMusicBubble").e(error, "Failed to attach floating Now Playing bubble")
+            // A permission/settings transition can race the first addView(). Retry
+            // shortly while the service is still alive, without a permanent loop.
+            handler.postDelayed({
+                if (!attached && Settings.canDrawOverlays(context) && this.player == null) {
+                    attach(player)
+                }
+            }, 700L)
         }
     }
 
     fun detach() {
         animator?.cancel()
         animator = null
+        snapAnimator?.cancel()
+        snapAnimator = null
         handler.removeCallbacks(progressTicker)
         view?.let { runCatching { wm.removeView(it) } }
         view = null
@@ -109,16 +125,36 @@ class IosMusicBubbleController(private val service: MusicService) {
         val startH = lp.height
 
         animator?.cancel()
+        snapAnimator?.cancel()
+        // Keep the transition on the native UI thread, but let the window size and
+        // content opacity move together. The cubic-bezier matches the soft iOS
+        // sheet/Live Activity feel without using a heavy blur shader.
+        v.setLayerType(View.LAYER_TYPE_HARDWARE, null)
         animator = ValueAnimator.ofFloat(0f, 1f).apply {
-            duration = 360L
-            interpolator = android.view.animation.PathInterpolator(.22f, 1f, .36f, 1f)
+            duration = if (expanded) 420L else 340L
+            interpolator = PathInterpolator(.16f, 1f, .3f, 1f)
             addUpdateListener { a ->
                 val f = a.animatedFraction
                 lp.width = (startW + (targetW - startW) * f).roundToInt()
                 lp.height = (startH + (targetH - startH) * f).roundToInt()
-                v.applyExpanded(expanded, f)
+                val contentF = if (expanded) f else 1f - f
+                v.applyExpanded(expanded, contentF)
+                v.scaleX = 0.985f + (0.015f * f)
+                v.scaleY = 0.985f + (0.015f * f)
                 runCatching { wm.updateViewLayout(v, lp) }
             }
+            addListener(object : android.animation.AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: android.animation.Animator) {
+                    v.scaleX = 1f
+                    v.scaleY = 1f
+                    v.setLayerType(View.LAYER_TYPE_NONE, null)
+                }
+                override fun onAnimationCancel(animation: android.animation.Animator) {
+                    v.scaleX = 1f
+                    v.scaleY = 1f
+                    v.setLayerType(View.LAYER_TYPE_NONE, null)
+                }
+            })
             start()
         }
     }
@@ -234,6 +270,22 @@ class IosMusicBubbleController(private val service: MusicService) {
                 })
             }
             compact.addView(wave, LinearLayout.LayoutParams(dp(18), dp(18)))
+            // Tiny 3-bar waveform: cheap native property animation, no shader/blur work.
+            for (i in 0 until wave.childCount) {
+                val bar = wave.getChildAt(i)
+                val animator = ValueAnimator.ofFloat(0.45f, 1f, 0.55f).apply {
+                    duration = 620L + (i * 90L)
+                    startDelay = i * 80L
+                    repeatCount = ValueAnimator.INFINITE
+                    interpolator = PathInterpolator(.25f, .1f, .25f, 1f)
+                    addUpdateListener { a ->
+                        val f = a.animatedValue as Float
+                        bar.scaleY = f
+                        bar.alpha = 0.72f + (f * 0.28f)
+                    }
+                }
+                animator.start()
+            }
         }
 
         private fun setupExpanded() {
@@ -318,6 +370,17 @@ class IosMusicBubbleController(private val service: MusicService) {
             button.scaleType = ImageView.ScaleType.CENTER
             button.setPadding(dp(10), dp(10), dp(10), dp(10))
             button.isClickable = true
+            button.setOnTouchListener { v, event ->
+                when (event.actionMasked) {
+                    MotionEvent.ACTION_DOWN -> {
+                        v.animate().scaleX(0.90f).scaleY(0.90f).setDuration(90L).setInterpolator(DecelerateInterpolator()).start()
+                    }
+                    MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                        v.animate().scaleX(1f).scaleY(1f).setDuration(150L).setInterpolator(PathInterpolator(.2f, .8f, .2f, 1f)).start()
+                    }
+                }
+                false
+            }
         }
 
         fun update(player: Player) {
@@ -378,9 +441,18 @@ class IosMusicBubbleController(private val service: MusicService) {
         private fun snap() {
             val lp = layoutParams as WindowManager.LayoutParams
             val screenW = context.resources.displayMetrics.widthPixels
-            val center = lp.x + width / 2
-            lp.x = if (center < screenW / 2) dp(8) else screenW - width - dp(8)
-            runCatching { wm.updateViewLayout(this, lp) }
+            val targetX = if (lp.x + width / 2 < screenW / 2) dp(8) else screenW - width - dp(8)
+            val startX = lp.x
+            snapAnimator?.cancel()
+            snapAnimator = ValueAnimator.ofInt(startX, targetX).apply {
+                duration = 260L
+                interpolator = PathInterpolator(.22f, 1f, .36f, 1f)
+                addUpdateListener { a ->
+                    lp.x = a.animatedValue as Int
+                    runCatching { wm.updateViewLayout(this@BubbleView, lp) }
+                }
+                start()
+            }
         }
 
         private fun rounded(radius: Float, color: Int = Color.argb(255, 255, 255, 255)) =
