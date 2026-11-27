@@ -6511,8 +6511,8 @@ class MusicService :
         const val MAX_CONSECUTIVE_ERR = 5
         const val MAX_RETRY_COUNT = 10
 
-        private const val MAX_GAIN_MB = 300 // Maximum gain in millibels (3 dB)
-        private const val MIN_GAIN_MB = -1500 // Minimum gain in millibels (-15 dB)
+        private const val MAX_GAIN_MB = 300 // Safe maximum gain: +3 dB
+        private const val MIN_GAIN_MB = -300 // Avoid excessive attenuation: -3 dB
 
         private const val TAG = "MusicService"
 
