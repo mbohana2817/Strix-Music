@@ -180,27 +180,109 @@ class IosMusicBubbleController(
         private val waveform = LinearLayout(context)
         private val waveformBars = mutableListOf<View>()
         private val waveformHandler = Handler(Looper.getMainLooper())
+
+        // HTML waveform transplanted to native Android:
+        // 20 independent liquid bars, each with its own max height, speed and
+        // phase offset. The motion is continuous rather than random/jittery.
         private var waveformPhase = 0.0
         private var bassLevel = 0f
         private var waveformVisualizer: Visualizer? = null
         private var visualizerSessionId = -1
+
+        private val iosMax = floatArrayOf(
+            15f, 27f, 40f, 23f, 34f, 47f, 31f, 44f, 25f, 52f,
+            37f, 46f, 29f, 42f, 33f, 49f, 26f, 39f, 18f, 43f
+        )
+        private val iosSpeed = floatArrayOf(
+            1.42f, 1.18f, 1.31f, 1.09f, 1.27f, 1.16f, 1.37f, 1.13f, 1.32f, 1.08f,
+            1.24f, 1.17f, 1.34f, 1.11f, 1.29f, 1.15f, 1.36f, 1.21f, 1.40f, 1.14f
+        )
+        private val iosDelay = floatArrayOf(
+            -.30f, -.50f, -.70f, -.40f, -.80f, -1.00f, -.60f, -.90f, -.45f, -1.10f,
+            -.70f, -.95f, -.55f, -.85f, -.65f, -1.05f, -.48f, -.78f, -.35f, -.92f
+        )
+
+        private val modernMax = floatArrayOf(
+            13f, 26f, 43f, 22f, 36f, 51f, 29f, 45f, 24f, 53f,
+            38f, 48f, 27f, 44f, 34f, 50f, 25f, 41f, 19f, 46f
+        )
+        private val modernSpeed = floatArrayOf(
+            .82f, .67f, .78f, .71f, .86f, .69f, .81f, .74f, .89f, .65f,
+            .77f, .72f, .84f, .68f, .80f, .70f, .87f, .73f, .91f, .76f
+        )
+        private val modernDelay = floatArrayOf(
+            -.12f, -.23f, -.35f, -.16f, -.43f, -.54f, -.29f, -.47f, -.20f, -.59f,
+            -.38f, -.52f, -.26f, -.61f, -.34f, -.57f, -.18f, -.49f, -.11f, -.66f
+        )
+
+        private val basicMax = floatArrayOf(
+            14f, 24f, 35f, 21f, 31f, 40f, 27f, 34f, 22f, 38f,
+            30f, 37f, 25f, 33f, 28f, 39f, 23f, 35f, 17f, 36f
+        )
+        private val basicSpeed = floatArrayOf(
+            1.05f, 1.16f, .94f, 1.22f, 1.08f, .98f, 1.15f, 1.03f, 1.19f, .91f,
+            1.10f, .99f, 1.18f, 1.04f, 1.13f, .96f, 1.21f, 1.01f, 1.25f, 1.07f
+        )
+        private val basicDelay = floatArrayOf(
+            -.12f, -.25f, -.38f, -.16f, -.44f, -.57f, -.31f, -.49f, -.21f, -.63f,
+            -.36f, -.54f, -.27f, -.61f, -.41f, -.58f, -.19f, -.47f, -.10f, -.67f
+        )
+
         private val waveformFrame = object : Runnable {
             override fun run() {
-                if (lastPlayer?.isPlaying == true) {
-                    waveformPhase += 0.055 + bassLevel * 0.30
-                    val energy = 0.14f + bassLevel * 0.86f
-                    waveformBars.forEachIndexed { index, bar ->
-                        val phase = waveformPhase + index * 0.58
-                        val wave = ((sin(phase) + 1.0) * 0.5).toFloat()
-                        val target = (0.24f + wave * energy).coerceIn(0.24f, 1.28f)
-                        val smooth = bar.scaleY + (target - bar.scaleY) * 0.32f
-                        bar.scaleY = smooth
-                        bar.alpha = (0.36f + smooth * 0.50f).coerceIn(0.42f, 1f)
+                val p = lastPlayer
+                if (p?.isPlaying == true && waveformBars.isNotEmpty()) {
+                    // HTML-style continuous liquid motion. Bass only nudges the
+                    // amplitude; it never replaces the smooth authored motion.
+                    waveformPhase += 0.022 + bassLevel * 0.035
+
+                    val maxArray: FloatArray
+                    val speedArray: FloatArray
+                    val delayArray: FloatArray
+                    when (theme) {
+                        BubbleTheme.IOS_LIKE -> {
+                            maxArray = iosMax
+                            speedArray = iosSpeed
+                            delayArray = iosDelay
+                        }
+                        BubbleTheme.MODERN_LIKE -> {
+                            maxArray = modernMax
+                            speedArray = modernSpeed
+                            delayArray = modernDelay
+                        }
+                        BubbleTheme.BASIC_LIKE -> {
+                            maxArray = basicMax
+                            speedArray = basicSpeed
+                            delayArray = basicDelay
+                        }
                     }
-                    waveformHandler.postDelayed(this, 48L)
+
+                    waveformBars.forEachIndexed { index, bar ->
+                        val local = waveformPhase * speedArray[index] + delayArray[index]
+                        val liquid = ((sin(local) + 1.0) * 0.5).toFloat()
+
+                        // The HTML keyframes are intentionally soft rather than
+                        // full-range random jumps. Keep bass as a subtle lift.
+                        val bassLift = bassLevel * 0.16f
+                        val target = (
+                            0.24f +
+                                liquid * 0.72f +
+                                bassLift * (0.25f + liquid * 0.75f)
+                            ).coerceIn(0.20f, 1.0f)
+
+                        val current = bar.scaleY
+                        val smooth = current + (target - current) * 0.18f
+                        bar.scaleY = smooth
+
+                        // Match the HTML opacity curve: quiet bars stay visible,
+                        // peaks become brighter without flashing.
+                        bar.alpha = (0.30f + smooth * 0.62f).coerceIn(0.32f, 0.98f)
+                    }
+
+                    waveformHandler.postDelayed(this, 32L)
                 } else {
-                    fadeWaveform(false)
                     waveformHandler.removeCallbacks(this)
+                    fadeWaveform(false)
                 }
             }
         }
@@ -282,26 +364,27 @@ class IosMusicBubbleController(
 
             waveform.orientation = HORIZONTAL
             waveform.gravity = Gravity.CENTER_VERTICAL
-            val count = when (theme) {
-                BubbleTheme.IOS_LIKE -> 6
-                BubbleTheme.MODERN_LIKE -> 7
-                BubbleTheme.BASIC_LIKE -> 4
-            }
-            repeat(count) { i ->
+            // 20 bars exactly like the HTML reference. The compact native
+            // bubble uses 1.5dp bars + a tiny gap so the whole liquid wave
+            // stays visible beside the artwork/title without crowding controls.
+            repeat(20) { i ->
                 val bar = View(context).apply {
                     background = rounded(2f, accent)
-                    alpha = .38f
-                    scaleY = .28f
+                    alpha = .34f
+                    scaleY = .24f
                     pivotY = dp(15).toFloat()
                 }
                 waveformBars += bar
-                waveform.addView(bar, LayoutParams(dp(2), dp(6 + (i % 4) * 3)).apply {
-                    leftMargin = if (i == 0) 0 else dp(2)
+                waveform.addView(bar, LayoutParams(dp(2), dp(30)).apply {
+                    leftMargin = 0
                 })
             }
             waveform.alpha = 0f
             waveform.visibility = View.INVISIBLE
-            addView(waveform, LayoutParams(if (theme == BubbleTheme.BASIC_LIKE) dp(22) else dp(28), dp(30)))
+            addView(waveform, LayoutParams(dp(40), dp(30)).apply {
+                leftMargin = dp(1)
+                rightMargin = dp(1)
+            })
 
             configureButton(previous, LineIconDrawable.PREV)
             configureButton(stop, LineIconDrawable.STOP)
