@@ -75,9 +75,11 @@ class IosMusicBubbleController(
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 android.graphics.PixelFormat.TRANSLUCENT,
             ).apply {
-                gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
-                x = 0
-                y = dp(14)
+                // START positioning lets us keep the bubble exactly where the
+                // user's finger leaves it. Initial position is centered.
+                gravity = Gravity.TOP or Gravity.START
+                x = ((context.resources.displayMetrics.widthPixels - width) / 2).coerceAtLeast(dp(8))
+                y = dp(18)
             }
             wm.addView(v, lp)
             view = v
@@ -174,9 +176,9 @@ class IosMusicBubbleController(
         private var lastPlayer: Player? = null
         private var downX = 0f
         private var downY = 0f
-        private var moved = false
         private var startWindowX = 0
         private var startWindowY = 0
+        private var dragging = false
 
         private val accent = when (theme) {
             BubbleTheme.IOS_LIKE -> Color.WHITE
@@ -188,9 +190,12 @@ class IosMusicBubbleController(
             orientation = HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
             setPadding(dp(8), 0, dp(7), 0)
+            // Keep the overlay draggable, but never let it leave the visible
+            // display. No edge snapping: the finger's final position is kept.
             background = backgroundForTheme()
             elevation = dp(16).toFloat()
             isClickable = true
+            isFocusable = false
             setupContent()
         }
 
@@ -273,9 +278,9 @@ class IosMusicBubbleController(
             configureButton(previous, LineIconDrawable.PREV)
             configureButton(stop, LineIconDrawable.STOP)
             configureButton(next, LineIconDrawable.NEXT)
-            addView(previous, LayoutParams(dp(22), dp(30)).apply { leftMargin = dp(1) })
-            addView(stop, LayoutParams(dp(22), dp(30)).apply { leftMargin = dp(1) })
-            addView(next, LayoutParams(dp(22), dp(30)).apply { leftMargin = dp(1) })
+            addView(previous, LayoutParams(dp(28), dp(34)).apply { leftMargin = dp(1) })
+            addView(stop, LayoutParams(dp(28), dp(34)).apply { leftMargin = dp(1) })
+            addView(next, LayoutParams(dp(28), dp(34)).apply { leftMargin = dp(1) })
 
             previous.setOnClickListener { lastPlayer?.seekToPreviousMediaItem() }
             stop.setOnClickListener { lastPlayer?.stop() }
@@ -283,8 +288,12 @@ class IosMusicBubbleController(
         }
 
         private fun configureButton(icon: ImageView, type: Int) {
-            icon.background = circle(Color.argb(22, 255, 255, 255))
-            icon.setPadding(dp(4), dp(7), dp(4), dp(7))
+            icon.background = GradientDrawable().apply {
+                shape = GradientDrawable.OVAL
+                setColor(Color.argb(34, 255, 255, 255))
+                setStroke(dp(1), Color.argb(42, 255, 255, 255))
+            }
+            icon.setPadding(dp(5), dp(5), dp(5), dp(5))
             icon.setImageDrawable(LineIconDrawable(type, Color.WHITE))
             icon.isClickable = true
             icon.setOnTouchListener { v, event ->
@@ -297,55 +306,49 @@ class IosMusicBubbleController(
             }
         }
 
+        // Child buttons receive their own taps. Empty/background areas are
+        // draggable and the window is clamped to the physical display.
         override fun onInterceptTouchEvent(event: MotionEvent): Boolean = false
 
         override fun onTouchEvent(event: MotionEvent): Boolean {
+            val lp = layoutParams as? WindowManager.LayoutParams ?: return true
+            val screenW = context.resources.displayMetrics.widthPixels
+            val screenH = context.resources.displayMetrics.heightPixels
+            val maxX = (screenW - width - dp(8)).coerceAtLeast(dp(8))
+            val maxY = (screenH - height - dp(8)).coerceAtLeast(dp(8))
+
             when (event.actionMasked) {
                 MotionEvent.ACTION_DOWN -> {
                     downX = event.rawX
                     downY = event.rawY
-                    moved = false
-                    val lp = layoutParams as? WindowManager.LayoutParams
-                    startWindowX = lp?.x ?: 0
-                    startWindowY = lp?.y ?: dp(14)
+                    startWindowX = lp.x
+                    startWindowY = lp.y
+                    dragging = false
+                    parent?.requestDisallowInterceptTouchEvent(true)
                     return true
                 }
+
                 MotionEvent.ACTION_MOVE -> {
                     val dx = event.rawX - downX
                     val dy = event.rawY - downY
-                    if (abs(dx) > dp(6) || abs(dy) > dp(6)) moved = true
-                    if (moved) moveWindow(dx, dy)
+                    if (!dragging && (abs(dx) > dp(4) || abs(dy) > dp(4))) {
+                        dragging = true
+                    }
+                    if (dragging) {
+                        lp.x = (startWindowX + dx.roundToInt()).coerceIn(dp(8), maxX)
+                        lp.y = (startWindowY + dy.roundToInt()).coerceIn(dp(8), maxY)
+                        runCatching { wm.updateViewLayout(this, lp) }
+                    }
                     return true
                 }
+
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    if (moved) snap()
+                    dragging = false
+                    parent?.requestDisallowInterceptTouchEvent(false)
                     return true
                 }
             }
             return true
-        }
-
-        private fun moveWindow(dx: Float, dy: Float) {
-            val lp = layoutParams as? WindowManager.LayoutParams ?: return
-            lp.x = startWindowX + dx.roundToInt()
-            lp.y = startWindowY + dy.roundToInt()
-            runCatching { wm.updateViewLayout(this, lp) }
-        }
-
-        private fun snap() {
-            val lp = layoutParams as? WindowManager.LayoutParams ?: return
-            val screenW = context.resources.displayMetrics.widthPixels
-            val targetX = if (lp.x + width / 2 < screenW / 2) -screenW / 2 + dp(8) else screenW / 2 - dp(8) - width
-            val startX = lp.x
-            val animator = android.animation.ValueAnimator.ofInt(startX, targetX).apply {
-                duration = 240L
-                interpolator = android.view.animation.PathInterpolator(.22f, 1f, .36f, 1f)
-                addUpdateListener { a ->
-                    lp.x = a.animatedValue as Int
-                    runCatching { wm.updateViewLayout(this@BubbleView, lp) }
-                }
-            }
-            animator.start()
         }
 
         fun update(player: Player) {
@@ -441,18 +444,40 @@ class IosMusicBubbleController(
             val p = Path()
             when (type) {
                 PREV -> {
-                    canvas.drawLine(cx - w * .28f, cy, cx - w * .05f, cy - h * .25f, paint)
-                    canvas.drawLine(cx - w * .28f, cy, cx - w * .05f, cy + h * .25f, paint)
-                    canvas.drawLine(cx + w * .18f, cy - h * .25f, cx + w * .18f, cy + h * .25f, paint)
+                    paint.style = Paint.Style.FILL
+                    p.moveTo(cx - w * .23f, cy)
+                    p.lineTo(cx + w * .06f, cy - h * .25f)
+                    p.lineTo(cx + w * .06f, cy + h * .25f)
+                    p.close()
+                    canvas.drawPath(p, paint)
+                    canvas.drawRoundRect(
+                        cx + w * .10f, cy - h * .25f,
+                        cx + w * .17f, cy + h * .25f,
+                        w * .035f, w * .035f, paint,
+                    )
+                    paint.style = Paint.Style.STROKE
                 }
                 NEXT -> {
-                    canvas.drawLine(cx + w * .28f, cy, cx + w * .05f, cy - h * .25f, paint)
-                    canvas.drawLine(cx + w * .28f, cy, cx + w * .05f, cy + h * .25f, paint)
-                    canvas.drawLine(cx - w * .18f, cy - h * .25f, cx - w * .18f, cy + h * .25f, paint)
+                    paint.style = Paint.Style.FILL
+                    p.moveTo(cx + w * .23f, cy)
+                    p.lineTo(cx - w * .06f, cy - h * .25f)
+                    p.lineTo(cx - w * .06f, cy + h * .25f)
+                    p.close()
+                    canvas.drawPath(p, paint)
+                    canvas.drawRoundRect(
+                        cx - w * .17f, cy - h * .25f,
+                        cx - w * .10f, cy + h * .25f,
+                        w * .035f, w * .035f, paint,
+                    )
+                    paint.style = Paint.Style.STROKE
                 }
                 STOP -> {
                     paint.style = Paint.Style.FILL
-                    canvas.drawRect(cx - w * .19f, cy - h * .19f, cx + w * .19f, cy + h * .19f, paint)
+                    canvas.drawRoundRect(
+                        cx - w * .19f, cy - h * .19f,
+                        cx + w * .19f, cy + h * .19f,
+                        w * .07f, w * .07f, paint,
+                    )
                     paint.style = Paint.Style.STROKE
                 }
                 PLAY -> {

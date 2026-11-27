@@ -6512,7 +6512,7 @@ class MusicService :
         const val MAX_RETRY_COUNT = 10
 
         private const val MAX_GAIN_MB = 300 // Safe maximum gain: +3 dB
-        private const val MIN_GAIN_MB = -300 // Avoid excessive attenuation: -3 dB
+        private const val MIN_GAIN_MB = 0 // Never attenuate already-quiet tracks
 
         private const val TAG = "MusicService"
 
