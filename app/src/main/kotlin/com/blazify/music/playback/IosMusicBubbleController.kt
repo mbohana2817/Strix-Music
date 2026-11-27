@@ -218,8 +218,7 @@ class IosMusicBubbleController(
         // Keep both layers alive during the whole transition. Hiding the
         // expanded panel on the first collapse frame caused the artwork to
         // jump/zoom and removed the smooth iOS-style cross-fade.
-        compactLayerVisible(v, true)
-        expandedLayerVisible(v, true)
+        v.setLayersVisible(compact = true, expanded = true)
 
         v.animate()
             .scaleX(0.985f)
@@ -243,16 +242,14 @@ class IosMusicBubbleController(
                     v.scaleX = 1f
                     v.scaleY = 1f
                     // Only hide the inactive layer after the fade has finished.
-                    compactLayerVisible(v, !expanded)
-                    expandedLayerVisible(v, expanded)
+                    v.setLayersVisible(compact = !expanded, expanded = expanded)
                     v.alpha = 1f
                 }
                 override fun onAnimationCancel(animation: android.animation.Animator) {
                     v.scaleX = 1f
                     v.scaleY = 1f
                     v.alpha = 1f
-                    compactLayerVisible(v, !expanded)
-                    expandedLayerVisible(v, expanded)
+                    v.setLayersVisible(compact = !expanded, expanded = expanded)
                 }
             })
             start()
@@ -589,14 +586,11 @@ class IosMusicBubbleController(
             expandedPanel.alpha = if (isExpanded) fraction else 1f - fraction
         }
 
-        private fun compactLayerVisible(v: BubbleView, visible: Boolean) {
-            v.compact.isVisible = visible
-            if (!visible) v.compact.alpha = 0f
-        }
-
-        private fun expandedLayerVisible(v: BubbleView, visible: Boolean) {
-            v.expandedPanel.isVisible = visible
-            if (!visible) v.expandedPanel.alpha = 0f
+        fun setLayersVisible(compact: Boolean, expanded: Boolean) {
+            this.compact.isVisible = compact
+            this.expandedPanel.isVisible = expanded
+            if (!compact) this.compact.alpha = 0f
+            if (!expanded) this.expandedPanel.alpha = 0f
         }
 
         private fun moveWindow(dx: Float, dy: Float) {
