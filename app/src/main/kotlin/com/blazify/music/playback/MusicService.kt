@@ -27,6 +27,8 @@ import android.media.AudioManager
 import android.media.audiofx.AudioEffect
 import com.blazify.music.constants.EnableBetterLyricsKey
 import com.blazify.music.constants.FloatingMediaNotificationKey
+import com.blazify.music.constants.FloatingBubbleThemeKey
+import com.blazify.music.constants.BubbleTheme
 import com.blazify.music.constants.AddToPlaylistAtTopKey
 import com.blazify.music.playback.audio.VolumeNormalizationAudioProcessor
 import com.blazify.music.utils.safeDataStoreEdit
@@ -5815,7 +5817,9 @@ class MusicService :
                     } else {
                         null
                     }
-                refreshIosMusicBubble(enabledOverride)
+                val themeOverride = intent.getStringExtra(EXTRA_IOS_BUBBLE_THEME)
+                    ?.let { runCatching { BubbleTheme.valueOf(it) }.getOrNull() }
+                refreshIosMusicBubble(enabledOverride, themeOverride)
             }
 
             ACTION_ALARM_TRIGGER -> {
@@ -5855,14 +5859,17 @@ class MusicService :
     }
 
 
-    private fun refreshIosMusicBubble(enabledOverride: Boolean? = null) {
-        // The preference can be changed by Compose while this service instance is
-        // already alive. startupPrefs is only a startup snapshot, so never use it
-        // here; read the current DataStore value instead.
+    private fun refreshIosMusicBubble(
+        enabledOverride: Boolean? = null,
+        themeOverride: BubbleTheme? = null,
+    ) {
+        // DataStore is the source of truth because startupPrefs is only a service-start snapshot.
         scope.launch {
-            val enabled = enabledOverride ?: runCatching {
-                dataStore.data.first()[FloatingMediaNotificationKey] ?: false
-            }.getOrDefault(false)
+            val prefs = runCatching { dataStore.data.first() }.getOrNull()
+            val enabled = enabledOverride ?: (prefs?.get(FloatingMediaNotificationKey) ?: false)
+            val theme = themeOverride
+                ?: prefs?.get(FloatingBubbleThemeKey)?.let { runCatching { BubbleTheme.valueOf(it) }.getOrNull() }
+                ?: BubbleTheme.IOS_LIKE
 
             withContext(Dispatchers.Main.immediate) {
                 if (!::player.isInitialized) return@withContext
@@ -5870,21 +5877,15 @@ class MusicService :
                 val overlayGranted = Settings.canDrawOverlays(this@MusicService)
                 if (enabled && overlayGranted) {
                     if (iosMusicBubble == null) {
-                        Timber.tag(TAG).i("iOS Now Playing: attaching floating bubble")
-                        iosMusicBubble = IosMusicBubbleController(this@MusicService).also {
+                        Timber.tag(TAG).i("iOS Now Playing: attaching bubble theme=%s", theme)
+                        iosMusicBubble = IosMusicBubbleController(this@MusicService, theme).also {
                             it.attach(player)
                         }
                     } else {
+                        iosMusicBubble?.setTheme(theme)
                         iosMusicBubble?.update(player)
                     }
                 } else {
-                    if (iosMusicBubble != null) {
-                        Timber.tag(TAG).i(
-                            "iOS Now Playing: detaching bubble (enabled=%s, overlay=%s)",
-                            enabled,
-                            overlayGranted,
-                        )
-                    }
                     iosMusicBubble?.detach()
                     iosMusicBubble = null
                 }
@@ -6466,6 +6467,7 @@ class MusicService :
         const val ACTION_ALARM_TRIGGER = "com.blazify.music.action.ALARM_TRIGGER"
         const val ACTION_REFRESH_IOS_BUBBLE = "com.blazify.music.action.REFRESH_IOS_BUBBLE"
         const val EXTRA_IOS_BUBBLE_ENABLED = "extra_ios_bubble_enabled"
+        const val EXTRA_IOS_BUBBLE_THEME = "extra_ios_bubble_theme"
         const val EXTRA_ALARM_ID = "extra_alarm_id"
         const val EXTRA_ALARM_PLAYLIST_ID = "extra_alarm_playlist_id"
         const val EXTRA_ALARM_RANDOM_SONG = "extra_alarm_random_song"

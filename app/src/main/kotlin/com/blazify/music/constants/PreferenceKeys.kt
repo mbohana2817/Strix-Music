@@ -51,6 +51,15 @@ val GlassThemeKey = booleanPreferencesKey("glassTheme")
 val AuroraAnimationKey = booleanPreferencesKey("auroraAnimation")
 /** Show the Android media notification as a heads-up/floating notification when possible. */
 val FloatingMediaNotificationKey = booleanPreferencesKey("floatingMediaNotification")
+/** Visual style used by the native floating Now Playing bubble. */
+val FloatingBubbleThemeKey = stringPreferencesKey("floatingBubbleTheme")
+
+enum class BubbleTheme {
+    IOS_LIKE,
+    MODERN_LIKE,
+    BASIC_LIKE,
+}
+
 
 enum class AppBackgroundStyle {
     STRIX_BURGUNDY,

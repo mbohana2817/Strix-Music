@@ -1,21 +1,22 @@
 package com.blazify.music.playback
 
+import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.content.Context
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Path
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.view.Gravity
-import android.view.animation.DecelerateInterpolator
-import android.view.animation.PathInterpolator
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import android.widget.FrameLayout
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -25,33 +26,38 @@ import coil3.asDrawable
 import coil3.request.ImageRequest
 import androidx.media3.common.Player
 import com.blazify.music.R
+import com.blazify.music.constants.BubbleTheme
 import kotlin.math.abs
 import kotlin.math.roundToInt
 import timber.log.Timber
 
-/** Native iOS-style Now Playing bubble. The bubble is hosted by MusicService,
- * so it can remain visible while the Activity is removed from recents. */
-class IosMusicBubbleController(private val service: MusicService) {
+/**
+ * Native floating Now Playing bubble.
+ *
+ * The window is owned by MusicService, while this class only owns the visual layer
+ * and forwards transport controls to the real Media3 Player.
+ */
+class IosMusicBubbleController(
+    private val service: MusicService,
+    private var theme: BubbleTheme = BubbleTheme.IOS_LIKE,
+) {
     private val context: Context = service
     private val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
     private val density = context.resources.displayMetrics.density
-    private val widthCompact = dp(154)
-    private val heightCompact = dp(42)
-    private val widthExpanded = dp(390)
-    private val heightExpanded = dp(164)
+
     private var view: BubbleView? = null
-    private var expanded = false
+    private var player: Player? = null
     private var attached = false
+    private var expanded = false
     private var animator: ValueAnimator? = null
     private var snapAnimator: ValueAnimator? = null
-    private var player: Player? = null
 
     private val handler = Handler(Looper.getMainLooper())
     private val progressTicker = object : Runnable {
         override fun run() {
             if (!attached) return
             player?.let { view?.updateProgressOnly(it) }
-            handler.postDelayed(this, 1000L)
+            handler.postDelayed(this, 750L)
         }
     }
 
@@ -62,9 +68,9 @@ class IosMusicBubbleController(private val service: MusicService) {
         val v = BubbleView(context)
         view = v
 
-        val params = WindowManager.LayoutParams(
-            widthCompact,
-            heightCompact,
+        val p = WindowManager.LayoutParams(
+            v.themeWidth(false),
+            v.themeHeight(false),
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
@@ -72,35 +78,70 @@ class IosMusicBubbleController(private val service: MusicService) {
         ).apply {
             gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
             x = 0
-            y = dp(16)
+            y = dp(14)
         }
 
-        runCatching { wm.addView(v, params) }.onSuccess {
-            attached = true
-            v.update(player)
-            handler.removeCallbacks(progressTicker)
-            handler.postDelayed(progressTicker, 1000L)
-            Timber.tag("IosMusicBubble").i("Floating Now Playing bubble attached")
-        }.onFailure { error ->
-            view = null
-            this.player = null
-            attached = false
-            Timber.tag("IosMusicBubble").e(error, "Failed to attach floating Now Playing bubble")
-            // A permission/settings transition can race the first addView(). Retry
-            // shortly while the service is still alive, without a permanent loop.
-            handler.postDelayed({
-                if (!attached && Settings.canDrawOverlays(context) && this.player == null) {
-                    attach(player)
-                }
-            }, 700L)
+        runCatching { wm.addView(v, p) }
+            .onSuccess {
+                attached = true
+                v.update(player)
+                handler.removeCallbacks(progressTicker)
+                handler.post(progressTicker)
+                Timber.tag("IosMusicBubble").i("Floating Now Playing bubble attached theme=%s", theme)
+            }
+            .onFailure { error ->
+                view = null
+                this.player = null
+                attached = false
+                Timber.tag("IosMusicBubble").e(error, "Failed to attach floating bubble")
+                handler.postDelayed({
+                    if (!attached && Settings.canDrawOverlays(context)) attach(player)
+                }, 700L)
+            }
+    }
+
+    fun setTheme(newTheme: BubbleTheme) {
+        if (theme == newTheme) return
+        theme = newTheme
+        val current = player
+        if (!attached || current == null) return
+
+        // Rebuild the visual tree inside the same overlay window. The window position
+        // is preserved, so changing theme does not make the bubble jump.
+        val old = view ?: return
+        animator?.cancel()
+        snapAnimator?.cancel()
+        val lp = old.layoutParams as WindowManager.LayoutParams
+        val replacement = BubbleView(context)
+        replacement.alpha = 0f
+        replacement.scaleX = 0.96f
+        replacement.scaleY = 0.96f
+        view = replacement
+        runCatching {
+            wm.addView(replacement, lp)
+            replacement.update(current)
+            replacement.animate()
+                .alpha(1f)
+                .scaleX(1f)
+                .scaleY(1f)
+                .setDuration(220L)
+                .start()
+            old.animate().alpha(0f).setDuration(100L).withEndAction {
+                runCatching { wm.removeView(old) }
+            }.start()
+        }.onFailure {
+            view = old
         }
+    }
+
+    fun update(player: Player) {
+        this.player = player
+        if (attached) view?.update(player)
     }
 
     fun detach() {
         animator?.cancel()
-        animator = null
         snapAnimator?.cancel()
-        snapAnimator = null
         handler.removeCallbacks(progressTicker)
         view?.let { runCatching { wm.removeView(it) } }
         view = null
@@ -109,57 +150,50 @@ class IosMusicBubbleController(private val service: MusicService) {
         expanded = false
     }
 
-    fun update(player: Player) {
-        this.player = player
-        if (attached) view?.update(player)
-    }
-
     private fun toggleExpanded() {
         expanded = !expanded
         val v = view ?: return
-        val screenWidth = context.resources.displayMetrics.widthPixels
-        val targetW = if (expanded) widthExpanded.coerceAtMost(screenWidth - dp(24)) else widthCompact
-        val targetH = if (expanded) heightExpanded else heightCompact
+        val screenW = context.resources.displayMetrics.widthPixels
+        val targetW = v.themeWidth(expanded).coerceAtMost(screenW - dp(20))
+        val targetH = v.themeHeight(expanded)
         val lp = v.layoutParams as WindowManager.LayoutParams
         val startW = lp.width
         val startH = lp.height
 
         animator?.cancel()
         snapAnimator?.cancel()
-        // Keep the transition on the native UI thread, but let the window size and
-        // content opacity move together. The cubic-bezier matches the soft iOS
-        // sheet/Live Activity feel without using a heavy blur shader.
-        v.setLayerType(View.LAYER_TYPE_HARDWARE, null)
+        v.animate()
+            .scaleX(0.985f)
+            .scaleY(0.985f)
+            .setDuration(70L)
+            .start()
+
         animator = ValueAnimator.ofFloat(0f, 1f).apply {
-            duration = if (expanded) 420L else 340L
-            interpolator = PathInterpolator(.16f, 1f, .3f, 1f)
+            duration = if (expanded) 400L else 300L
+            interpolator = android.view.animation.PathInterpolator(.16f, 1f, .3f, 1f)
             addUpdateListener { a ->
                 val f = a.animatedFraction
                 lp.width = (startW + (targetW - startW) * f).roundToInt()
                 lp.height = (startH + (targetH - startH) * f).roundToInt()
                 val contentF = if (expanded) f else 1f - f
                 v.applyExpanded(expanded, contentF)
-                v.scaleX = 0.985f + (0.015f * f)
-                v.scaleY = 0.985f + (0.015f * f)
                 runCatching { wm.updateViewLayout(v, lp) }
             }
-            addListener(object : android.animation.AnimatorListenerAdapter() {
+            addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: android.animation.Animator) {
                     v.scaleX = 1f
                     v.scaleY = 1f
-                    v.setLayerType(View.LAYER_TYPE_NONE, null)
                 }
                 override fun onAnimationCancel(animation: android.animation.Animator) {
                     v.scaleX = 1f
                     v.scaleY = 1f
-                    v.setLayerType(View.LAYER_TYPE_NONE, null)
                 }
             })
             start()
         }
     }
 
-    private fun dp(value: Int): Int = (value * density).roundToInt()
+    private fun dp(v: Int) = (v * density).roundToInt()
 
     private inner class BubbleView(context: Context) : FrameLayout(context) {
         private val compact = LinearLayout(context)
@@ -170,9 +204,10 @@ class IosMusicBubbleController(private val service: MusicService) {
         private val artist = TextView(context)
         private val progressTrack = FrameLayout(context)
         private val progress = View(context)
-        private val previous = ImageButton(context)
-        private val play = ImageButton(context)
-        private val next = ImageButton(context)
+        private val previous = ImageView(context)
+        private val play = ImageView(context)
+        private val next = ImageView(context)
+        private val waveform = LinearLayout(context)
 
         private var downX = 0f
         private var downY = 0f
@@ -182,12 +217,17 @@ class IosMusicBubbleController(private val service: MusicService) {
         private var lastArtwork: Uri? = null
         private var lastPlayer: Player? = null
 
+        private val accent = when (theme) {
+            BubbleTheme.IOS_LIKE -> Color.WHITE
+            BubbleTheme.MODERN_LIKE -> Color.rgb(190, 225, 255)
+            BubbleTheme.BASIC_LIKE -> Color.WHITE
+        }
+
         init {
             clipChildren = true
             clipToPadding = true
-            background = glassBackground(30)
+            background = backgroundForTheme()
             elevation = dp(18).toFloat()
-
             setupCompact()
             setupExpanded()
             addView(compact, LayoutParams(-1, -1))
@@ -196,17 +236,24 @@ class IosMusicBubbleController(private val service: MusicService) {
             isClickable = true
         }
 
-        /** Let the three transport buttons receive their own clicks. Everything else
-         * is handled by the bubble for tap-to-expand and drag. */
-        override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
-            if (expanded && event.actionMasked == MotionEvent.ACTION_DOWN && isTransportArea(event.x, event.y)) {
-                return false
-            }
-            return true
+        fun themeWidth(expanded: Boolean): Int = when (theme) {
+            BubbleTheme.IOS_LIKE -> dp(if (expanded) 390 else 154)
+            BubbleTheme.MODERN_LIKE -> dp(if (expanded) 400 else 180)
+            BubbleTheme.BASIC_LIKE -> dp(if (expanded) 360 else 166)
         }
 
-        private fun isTransportArea(x: Float, y: Float): Boolean {
-            return y >= height - dp(58) && x >= dp(45) && x <= width - dp(45)
+        fun themeHeight(expanded: Boolean): Int = when (theme) {
+            BubbleTheme.IOS_LIKE -> dp(if (expanded) 166 else 44)
+            BubbleTheme.MODERN_LIKE -> dp(if (expanded) 174 else 48)
+            BubbleTheme.BASIC_LIKE -> dp(if (expanded) 154 else 44)
+        }
+
+        override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
+            // Give transport controls first refusal in expanded mode.
+            if (expanded && event.actionMasked == MotionEvent.ACTION_DOWN &&
+                event.y >= height - dp(62)
+            ) return false
+            return true
         }
 
         override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -240,61 +287,91 @@ class IosMusicBubbleController(private val service: MusicService) {
         }
 
         private fun setupCompact() {
-            compact.gravity = Gravity.CENTER
             compact.orientation = LinearLayout.HORIZONTAL
+            compact.gravity = Gravity.CENTER_VERTICAL
             compact.setPadding(dp(8), 0, dp(8), 0)
 
-            cover.layoutParams = LinearLayout.LayoutParams(dp(23), dp(23))
-            cover.background = rounded(8f)
+            val artSize = when (theme) {
+                BubbleTheme.IOS_LIKE -> 28
+                BubbleTheme.MODERN_LIKE -> 30
+                BubbleTheme.BASIC_LIKE -> 26
+            }
+            cover.layoutParams = LinearLayout.LayoutParams(dp(artSize), dp(artSize))
+            cover.background = rounded(if (theme == BubbleTheme.IOS_LIKE) 9f else 7f)
             cover.scaleType = ImageView.ScaleType.CENTER_CROP
             compact.addView(cover)
 
-            val dot = View(context).apply {
-                background = circle(Color.argb(145, 255, 255, 255))
+            val info = LinearLayout(context).apply {
+                orientation = LinearLayout.VERTICAL
+                gravity = Gravity.CENTER_VERTICAL
             }
-            compact.addView(dot, LinearLayout.LayoutParams(dp(4), dp(4)).apply {
-                leftMargin = dp(7)
+            val compactTitle = TextView(context).apply {
+                textSize = if (theme == BubbleTheme.BASIC_LIKE) 10f else 10.5f
+                setTextColor(Color.WHITE)
+                maxLines = 1
+                ellipsize = android.text.TextUtils.TruncateAt.END
+            }
+            val compactArtist = TextView(context).apply {
+                textSize = 8.5f
+                setTextColor(Color.argb(145, 255, 255, 255))
+                maxLines = 1
+                ellipsize = android.text.TextUtils.TruncateAt.END
+            }
+            info.addView(compactTitle, LinearLayout.LayoutParams(0, dp(16), 1f))
+            info.addView(compactArtist, LinearLayout.LayoutParams(0, dp(13), 1f))
+            compact.addView(info, LinearLayout.LayoutParams(0, -1, 1f).apply {
+                leftMargin = dp(8)
                 rightMargin = dp(7)
             })
 
-            val wave = LinearLayout(context).apply {
-                gravity = Gravity.CENTER
-                orientation = LinearLayout.HORIZONTAL
+            waveform.gravity = Gravity.CENTER_VERTICAL
+            waveform.orientation = LinearLayout.HORIZONTAL
+            val count = when (theme) {
+                BubbleTheme.IOS_LIKE -> 6
+                BubbleTheme.MODERN_LIKE -> 8
+                BubbleTheme.BASIC_LIKE -> 4
             }
-            repeat(3) { i ->
+            repeat(count) { i ->
                 val bar = View(context).apply {
-                    background = rounded(3f, Color.argb(220, 255, 255, 255))
+                    background = rounded(2f, accent)
+                    alpha = .62f
                 }
-                wave.addView(bar, LinearLayout.LayoutParams(dp(2), dp(5 + i * 3)).apply {
-                    leftMargin = dp(2)
+                waveform.addView(bar, LinearLayout.LayoutParams(dp(if (theme == BubbleTheme.MODERN_LIKE) 2 else 2), dp(6 + (i % 4) * 3)).apply {
+                    leftMargin = if (i == 0) 0 else dp(2)
                 })
-            }
-            compact.addView(wave, LinearLayout.LayoutParams(dp(18), dp(18)))
-            // Tiny 3-bar waveform: cheap native property animation, no shader/blur work.
-            for (i in 0 until wave.childCount) {
-                val bar = wave.getChildAt(i)
-                val animator = ValueAnimator.ofFloat(0.45f, 1f, 0.55f).apply {
-                    duration = 620L + (i * 90L)
-                    startDelay = i * 80L
+                ValueAnimator.ofFloat(.38f, 1f, .45f).apply {
+                    duration = when (theme) {
+                        BubbleTheme.IOS_LIKE -> 560L + i * 55L
+                        BubbleTheme.MODERN_LIKE -> 430L + i * 35L
+                        BubbleTheme.BASIC_LIKE -> 700L + i * 70L
+                    }
+                    startDelay = i * 65L
                     repeatCount = ValueAnimator.INFINITE
-                    interpolator = PathInterpolator(.25f, .1f, .25f, 1f)
+                    interpolator = android.view.animation.PathInterpolator(.22f, .8f, .25f, 1f)
                     addUpdateListener { a ->
                         val f = a.animatedValue as Float
                         bar.scaleY = f
-                        bar.alpha = 0.72f + (f * 0.28f)
+                        bar.alpha = .48f + f * .52f
                     }
+                    start()
                 }
-                animator.start()
             }
+            compact.addView(waveform, LinearLayout.LayoutParams(
+                if (theme == BubbleTheme.BASIC_LIKE) dp(22) else dp(39),
+                dp(30),
+            ))
+            compactTitle.tag = "compactTitle"
+            compactArtist.tag = "compactArtist"
         }
 
         private fun setupExpanded() {
             expandedPanel.orientation = LinearLayout.VERTICAL
-            expandedPanel.setPadding(dp(14), dp(12), dp(14), dp(8))
+            expandedPanel.setPadding(dp(14), dp(12), dp(14), dp(7))
 
             val header = LinearLayout(context).apply { gravity = Gravity.CENTER_VERTICAL }
-            expandedCover.layoutParams = LinearLayout.LayoutParams(dp(54), dp(54))
-            expandedCover.background = rounded(16f)
+            val coverSize = if (theme == BubbleTheme.BASIC_LIKE) 48 else 54
+            expandedCover.layoutParams = LinearLayout.LayoutParams(dp(coverSize), dp(coverSize))
+            expandedCover.background = rounded(if (theme == BubbleTheme.IOS_LIKE) 16f else 12f)
             expandedCover.scaleType = ImageView.ScaleType.CENTER_CROP
             header.addView(expandedCover)
 
@@ -302,54 +379,43 @@ class IosMusicBubbleController(private val service: MusicService) {
                 orientation = LinearLayout.VERTICAL
                 gravity = Gravity.CENTER_VERTICAL
             }
-            title.textSize = 14f
+            title.textSize = if (theme == BubbleTheme.BASIC_LIKE) 13f else 14f
             title.setTextColor(Color.WHITE)
             title.maxLines = 1
             title.ellipsize = android.text.TextUtils.TruncateAt.END
             artist.textSize = 11f
-            artist.setTextColor(Color.argb(125, 255, 255, 255))
+            artist.setTextColor(Color.argb(145, 255, 255, 255))
             artist.maxLines = 1
             artist.ellipsize = android.text.TextUtils.TruncateAt.END
-            info.addView(title, LinearLayout.LayoutParams(0, dp(22), 1f))
+            info.addView(title, LinearLayout.LayoutParams(0, dp(23), 1f))
             info.addView(artist, LinearLayout.LayoutParams(0, dp(18), 1f))
             header.addView(info, LinearLayout.LayoutParams(0, dp(54), 1f).apply {
                 leftMargin = dp(12)
             })
 
-            val more = TextView(context).apply {
-                text = "•••"
-                textSize = 13f
-                setTextColor(Color.argb(190, 255, 255, 255))
-                gravity = Gravity.CENTER
+            val menu = ImageView(context).apply {
+                setImageDrawable(LineIconDrawable(LineIconDrawable.MENU, Color.WHITE))
                 background = circle(Color.argb(18, 255, 255, 255))
+                setPadding(dp(9), dp(9), dp(9), dp(9))
             }
-            header.addView(more, LinearLayout.LayoutParams(dp(34), dp(34)))
+            header.addView(menu, LinearLayout.LayoutParams(dp(34), dp(34)))
             expandedPanel.addView(header, LinearLayout.LayoutParams(-1, dp(54)))
 
-            progressTrack.background = rounded(99f, Color.argb(34, 255, 255, 255))
-            progress.background = rounded(99f, Color.argb(245, 255, 255, 255))
+            progressTrack.background = rounded(99f, Color.argb(40, 255, 255, 255))
+            progress.background = rounded(99f, accent)
             progressTrack.addView(progress, FrameLayout.LayoutParams(0, dp(3), Gravity.START or Gravity.CENTER_VERTICAL))
-            expandedPanel.addView(progressTrack, LinearLayout.LayoutParams(-1, dp(8)).apply {
-                topMargin = dp(10)
-            })
+            expandedPanel.addView(progressTrack, LinearLayout.LayoutParams(-1, dp(8)).apply { topMargin = dp(9) })
 
             val controls = LinearLayout(context).apply {
                 gravity = Gravity.CENTER
                 orientation = LinearLayout.HORIZONTAL
             }
-            previous.setImageResource(android.R.drawable.ic_media_previous)
-            play.setImageResource(android.R.drawable.ic_media_pause)
-            next.setImageResource(android.R.drawable.ic_media_next)
-            styleButton(previous, false)
-            styleButton(play, true)
-            styleButton(next, false)
+            configureTransport(previous, LineIconDrawable.PREV, false)
+            configureTransport(play, LineIconDrawable.PAUSE, true)
+            configureTransport(next, LineIconDrawable.NEXT, false)
 
-            controls.addView(previous, LinearLayout.LayoutParams(dp(42), dp(42)).apply {
-                rightMargin = dp(20)
-            })
-            controls.addView(play, LinearLayout.LayoutParams(dp(46), dp(46)).apply {
-                rightMargin = dp(20)
-            })
+            controls.addView(previous, LinearLayout.LayoutParams(dp(42), dp(42)).apply { rightMargin = dp(18) })
+            controls.addView(play, LinearLayout.LayoutParams(dp(46), dp(46)).apply { rightMargin = dp(18) })
             controls.addView(next, LinearLayout.LayoutParams(dp(42), dp(42)))
             expandedPanel.addView(controls, LinearLayout.LayoutParams(-1, 0, 1f))
 
@@ -360,24 +426,22 @@ class IosMusicBubbleController(private val service: MusicService) {
             }
         }
 
-        private fun styleButton(button: ImageButton, main: Boolean) {
-            button.background = if (main) {
-                circle(Color.argb(245, 255, 255, 255))
-            } else {
-                circle(Color.argb(18, 255, 255, 255))
-            }
-            button.setColorFilter(if (main) Color.rgb(18, 18, 20) else Color.WHITE)
-            button.scaleType = ImageView.ScaleType.CENTER
-            button.setPadding(dp(10), dp(10), dp(10), dp(10))
-            button.isClickable = true
-            button.setOnTouchListener { v, event ->
-                when (event.actionMasked) {
+        private fun configureTransport(icon: ImageView, type: Int, main: Boolean) {
+            icon.background = if (main) circle(Color.WHITE) else circle(Color.argb(24, 255, 255, 255))
+            icon.setPadding(dp(if (main) 12 else 10), dp(if (main) 12 else 10), dp(if (main) 12 else 10), dp(if (main) 12 else 10))
+            icon.setImageDrawable(LineIconDrawable(type, if (main) Color.rgb(18, 18, 20) else Color.WHITE))
+            icon.isClickable = true
+            icon.isFocusable = false
+            icon.setOnTouchListener { v, e ->
+                when (e.actionMasked) {
                     MotionEvent.ACTION_DOWN -> {
-                        v.animate().scaleX(0.90f).scaleY(0.90f).setDuration(90L).setInterpolator(DecelerateInterpolator()).start()
+                        v.animate().scaleX(.88f).scaleY(.88f).setDuration(70L).start()
                     }
-                    MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                        v.animate().scaleX(1f).scaleY(1f).setDuration(150L).setInterpolator(PathInterpolator(.2f, .8f, .2f, 1f)).start()
+                    MotionEvent.ACTION_UP -> {
+                        v.animate().scaleX(1f).scaleY(1f).setDuration(170L)
+                            .setInterpolator(android.view.animation.PathInterpolator(.2f, .9f, .2f, 1f)).start()
                     }
+                    MotionEvent.ACTION_CANCEL -> v.animate().scaleX(1f).scaleY(1f).setDuration(120L).start()
                 }
                 false
             }
@@ -385,37 +449,40 @@ class IosMusicBubbleController(private val service: MusicService) {
 
         fun update(player: Player) {
             lastPlayer = player
-            title.text = player.mediaMetadata.title?.toString().orEmpty().ifBlank { "Strix Music" }
-            artist.text = player.mediaMetadata.artist?.toString().orEmpty().ifBlank { "Now Playing" }
+            val t = player.mediaMetadata.title?.toString().orEmpty().ifBlank { "Strix Music" }
+            val a = player.mediaMetadata.artist?.toString().orEmpty().ifBlank { "Now Playing" }
+            title.text = t
+            artist.text = a
+            (compact.findViewWithTag<TextView>("compactTitle"))?.text = t
+            (compact.findViewWithTag<TextView>("compactArtist"))?.text = a
 
             val artwork = player.mediaMetadata.artworkUri
             if (artwork != null && artwork != lastArtwork) {
                 lastArtwork = artwork
-                val request = ImageRequest.Builder(context)
-                    .data(artwork)
-                    .target { image ->
-                        val drawable = image.asDrawable(context.resources)
-                        cover.setImageDrawable(drawable)
-                        expandedCover.setImageDrawable(drawable)
-                    }
-                    .build()
-                SingletonImageLoader.get(context).enqueue(request)
+                SingletonImageLoader.get(context).enqueue(
+                    ImageRequest.Builder(context).data(artwork).target { image ->
+                        val d = image.asDrawable(context.resources)
+                        cover.setImageDrawable(d)
+                        expandedCover.setImageDrawable(d)
+                    }.build()
+                )
             }
 
-            play.setImageResource(
-                if (player.isPlaying) android.R.drawable.ic_media_pause
-                else android.R.drawable.ic_media_play,
+            play.setImageDrawable(
+                LineIconDrawable(
+                    if (player.isPlaying) LineIconDrawable.PAUSE else LineIconDrawable.PLAY,
+                    if (theme == BubbleTheme.IOS_LIKE || theme == BubbleTheme.MODERN_LIKE) Color.rgb(18,18,20) else Color.WHITE,
+                )
             )
             updateProgressOnly(player)
         }
 
         fun updateProgressOnly(player: Player) {
             val duration = player.duration
-            val position = player.currentPosition
             val fraction = if (duration > 0) {
-                (position.toFloat() / duration).coerceIn(0f, 1f)
+                (player.currentPosition.toFloat() / duration).coerceIn(0f, 1f)
             } else 0f
-            val trackWidth = progressTrack.width.takeIf { it > 0 } ?: (widthExpanded - dp(28))
+            val trackWidth = progressTrack.width.takeIf { it > 0 } ?: themeWidth(true) - dp(28)
             progress.layoutParams = (progress.layoutParams as FrameLayout.LayoutParams).apply {
                 width = (trackWidth * fraction).roundToInt()
             }
@@ -425,28 +492,32 @@ class IosMusicBubbleController(private val service: MusicService) {
         fun applyExpanded(isExpanded: Boolean, fraction: Float) {
             compact.alpha = if (isExpanded) 1f - fraction else fraction
             expandedPanel.alpha = if (isExpanded) fraction else 1f - fraction
-            expandedPanel.isVisible = isExpanded || fraction < 0.99f
+            expandedPanel.isVisible = isExpanded || fraction < .99f
         }
 
         private fun moveWindow(dx: Float, dy: Float) {
             val lp = layoutParams as WindowManager.LayoutParams
             lp.gravity = Gravity.TOP or Gravity.START
-            val screenW = context.resources.displayMetrics.widthPixels
-            val screenH = context.resources.displayMetrics.heightPixels
-            lp.x = (startWindowX + dx).roundToInt().coerceIn(dp(8), screenW - width - dp(8))
-            lp.y = (startWindowY + dy).roundToInt().coerceIn(dp(8), screenH - height - dp(8))
+            val sw = context.resources.displayMetrics.widthPixels
+            val sh = context.resources.displayMetrics.heightPixels
+            lp.x = (startWindowX + dx).roundToInt().coerceIn(dp(6), sw - width - dp(6))
+            lp.y = (startWindowY + dy).roundToInt().coerceIn(dp(6), sh - height - dp(6))
             runCatching { wm.updateViewLayout(this, lp) }
         }
 
         private fun snap() {
             val lp = layoutParams as WindowManager.LayoutParams
-            val screenW = context.resources.displayMetrics.widthPixels
-            val targetX = if (lp.x + width / 2 < screenW / 2) dp(8) else screenW - width - dp(8)
-            val startX = lp.x
+            val sw = context.resources.displayMetrics.widthPixels
+            val targetX = if (lp.x + width / 2 < sw / 2) dp(8) else sw - width - dp(8)
+            val start = lp.x
             snapAnimator?.cancel()
-            snapAnimator = ValueAnimator.ofInt(startX, targetX).apply {
-                duration = 260L
-                interpolator = PathInterpolator(.22f, 1f, .36f, 1f)
+            snapAnimator = ValueAnimator.ofInt(start, targetX).apply {
+                duration = when (theme) {
+                    BubbleTheme.IOS_LIKE -> 300L
+                    BubbleTheme.MODERN_LIKE -> 240L
+                    BubbleTheme.BASIC_LIKE -> 190L
+                }
+                interpolator = android.view.animation.PathInterpolator(.22f, 1f, .36f, 1f)
                 addUpdateListener { a ->
                     lp.x = a.animatedValue as Int
                     runCatching { wm.updateViewLayout(this@BubbleView, lp) }
@@ -455,7 +526,7 @@ class IosMusicBubbleController(private val service: MusicService) {
             }
         }
 
-        private fun rounded(radius: Float, color: Int = Color.argb(255, 255, 255, 255)) =
+        private fun rounded(radius: Float, color: Int = Color.WHITE) =
             GradientDrawable().apply {
                 cornerRadius = dp(radius.toInt()).toFloat()
                 setColor(color)
@@ -466,16 +537,100 @@ class IosMusicBubbleController(private val service: MusicService) {
             setColor(color)
         }
 
-        private fun glassBackground(radius: Int) = GradientDrawable(
-            GradientDrawable.Orientation.TL_BR,
-            intArrayOf(
-                Color.argb(245, 29, 30, 37),
-                Color.argb(235, 10, 11, 15),
-                Color.argb(242, 18, 19, 25),
-            ),
-        ).apply {
-            cornerRadius = dp(radius).toFloat()
-            setStroke(dp(1), Color.argb(36, 255, 255, 255))
+        private fun backgroundForTheme() = when (theme) {
+            BubbleTheme.IOS_LIKE -> GradientDrawable(
+                GradientDrawable.Orientation.TL_BR,
+                intArrayOf(Color.argb(247, 30, 31, 39), Color.argb(236, 9, 10, 15), Color.argb(244, 20, 21, 28)),
+            ).apply {
+                cornerRadius = dp(30).toFloat()
+                setStroke(dp(1), Color.argb(48,255,255,255))
+            }
+            BubbleTheme.MODERN_LIKE -> GradientDrawable(
+                GradientDrawable.Orientation.LEFT_RIGHT,
+                intArrayOf(Color.argb(246, 20, 26, 35), Color.argb(240, 10, 17, 27)),
+            ).apply {
+                cornerRadius = dp(24).toFloat()
+                setStroke(dp(1), Color.argb(60,190,225,255))
+            }
+            BubbleTheme.BASIC_LIKE -> GradientDrawable(
+                GradientDrawable.Orientation.LEFT_RIGHT,
+                intArrayOf(Color.argb(245, 20,20,23), Color.argb(245, 13,13,15)),
+            ).apply {
+                cornerRadius = dp(21).toFloat()
+                setStroke(dp(1), Color.argb(30,255,255,255))
+            }
         }
+    }
+
+    private class LineIconDrawable(
+        private val type: Int,
+        private val color: Int,
+    ) : android.graphics.drawable.Drawable() {
+        companion object {
+            const val PREV = 1
+            const val PLAY = 2
+            const val PAUSE = 3
+            const val NEXT = 4
+            const val MENU = 5
+        }
+
+        private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            style = Paint.Style.STROKE
+            strokeWidth = 2.4f
+            strokeCap = Paint.Cap.ROUND
+            strokeJoin = Paint.Join.ROUND
+        }
+        private val fill = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            style = Paint.Style.FILL
+        }
+
+        override fun draw(canvas: Canvas) {
+            val b = bounds
+            val cx = b.exactCenterX()
+            val cy = b.exactCenterY()
+            paint.color = color
+            fill.color = color
+            val w = b.width().toFloat()
+            val h = b.height().toFloat()
+            when (type) {
+                PLAY -> {
+                    val path = Path().apply {
+                        moveTo(cx - w*.20f, cy - h*.25f)
+                        lineTo(cx + w*.24f, cy)
+                        lineTo(cx - w*.20f, cy + h*.25f)
+                        close()
+                    }
+                    canvas.drawPath(path, fill)
+                }
+                PAUSE -> {
+                    canvas.drawRoundRect(cx-w*.20f, cy-h*.24f, cx-w*.03f, cy+h*.24f, 2f,2f,fill)
+                    canvas.drawRoundRect(cx+w*.03f, cy-h*.24f, cx+w*.20f, cy+h*.24f, 2f,2f,fill)
+                }
+                PREV, NEXT -> {
+                    val dir = if (type == PREV) -1f else 1f
+                    val x1 = cx + dir*w*.18f
+                    val x2 = cx - dir*w*.22f
+                    val x3 = cx + dir*w*.22f
+                    val path = Path().apply {
+                        moveTo(x1, cy-h*.27f)
+                        lineTo(x2, cy)
+                        lineTo(x1, cy+h*.27f)
+                        close()
+                    }
+                    canvas.drawPath(path, fill)
+                    val lineX = cx + dir*w*.31f
+                    canvas.drawLine(lineX, cy-h*.25f, lineX, cy+h*.25f, paint)
+                }
+                MENU -> {
+                    canvas.drawCircle(cx-w*.18f, cy, 1.8f, fill)
+                    canvas.drawCircle(cx, cy, 1.8f, fill)
+                    canvas.drawCircle(cx+w*.18f, cy, 1.8f, fill)
+                }
+            }
+        }
+
+        override fun setAlpha(alpha: Int) { paint.alpha = alpha; fill.alpha = alpha }
+        override fun setColorFilter(colorFilter: android.graphics.ColorFilter?) { paint.colorFilter = colorFilter; fill.colorFilter = colorFilter }
+        override fun getOpacity() = android.graphics.PixelFormat.TRANSLUCENT
     }
 }

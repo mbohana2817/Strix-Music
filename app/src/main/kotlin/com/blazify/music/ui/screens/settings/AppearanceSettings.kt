@@ -78,6 +78,8 @@ import com.blazify.music.constants.DensityScaleKey
 import com.blazify.music.constants.DynamicThemeKey
 import com.blazify.music.constants.EnableHighRefreshRateKey
 import com.blazify.music.constants.FloatingMediaNotificationKey
+import com.blazify.music.constants.FloatingBubbleThemeKey
+import com.blazify.music.constants.BubbleTheme
 import com.blazify.music.constants.EnableLandscapeScalingKey
 import com.blazify.music.constants.HidePlayerThumbnailKey
 import com.blazify.music.constants.ListenTogetherInTopBarKey
@@ -149,6 +151,11 @@ fun AppearanceSettings(
         rememberPreference(
             FloatingMediaNotificationKey,
             defaultValue = false,
+        )
+    val (floatingBubbleTheme, onFloatingBubbleThemeChange) =
+        rememberEnumPreference(
+            FloatingBubbleThemeKey,
+            defaultValue = BubbleTheme.IOS_LIKE,
         )
     val (selectedThemeColorInt) =
         rememberPreference(
@@ -296,6 +303,9 @@ fun AppearanceSettings(
     var showPlayerButtonsStyleDialog by rememberSaveable {
         mutableStateOf(false)
     }
+    var showFloatingBubbleThemeDialog by rememberSaveable {
+        mutableStateOf(false)
+    }
 
     // Lyrics dialogs moved to the dedicated Lyrics screen (settings/lyrics).
 
@@ -314,6 +324,32 @@ fun AppearanceSettings(
                     PlayerButtonsStyle.DEFAULT -> stringResource(R.string.default_style)
                     PlayerButtonsStyle.PRIMARY -> stringResource(R.string.primary_color_style)
                     PlayerButtonsStyle.TERTIARY -> stringResource(R.string.tertiary_color_style)
+                }
+            },
+        )
+    }
+
+    if (showFloatingBubbleThemeDialog) {
+        EnumDialog(
+            onDismiss = { showFloatingBubbleThemeDialog = false },
+            onSelect = {
+                onFloatingBubbleThemeChange(it)
+                showFloatingBubbleThemeDialog = false
+                val intent = Intent(activity, com.blazify.music.playback.MusicService::class.java).apply {
+                    action = com.blazify.music.playback.MusicService.ACTION_REFRESH_IOS_BUBBLE
+                    putExtra(com.blazify.music.playback.MusicService.EXTRA_IOS_BUBBLE_ENABLED, floatingMediaNotification)
+                    putExtra(com.blazify.music.playback.MusicService.EXTRA_IOS_BUBBLE_THEME, it.name)
+                }
+                runCatching { androidx.core.content.ContextCompat.startForegroundService(activity, intent) }
+            },
+            title = "Floating Bubble Theme",
+            current = floatingBubbleTheme,
+            values = BubbleTheme.entries.toList(),
+            valueText = {
+                when (it) {
+                    BubbleTheme.IOS_LIKE -> "iOS Like"
+                    BubbleTheme.MODERN_LIKE -> "Modern Like"
+                    BubbleTheme.BASIC_LIKE -> "Basic Like"
                 }
             },
         )
@@ -523,6 +559,33 @@ fun AppearanceSettings(
                                     runCatching { androidx.core.content.ContextCompat.startForegroundService(activity, intent) }
                                 }
                             },
+                        ),
+                    )
+                    add(
+                        Material3SettingsItem(
+                            icon = painterResource(R.drawable.notification),
+                            title = { Text("Floating Bubble Theme") },
+                            description = {
+                                Text(
+                                    when (floatingBubbleTheme) {
+                                        BubbleTheme.IOS_LIKE -> "iOS Like • Dynamic Island"
+                                        BubbleTheme.MODERN_LIKE -> "Modern Like • Futuristic"
+                                        BubbleTheme.BASIC_LIKE -> "Basic Like • Low Spec"
+                                    }
+                                )
+                            },
+                            trailingContent = {
+                                TextButton(onClick = { showFloatingBubbleThemeDialog = true }) {
+                                    Text(
+                                        when (floatingBubbleTheme) {
+                                            BubbleTheme.IOS_LIKE -> "iOS Like"
+                                            BubbleTheme.MODERN_LIKE -> "Modern"
+                                            BubbleTheme.BASIC_LIKE -> "Basic"
+                                        }
+                                    )
+                                }
+                            },
+                            onClick = { showFloatingBubbleThemeDialog = true },
                         ),
                     )
                     add(
