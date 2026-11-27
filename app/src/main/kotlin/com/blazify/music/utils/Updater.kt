@@ -74,6 +74,7 @@ object Updater {
      */
     internal var primaryApi = "https://api.github.com/repos/rajendra7169/blazify"
     internal var backupHome = "https://rajendrapandey.info.np/blazify/home.json"
+    internal var strixServerManifest = "https://strix-live-server-production.up.railway.app/api/update/latest"
 
     /** Which source the last answer came from, for the update screen to say. */
     @Volatile
@@ -137,6 +138,41 @@ object Updater {
         return response.bodyAsText()
     }
 
+    /**
+     * Read the small release manifest exposed by the Strix Live Server.
+     *
+     * The server returns version/versionCode/url/notes/force.  The updater
+     * already knows how to install an APK from one URL, so the response is
+     * translated into the same ReleaseInfo shape used by the existing updater.
+     */
+    private suspend fun latestFromStrixServer(): ReleaseInfo {
+        val latest = JSONObject(fetch(strixServerManifest))
+        val version = latest.optString("version").removePrefix("v")
+        require(version.isNotBlank() && version != "0.0.0")
+        val url = latest.optString("url").takeIf { it.startsWith("https://") }
+        val assets =
+            if (url != null) {
+                parseAssets(
+                    JSONArray().put(
+                        JSONObject()
+                            .put("name", url.substringAfterLast('/').ifBlank { "Strix-Music.apk" })
+                            .put("browser_download_url", url)
+                            .put("size", 0L),
+                    ),
+                )
+            } else {
+                emptyList()
+            }
+        return ReleaseInfo(
+            tagName = "v$version",
+            versionName = version,
+            description = latest.optString("notes"),
+            releaseDate = "",
+            assets = assets,
+            isPrerelease = false,
+        )
+    }
+
     /** The newest release from a GitHub-style API at [base]. */
     private suspend fun latestFromApi(base: String, includeBetas: Boolean): ReleaseInfo =
         if (includeBetas) {
@@ -153,6 +189,14 @@ object Updater {
 
     /** GitHub first; the website's backup only if GitHub gave no usable answer. */
     internal suspend fun latestFromAnySource(includeBetas: Boolean): ReleaseInfo {
+        // Strix Live Server is checked first so Strix can announce releases
+        // without depending on the GitHub repository metadata.
+        val strix = runCatching { latestFromStrixServer() }
+        strix.getOrNull()?.let {
+            lastSource = "Strix Live Server"
+            return it
+        }
+
         val primary = runCatching { latestFromApi(primaryApi, includeBetas) }
         primary.getOrNull()?.let {
             lastSource = "GitHub"

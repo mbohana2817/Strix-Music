@@ -26,7 +26,7 @@ object ListenTogetherServers {
         [
           {
             "name": "Blazify",
-            "url": "wss://blazify-together.onrender.com/ws",
+            "url": "wss://strix-live-server-production.up.railway.app/ws",
             "location": "Singapore",
             "operator": "Rajendra Pandey"
           },
