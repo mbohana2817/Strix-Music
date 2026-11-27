@@ -16,6 +16,7 @@ import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
+import android.view.animation.PathInterpolator
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -198,11 +199,7 @@ class IosMusicBubbleController(
                     }
                     waveformHandler.postDelayed(this, 48L)
                 } else {
-                    waveformBars.forEach { bar ->
-                        bar.animate().cancel()
-                        bar.scaleY = 0.28f
-                        bar.alpha = 0.38f
-                    }
+                    fadeWaveform(false)
                     waveformHandler.removeCallbacks(this)
                 }
             }
@@ -302,6 +299,8 @@ class IosMusicBubbleController(
                     leftMargin = if (i == 0) 0 else dp(2)
                 })
             }
+            waveform.alpha = 0f
+            waveform.visibility = View.INVISIBLE
             addView(waveform, LayoutParams(if (theme == BubbleTheme.BASIC_LIKE) dp(22) else dp(28), dp(30)))
 
             configureButton(previous, LineIconDrawable.PREV)
@@ -319,7 +318,11 @@ class IosMusicBubbleController(
             stop.setOnClickListener {
                 animateAction(stop)
                 lastPlayer?.let { p ->
-                    if (p.isPlaying) p.stop() else p.play()
+                    if (p.isPlaying) {
+                        p.stop()
+                    } else {
+                        resumePlayback(p)
+                    }
                 }
                 refreshControlState()
             }
@@ -345,6 +348,33 @@ class IosMusicBubbleController(
                         .start()
                 }
                 .start()
+        }
+
+        private fun resumePlayback(p: Player) {
+            runCatching {
+                // stop() leaves Media3 in STATE_IDLE. Calling play() alone can
+                // leave some ExoPlayer versions parked in idle after a Stop.
+                // Prepare explicitly, then play, so the bubble never breaks
+                // the main playback path.
+                if (p.playbackState == Player.STATE_IDLE) p.prepare()
+                p.play()
+            }.onFailure {
+                Timber.tag("IosMusicBubble").e(it, "resume playback failed")
+            }
+        }
+
+        private fun fadeWaveform(show: Boolean) {
+            val targetAlpha = if (show) 1f else 0f
+            waveform.animate().cancel()
+            waveform.animate()
+                .alpha(targetAlpha)
+                .setDuration(if (show) 180L else 220L)
+                .setInterpolator(PathInterpolator(.16f, 1f, .3f, 1f))
+                .withEndAction {
+                    if (!show) waveform.visibility = View.INVISIBLE
+                }
+                .start()
+            if (show) waveform.visibility = View.VISIBLE
         }
 
         private fun refreshControlState() {
@@ -460,6 +490,8 @@ class IosMusicBubbleController(
                 }
                 return
             }
+
+            fadeWaveform(true)
 
             val sessionId = player.audioSessionId
             if (sessionId > 0 && sessionId != visualizerSessionId) {
