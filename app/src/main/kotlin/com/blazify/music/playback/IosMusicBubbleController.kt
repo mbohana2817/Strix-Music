@@ -102,35 +102,66 @@ class IosMusicBubbleController(
 
     fun setTheme(newTheme: BubbleTheme) {
         if (theme == newTheme) return
-        theme = newTheme
-        val current = player
-        if (!attached || current == null) return
+        val current = player ?: return
+        if (!attached) {
+            theme = newTheme
+            return
+        }
 
-        // Rebuild the visual tree inside the same overlay window. The window position
-        // is preserved, so changing theme does not make the bubble jump.
         val old = view ?: return
+        val wasExpanded = expanded
+        val oldTheme = theme
+        theme = newTheme
+
         animator?.cancel()
         snapAnimator?.cancel()
-        val lp = old.layoutParams as WindowManager.LayoutParams
+
+        val oldLp = old.layoutParams as? WindowManager.LayoutParams ?: return
         val replacement = BubbleView(context)
         replacement.alpha = 0f
-        replacement.scaleX = 0.96f
-        replacement.scaleY = 0.96f
+        replacement.scaleX = 0.97f
+        replacement.scaleY = 0.97f
+
+        val replacementLp = WindowManager.LayoutParams(oldLp).apply {
+            width = replacement.themeWidth(wasExpanded).coerceAtMost(
+                context.resources.displayMetrics.widthPixels - dp(20)
+            )
+            height = replacement.themeHeight(wasExpanded)
+        }
+
+        // Preserve the expanded state. The previous implementation recreated
+        // the view as compact, which made the bubble look broken after a theme change.
+        if (wasExpanded) {
+            replacement.prepareExpandedState()
+        }
+
         view = replacement
+
         runCatching {
-            wm.addView(replacement, lp)
+            wm.addView(replacement, replacementLp)
             replacement.update(current)
+
             replacement.animate()
                 .alpha(1f)
                 .scaleX(1f)
                 .scaleY(1f)
-                .setDuration(220L)
+                .setDuration(180L)
+                .setInterpolator(android.view.animation.PathInterpolator(.16f, 1f, .3f, 1f))
                 .start()
-            old.animate().alpha(0f).setDuration(100L).withEndAction {
-                runCatching { wm.removeView(old) }
-            }.start()
-        }.onFailure {
+
+            old.animate()
+                .alpha(0f)
+                .scaleX(.985f)
+                .scaleY(.985f)
+                .setDuration(120L)
+                .withEndAction {
+                    runCatching { wm.removeView(old) }
+                }
+                .start()
+        }.onFailure { error ->
             view = old
+            theme = oldTheme
+            Timber.tag("IosMusicBubble").e(error, "Failed to switch bubble theme")
         }
     }
 
@@ -249,11 +280,25 @@ class IosMusicBubbleController(
         }
 
         override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
-            // Give transport controls first refusal in expanded mode.
-            if (expanded && event.actionMasked == MotionEvent.ACTION_DOWN &&
-                event.y >= height - dp(62)
-            ) return false
+            if (expanded && event.actionMasked == MotionEvent.ACTION_DOWN) {
+                // Never steal the initial DOWN event from a transport button.
+                // The old fixed Y threshold was fragile across themes/sizes.
+                val x = event.x.toInt()
+                val y = event.y.toInt()
+                if (isPointInside(previous, x, y) ||
+                    isPointInside(play, x, y) ||
+                    isPointInside(next, x, y)
+                ) {
+                    return false
+                }
+            }
             return true
+        }
+
+        private fun isPointInside(child: View, x: Int, y: Int): Boolean {
+            if (!child.isShown || !child.isClickable) return false
+            return x >= child.left && x < child.right &&
+                y >= child.top && y < child.bottom
         }
 
         override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -447,6 +492,12 @@ class IosMusicBubbleController(
             }
         }
 
+        fun prepareExpandedState() {
+            expandedPanel.isVisible = true
+            compact.alpha = 0f
+            expandedPanel.alpha = 1f
+        }
+
         fun update(player: Player) {
             lastPlayer = player
             val t = player.mediaMetadata.title?.toString().orEmpty().ifBlank { "Strix Music" }
@@ -460,7 +511,10 @@ class IosMusicBubbleController(
             if (artwork != null && artwork != lastArtwork) {
                 lastArtwork = artwork
                 SingletonImageLoader.get(context).enqueue(
-                    ImageRequest.Builder(context).data(artwork).target { image ->
+                    ImageRequest.Builder(context)
+                        .data(artwork)
+                        .allowHardware(false)
+                        .target { image ->
                         val d = image.asDrawable(context.resources)
                         cover.setImageDrawable(d)
                         expandedCover.setImageDrawable(d)
