@@ -186,16 +186,17 @@ class IosMusicBubbleController(
         private val waveformFrame = object : Runnable {
             override fun run() {
                 if (lastPlayer?.isPlaying == true) {
-                    waveformPhase += 0.065 + bassLevel * 0.46
-                    val energy = 0.18f + bassLevel * 0.82f
+                    waveformPhase += 0.055 + bassLevel * 0.30
+                    val energy = 0.14f + bassLevel * 0.86f
                     waveformBars.forEachIndexed { index, bar ->
-                        val phase = waveformPhase + index * 0.72
+                        val phase = waveformPhase + index * 0.58
                         val wave = ((sin(phase) + 1.0) * 0.5).toFloat()
-                        val scale = (0.28f + wave * energy).coerceIn(0.28f, 1.35f)
-                        bar.scaleY = scale
-                        bar.alpha = (0.40f + scale * 0.45f).coerceIn(0.45f, 1f)
+                        val target = (0.24f + wave * energy).coerceIn(0.24f, 1.28f)
+                        val smooth = bar.scaleY + (target - bar.scaleY) * 0.32f
+                        bar.scaleY = smooth
+                        bar.alpha = (0.36f + smooth * 0.50f).coerceIn(0.42f, 1f)
                     }
-                    waveformHandler.postDelayed(this, 80L)
+                    waveformHandler.postDelayed(this, 48L)
                 } else {
                     waveformBars.forEach { bar ->
                         bar.animate().cancel()
@@ -310,9 +311,61 @@ class IosMusicBubbleController(
             addView(stop, LayoutParams(dp(28), dp(34)).apply { leftMargin = dp(1) })
             addView(next, LayoutParams(dp(28), dp(34)).apply { leftMargin = dp(1) })
 
-            previous.setOnClickListener { lastPlayer?.seekToPreviousMediaItem() }
-            stop.setOnClickListener { lastPlayer?.stop() }
-            next.setOnClickListener { lastPlayer?.seekToNextMediaItem() }
+            previous.setOnClickListener {
+                animateAction(previous)
+                lastPlayer?.seekToPreviousMediaItem()
+                refreshControlState()
+            }
+            stop.setOnClickListener {
+                animateAction(stop)
+                lastPlayer?.let { p ->
+                    if (p.isPlaying) p.stop() else p.play()
+                }
+                refreshControlState()
+            }
+            next.setOnClickListener {
+                animateAction(next)
+                lastPlayer?.seekToNextMediaItem()
+                refreshControlState()
+            }
+            refreshControlState()
+        }
+
+        private fun animateAction(view: View) {
+            view.animate().cancel()
+            view.animate()
+                .scaleX(0.82f).scaleY(0.82f).alpha(0.62f)
+                .setDuration(65L)
+                .setInterpolator(android.view.animation.DecelerateInterpolator())
+                .withEndAction {
+                    view.animate()
+                        .scaleX(1f).scaleY(1f).alpha(1f)
+                        .setDuration(170L)
+                        .setInterpolator(android.view.animation.PathInterpolator(.16f, 1f, .3f, 1f))
+                        .start()
+                }
+                .start()
+        }
+
+        private fun refreshControlState() {
+            val p = lastPlayer ?: return
+            val iconType = if (p.isPlaying) LineIconDrawable.STOP else LineIconDrawable.PLAY
+            val old = stop.drawable
+            stop.animate().cancel()
+            stop.animate()
+                .alpha(0.35f)
+                .scaleX(0.86f).scaleY(0.86f)
+                .setDuration(70L)
+                .withEndAction {
+                    stop.setImageDrawable(LineIconDrawable(iconType, Color.WHITE))
+                    stop.animate()
+                        .alpha(1f)
+                        .scaleX(1f).scaleY(1f)
+                        .setDuration(180L)
+                        .setInterpolator(android.view.animation.PathInterpolator(.16f, 1f, .3f, 1f))
+                        .start()
+                }
+                .start()
         }
 
         private fun configureButton(icon: ImageView, type: Int) {
@@ -326,9 +379,20 @@ class IosMusicBubbleController(
             icon.isClickable = true
             icon.setOnTouchListener { v, event ->
                 when (event.actionMasked) {
-                    MotionEvent.ACTION_DOWN -> v.animate().scaleX(.82f).scaleY(.82f).setDuration(55L).start()
-                    MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL ->
-                        v.animate().scaleX(1f).scaleY(1f).setDuration(130L).start()
+                    MotionEvent.ACTION_DOWN -> {
+                    v.animate().cancel()
+                    v.animate().scaleX(.82f).scaleY(.82f).alpha(.62f)
+                        .setDuration(55L)
+                        .setInterpolator(android.view.animation.DecelerateInterpolator())
+                        .start()
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    v.animate().cancel()
+                    v.animate().scaleX(1f).scaleY(1f).alpha(1f)
+                        .setDuration(150L)
+                        .setInterpolator(android.view.animation.PathInterpolator(.16f, 1f, .3f, 1f))
+                        .start()
+                }
                 }
                 false
             }
@@ -388,8 +452,11 @@ class IosMusicBubbleController(
                 waveformHandler.removeCallbacks(waveformFrame)
                 waveformBars.forEach { bar ->
                     bar.animate().cancel()
-                    bar.scaleY = 0.28f
-                    bar.alpha = 0.38f
+                    bar.animate()
+                        .scaleY(0.28f).alpha(0.38f)
+                        .setDuration(180L)
+                        .setInterpolator(android.view.animation.DecelerateInterpolator())
+                        .start()
                 }
                 return
             }
@@ -468,6 +535,7 @@ class IosMusicBubbleController(
             }
             updateProgressOnly(player)
             updateWaveform(player)
+            refreshControlState()
         }
 
         fun updateProgressOnly(player: Player) {
