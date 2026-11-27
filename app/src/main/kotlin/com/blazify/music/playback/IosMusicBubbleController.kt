@@ -24,6 +24,7 @@ import androidx.core.view.isVisible
 import coil3.SingletonImageLoader
 import coil3.asDrawable
 import coil3.request.ImageRequest
+import coil3.request.allowHardware
 import androidx.media3.common.Player
 import com.blazify.music.R
 import com.blazify.music.constants.BubbleTheme
@@ -122,11 +123,31 @@ class IosMusicBubbleController(
         replacement.scaleX = 0.97f
         replacement.scaleY = 0.97f
 
-        val replacementLp = WindowManager.LayoutParams(oldLp).apply {
-            width = replacement.themeWidth(wasExpanded).coerceAtMost(
-                context.resources.displayMetrics.widthPixels - dp(20)
-            )
-            height = replacement.themeHeight(wasExpanded)
+        val replacementWidth = replacement.themeWidth(wasExpanded).coerceAtMost(
+            context.resources.displayMetrics.widthPixels - dp(20)
+        )
+        val replacementHeight = replacement.themeHeight(wasExpanded)
+        val replacementLp = WindowManager.LayoutParams(
+            replacementWidth,
+            replacementHeight,
+            oldLp.type,
+            oldLp.flags,
+            oldLp.format,
+        ).apply {
+            gravity = oldLp.gravity
+            x = oldLp.x
+            y = oldLp.y
+            horizontalMargin = oldLp.horizontalMargin
+            verticalMargin = oldLp.verticalMargin
+            alpha = oldLp.alpha
+            dimAmount = oldLp.dimAmount
+            screenBrightness = oldLp.screenBrightness
+            preferredRefreshRate = oldLp.preferredRefreshRate
+            preferredDisplayModeId = oldLp.preferredDisplayModeId
+            rotationAnimation = oldLp.rotationAnimation
+            softInputMode = oldLp.softInputMode
+            systemUiVisibility = oldLp.systemUiVisibility
+            layoutInDisplayCutoutMode = oldLp.layoutInDisplayCutoutMode
         }
 
         // Preserve the expanded state. The previous implementation recreated
