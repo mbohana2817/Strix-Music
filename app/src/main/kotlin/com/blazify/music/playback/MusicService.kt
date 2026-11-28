@@ -6503,6 +6503,7 @@ class MusicService :
         const val ACTION_ALARM_TRIGGER = "com.blazify.music.action.ALARM_TRIGGER"
         const val ACTION_REFRESH_IOS_BUBBLE = "com.blazify.music.action.REFRESH_IOS_BUBBLE"
         const val EXTRA_IOS_BUBBLE_ENABLED = "extra_ios_bubble_enabled"
+        const val EXTRA_IOS_BUBBLE_THEME = "extra_ios_bubble_theme"
         const val EXTRA_ALARM_ID = "extra_alarm_id"
         const val EXTRA_ALARM_PLAYLIST_ID = "extra_alarm_playlist_id"
         const val EXTRA_ALARM_RANDOM_SONG = "extra_alarm_random_song"
