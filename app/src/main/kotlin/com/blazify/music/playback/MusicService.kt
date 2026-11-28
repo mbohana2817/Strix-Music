@@ -27,8 +27,6 @@ import android.media.AudioManager
 import android.media.audiofx.AudioEffect
 import com.blazify.music.constants.EnableBetterLyricsKey
 import com.blazify.music.constants.FloatingMediaNotificationKey
-import com.blazify.music.constants.FloatingBubbleThemeKey
-import com.blazify.music.constants.BubbleTheme
 import com.blazify.music.constants.AddToPlaylistAtTopKey
 import com.blazify.music.playback.audio.VolumeNormalizationAudioProcessor
 import com.blazify.music.utils.safeDataStoreEdit
@@ -906,9 +904,13 @@ class MusicService :
             try {
                 controllerFuture?.get()
             } catch (e: Exception) {
-                Timber.tag(TAG).e(e, "Failed to initialize MediaController")
+                // The internal controller is only a helper for notification/transport plumbing.
+                // Never kill an actively playing MusicService just because this future failed.
+                Timber.tag(TAG).e(e, "Failed to initialize MediaController; playback will continue")
                 controllerFuture = null
-                stopSelf()
+                if (!::player.isInitialized || !player.isPlaying) {
+                    stopSelf()
+                }
             }
         }, MoreExecutors.directExecutor())
 
@@ -1261,44 +1263,66 @@ class MusicService :
                 val shuffleModeEnabled = player.shuffleModeEnabled
                 val playbackParameters = player.playbackParameters
                 val volume = player.volume
-                // The order shuffle chose, so the rebuilt player plays the rest of it rather than a new one.
+                // Build the replacement player BEFORE releasing the old one.  A failure while
+                // constructing an audio renderer/processor must never take the active player
+                // down with it.
                 val shuffleOrder = player.shuffleOrder
                 val mediaItems = List(player.mediaItemCount) { index ->
                     player.getMediaItemAt(index)
                 }
+                val oldPlayer = player
 
-                player.removeListener(this)
-                sleepTimer?.let { player.removeListener(it) }
-                playerNormalizationProcessors.remove(player)
-                playerSilenceProcessors.remove(player)
-                player.release()
-
-                val newPlayer = createExoPlayer()
-                newPlayer.addListener(this@MusicService)
-                sleepTimer?.let { newPlayer.addListener(it) }
-
-                sleepTimer?.player = newPlayer
-
-                try {
-                    mediaSession?.let { (it as MediaSession).player = newPlayer }
-                } catch (e: Exception) {
-                    Timber.tag(TAG).e(e, "Failed to swap player in MediaSession")
+                val newPlayer = runCatching {
+                    createExoPlayer()
+                }.getOrElse { error ->
+                    Timber.tag(TAG).e(
+                        error,
+                        "Failed to recreate player after AudioTrackPlaybackParams change; keeping current player",
+                    )
+                    return@collectLatest
                 }
 
-                newPlayer.setMediaItems(mediaItems, currentIndex, currentPosition)
-                newPlayer.repeatMode = repeatMode
-                newPlayer.shuffleModeEnabled = shuffleModeEnabled
-                newPlayer.setShuffleOrder(shuffleOrder)
-                newPlayer.playbackParameters = playbackParameters
-                newPlayer.volume = volume
-                newPlayer.playWhenReady = playWhenReady
-                newPlayer.prepare()
+                runCatching {
+                    newPlayer.setMediaItems(mediaItems, currentIndex, currentPosition)
+                    newPlayer.repeatMode = repeatMode
+                    newPlayer.shuffleModeEnabled = shuffleModeEnabled
+                    newPlayer.setShuffleOrder(shuffleOrder)
+                    newPlayer.playbackParameters = playbackParameters
+                    newPlayer.volume = volume
+                    newPlayer.playWhenReady = playWhenReady
+                    newPlayer.prepare()
 
-                player = newPlayer
-                _playerFlow.value = newPlayer
-                iosMusicBubble?.update(newPlayer)
+                    newPlayer.addListener(this@MusicService)
+                    sleepTimer?.let { newPlayer.addListener(it) }
 
-                Timber.tag("MusicService").i("Player recreated with AudioTrackPlaybackParams: $useAudioTrackParams")
+                    mediaSession?.let { (it as MediaSession).player = newPlayer }
+
+                    // Only swap the service reference after the new player is fully prepared.
+                    player = newPlayer
+                    _playerFlow.value = newPlayer
+                    sleepTimer?.player = newPlayer
+                    iosMusicBubble?.update(newPlayer)
+
+                    oldPlayer.removeListener(this)
+                    sleepTimer?.let { oldPlayer.removeListener(it) }
+                    playerNormalizationProcessors.remove(oldPlayer)
+                    playerSilenceProcessors.remove(oldPlayer)
+                    oldPlayer.release()
+
+                    Timber.tag("MusicService").i(
+                        "Player safely recreated with AudioTrackPlaybackParams: $useAudioTrackParams",
+                    )
+                }.onFailure { error ->
+                    Timber.tag(TAG).e(
+                        error,
+                        "Replacement player failed; releasing replacement and keeping current player",
+                    )
+                    newPlayer.removeListener(this@MusicService)
+                    sleepTimer?.let { newPlayer.removeListener(it) }
+                    playerNormalizationProcessors.remove(newPlayer)
+                    playerSilenceProcessors.remove(newPlayer)
+                    runCatching { newPlayer.release() }
+                }
             }
 
         // Initialize Discord RPC manager (rehydrates token, reconnects gateway)
@@ -5675,8 +5699,10 @@ class MusicService :
             unregisterReceiver(screenStateReceiver)
         } catch (e: Exception) {
         }
-        audioManager.unregisterAudioDeviceCallback(audioDeviceCallback)
-        castConnectionHandler?.release()
+        runCatching { audioManager.unregisterAudioDeviceCallback(audioDeviceCallback) }
+            .onFailure { Timber.tag(TAG).w(it, "Audio device callback was already unregistered") }
+        runCatching { castConnectionHandler?.release() }
+            .onFailure { Timber.tag(TAG).w(it, "Failed to release cast connection handler") }
         if (dataStore.get(PersistentQueueKey, true)) {
             saveQueueToDisk()
         }
@@ -5687,18 +5713,20 @@ class MusicService :
             DiscordRpcManager.disconnect()
         }
         DiscordRpcManager.destroy()
-        connectivityObserver.unregister()
-        abandonAudioFocus()
-        closeAudioEffectSession()
-        mediaLibrarySessionCallback.release()
-        mediaSession?.release()
-        player.removeListener(this)
-        sleepTimer?.let { player.removeListener(it) }
+        runCatching { connectivityObserver.unregister() }
+            .onFailure { Timber.tag(TAG).w(it, "Connectivity observer was already unregistered") }
+        runCatching { abandonAudioFocus() }
+        runCatching { closeAudioEffectSession() }
+        runCatching { mediaLibrarySessionCallback.release() }
+        runCatching { mediaSession?.release() }
+        runCatching { player.removeListener(this) }
+        runCatching { sleepTimer?.let { player.removeListener(it) } }
         playerNormalizationProcessors.remove(player)
         playerSilenceProcessors.remove(player)
-        controllerFuture?.let { MediaController.releaseFuture(it) }
+        controllerFuture?.let { runCatching { MediaController.releaseFuture(it) } }
         controllerFuture = null
-        player.release()
+        runCatching { player.release() }
+            .onFailure { Timber.tag(TAG).w(it, "Player release failed during service shutdown") }
         scope.cancel()
         super.onDestroy()
         shutdownDeferred.complete(Unit)
@@ -5817,9 +5845,7 @@ class MusicService :
                     } else {
                         null
                     }
-                val themeOverride = intent.getStringExtra(EXTRA_IOS_BUBBLE_THEME)
-                    ?.let { runCatching { BubbleTheme.valueOf(it) }.getOrNull() }
-                refreshIosMusicBubble(enabledOverride, themeOverride)
+                refreshIosMusicBubble(enabledOverride)
             }
 
             ACTION_ALARM_TRIGGER -> {
@@ -5855,21 +5881,25 @@ class MusicService :
             }
         }
 
-        return super.onStartCommand(intent, flags, startId)
+        // Keep the playback service sticky while audio is actually playing. This does not
+        // force a fresh player to start by itself, but it prevents an OEM from treating a
+        // short process/service restart as a permanent "music stopped" request.
+        return if (::player.isInitialized && player.isPlaying) {
+            START_STICKY
+        } else {
+            super.onStartCommand(intent, flags, startId)
+        }
     }
 
 
-    private fun refreshIosMusicBubble(
-        enabledOverride: Boolean? = null,
-        themeOverride: BubbleTheme? = null,
-    ) {
-        // DataStore is the source of truth because startupPrefs is only a service-start snapshot.
+    private fun refreshIosMusicBubble(enabledOverride: Boolean? = null) {
+        // The preference can be changed by Compose while this service instance is
+        // already alive. startupPrefs is only a startup snapshot, so never use it
+        // here; read the current DataStore value instead.
         scope.launch {
-            val prefs = runCatching { dataStore.data.first() }.getOrNull()
-            val enabled = enabledOverride ?: (prefs?.get(FloatingMediaNotificationKey) ?: false)
-            val theme = themeOverride
-                ?: prefs?.get(FloatingBubbleThemeKey)?.let { runCatching { BubbleTheme.valueOf(it) }.getOrNull() }
-                ?: BubbleTheme.IOS_LIKE
+            val enabled = enabledOverride ?: runCatching {
+                dataStore.data.first()[FloatingMediaNotificationKey] ?: false
+            }.getOrDefault(false)
 
             withContext(Dispatchers.Main.immediate) {
                 if (!::player.isInitialized) return@withContext
@@ -5877,15 +5907,21 @@ class MusicService :
                 val overlayGranted = Settings.canDrawOverlays(this@MusicService)
                 if (enabled && overlayGranted) {
                     if (iosMusicBubble == null) {
-                        Timber.tag(TAG).i("iOS Now Playing: attaching bubble theme=%s", theme)
-                        iosMusicBubble = IosMusicBubbleController(this@MusicService, theme).also {
+                        Timber.tag(TAG).i("iOS Now Playing: attaching floating bubble")
+                        iosMusicBubble = IosMusicBubbleController(this@MusicService).also {
                             it.attach(player)
                         }
                     } else {
-                        iosMusicBubble?.setTheme(theme)
                         iosMusicBubble?.update(player)
                     }
                 } else {
+                    if (iosMusicBubble != null) {
+                        Timber.tag(TAG).i(
+                            "iOS Now Playing: detaching bubble (enabled=%s, overlay=%s)",
+                            enabled,
+                            overlayGranted,
+                        )
+                    }
                     iosMusicBubble?.detach()
                     iosMusicBubble = null
                 }
@@ -6467,7 +6503,6 @@ class MusicService :
         const val ACTION_ALARM_TRIGGER = "com.blazify.music.action.ALARM_TRIGGER"
         const val ACTION_REFRESH_IOS_BUBBLE = "com.blazify.music.action.REFRESH_IOS_BUBBLE"
         const val EXTRA_IOS_BUBBLE_ENABLED = "extra_ios_bubble_enabled"
-        const val EXTRA_IOS_BUBBLE_THEME = "extra_ios_bubble_theme"
         const val EXTRA_ALARM_ID = "extra_alarm_id"
         const val EXTRA_ALARM_PLAYLIST_ID = "extra_alarm_playlist_id"
         const val EXTRA_ALARM_RANDOM_SONG = "extra_alarm_random_song"
@@ -6511,8 +6546,8 @@ class MusicService :
         const val MAX_CONSECUTIVE_ERR = 5
         const val MAX_RETRY_COUNT = 10
 
-        private const val MAX_GAIN_MB = 300 // Safe maximum gain: +3 dB
-        private const val MIN_GAIN_MB = 0 // Never attenuate already-quiet tracks
+        private const val MAX_GAIN_MB = 300 // Maximum gain in millibels (3 dB)
+        private const val MIN_GAIN_MB = -1500 // Minimum gain in millibels (-15 dB)
 
         private const val TAG = "MusicService"
 
